@@ -93,7 +93,23 @@ Feature-specific views that consume UI components and bind data.
 
 ---
 
-## 🧪 6. Testing Strategy
+## 🛠️ 6. Development Scripts
+
+### Web Build (Production)
+```bash
+npm run build
+```
+Outputs to `dist/`. This is what gets deployed to Vercel or synced to Capacitor.
+
+### Testing (Watch Mode)
+```bash
+npm test -- --watch
+```
+Useful for TDD.
+
+---
+
+## 🧪 7. Testing Strategy
 
 We use **Vitest**.
 *   **Focus**: Unit testing the **Engine** (`src/engine/`).
@@ -103,7 +119,7 @@ We use **Vitest**.
 
 ---
 
-## 📚 7. Glossary
+## 📚 8. Glossary
 
 *   **WOD**: Workout of the Day.
 *   **AMRAP**: As Many Rounds As Possible (Time is fixed, work is variable).
@@ -114,7 +130,7 @@ We use **Vitest**.
 
 ---
 
-## 🤖 8. Native Android Support (Capacitor)
+## 🤖 9. Native Android Support (Capacitor)
 
 The project now supports building a native Android `.apk` using Capacitor.
 
@@ -141,4 +157,6 @@ The project now supports building a native Android `.apk` using Capacitor.
     ./gradlew assembleDebug
     ```
     The APK will be at: `android/app/build/outputs/apk/debug/app-debug.apk`
+
+👉 **[See Full Mobile Build Guide](docs/MOBILE_BUILD.md)** for detailed instructions on release builds, signing, and troubleshooting.
 

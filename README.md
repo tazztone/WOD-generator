@@ -82,60 +82,15 @@ Once generated, you see the WOD (Workout of the Day) preview.
     ```
     Open `http://localhost:5173` in your browser.
 
-### Building for Production
-To create an optimized build for deployment:
-```bash
-npm run build
-```
-The output will be in the `dist/` directory, ready to be hosted on any static site provider (Vercel, Netlify, GitHub Pages).
-
----
-
-## 🧪 Testing
-
-The project uses [Vitest](https://vitest.dev/) for unit testing the core generation logic.
-
-```bash
-# Run tests once
-npm test
-
-# Run tests in watch mode
-npm test -- --watch
-```
-
-Tests cover:
-*   Use case validation (e.g., "No Barbell" configuration truly excludes barbells).
-*   Rep scaling logic (Beginner vs Rx).
-*   Injury exclusions.
+### Building & Deployment
+See [`AGENTS.md`](AGENTS.md) for detailed build instructions (Web & Android).
 
 ---
 
 ## 📱 PWA (Offline Support)
-This app is configured with `vite-plugin-pwa`. It caches all assets (HTML, CSS, JS, Audio logic) for offline use.
+This app is designed to work 100% offline.
 *   **Mobile**: Open in Safari/Chrome on iOS/Android and tap "Add to Home Screen" for a native app experience.
 *   **Desktop**: Detects as an installable Chrome App.
-
-### Native Android (APK)
-This project uses **Capacitor** to wrap the web app in a native Android container.
-1.  Initialize/Update: `npx cap sync`
-2.  Open in Android Studio: `npx cap open android`
-3.  Build APK: `./gradlew assembleDebug` (inside `android/` folder)
-
----
-
-## 🧱 Architecture Overview
-
-The codebase was recently refactored from a monolithic React component into a modular architecture:
-
-| Directory | Description |
-|-----------|-------------|
-| `src/engine` | Pure JS business logic (Generator, Audio, Math). Core of the app. |
-| `src/data` | JSON-like structures for Exercises (`EXERCISE_DB`) and Injury mappings. |
-| `src/components` | Reusable UI atoms (Buttons, Cards, Layouts). |
-| `src/screens` | Page-level components (`Config`, `Timer`, `History`). |
-| `src/hooks` | Complex state logic extracted into React Hooks (`useTimer`). |
-
-See `AGENTS.md` for more technical details.
 
 ---
 
