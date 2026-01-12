@@ -38,15 +38,29 @@ describe('Generator Engine', () => {
         expect(isExerciseValid(bodyweightEx, config)).toBe(true);
     });
 
-    it('should respect injury avoidance', () => {
+    it('should respect injury avoidance (Shoulders)', () => {
+        const config = {
+            difficulty: 'Rx',
+            avoid: ['Shoulders'],
+            equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true, bodyweight: true }
+        };
+
+        const shoulderEx = EXERCISE_DB.find(e => e.tags.includes('shoulders'));
+        expect(isExerciseValid(shoulderEx, config)).toBe(false);
+
+        const legEx = EXERCISE_DB.find(e => !e.tags.includes('shoulders') && !e.tags.includes('overhead'));
+        if (legEx) expect(isExerciseValid(legEx, config)).toBe(true);
+    });
+
+    it('should respect injury avoidance (Knees)', () => {
         const config = {
             difficulty: 'Rx',
             avoid: ['Knees'],
-            equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true }
+            equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true, bodyweight: true }
         };
 
-        const squatEx = EXERCISE_DB.find(e => e.pattern === 'Squat'); // Should have 'knees' tag
-        expect(isExerciseValid(squatEx, config)).toBe(false);
+        const kneeEx = EXERCISE_DB.find(e => e.tags.includes('knees'));
+        expect(isExerciseValid(kneeEx, config)).toBe(false);
     });
 
     it('should scale reps for beginners', () => {

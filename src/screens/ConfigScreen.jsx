@@ -3,56 +3,10 @@ import { Activity, HelpCircle } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 
-// Temporary Translation Object until we move it to a Context/Hook
-const T = {
-    en: {
-        duration: "Duration",
-        movements: "Movements",
-        includeStrength: "Include Strength (Part A)",
-        strengthSub: "Heavy compound lift before WOD",
-        level: "Level",
-        style: "Workout Style",
-        focus: "Focus",
-        injuries: "Injuries",
-        gear: "Gear",
-        generate: "Generate WOD",
-        rx: "Rx (Standard)",
-        scaled: "Scaled",
-        random: "Surprise Me (Random)",
-        chipper: "Chipper",
-        tabata: "Tabata",
-        parts: { shoulders: "Shoulders", knees: "Knees", back: "Back" },
-        equip: { barbell: "Barbell", dumbbell: "Dumbbells / KBs", pullup: "Pull-Up Bar", machine: "Cardio Machine" },
-        tt: {
-            injuries: "Smart-Filter: Excludes aggravating movements."
-        }
-    },
-    de: {
-        duration: "Dauer",
-        movements: "Übungen",
-        includeStrength: "Kraftteil (Teil A)",
-        strengthSub: "Schwere Grundübung vor dem WOD",
-        level: "Niveau",
-        style: "Workout Stil",
-        focus: "Fokus",
-        injuries: "Verletzungen",
-        gear: "Ausrüstung",
-        generate: "Workout Generieren",
-        rx: "Rx (Standard)",
-        scaled: "Skaliert",
-        random: "Überraschung (Zufall)",
-        chipper: "Chipper",
-        tabata: "Tabata",
-        parts: { shoulders: "Schultern", knees: "Knie", back: "Rücken" },
-        equip: { barbell: "Langhantel", dumbbell: "Kurzhantel / KB", pullup: "Klimmzugstange", machine: "Cardio Gerät" },
-        tt: {
-            injuries: "Smart-Filter: Entfernt belastende Übungen."
-        }
-    }
-};
+import { LOCALES } from '../data/locales';
 
 export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip }) => {
-    const t = T[lang];
+    const t = LOCALES[lang];
 
     const toggleAvoid = (key) => {
         setConfig(prev => ({
