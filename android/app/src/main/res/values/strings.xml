@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WodGen Ultimate</string>
+    <string name="title_activity_main">WodGen Ultimate</string>
+    <string name="package_name">com.wodgen.ultimate</string>
+    <string name="custom_url_scheme">com.wodgen.ultimate</string>
+</resources>

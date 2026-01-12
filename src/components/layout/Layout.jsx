@@ -1,0 +1,31 @@
+import React from 'react';
+import { Globe, History as HistoryIcon } from 'lucide-react';
+
+export const Shell = ({ children }) => {
+    return (
+        <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black text-slate-100 font-sans selection:bg-emerald-500 selection:text-white">
+            <div className="max-w-md mx-auto min-h-screen shadow-2xl overflow-hidden flex flex-col relative bg-slate-900/50">
+                {children}
+            </div>
+        </div>
+    );
+};
+
+export const Header = ({ onBack, onLangToggle, onHistory, lang, appState }) => {
+    return (
+        <header className="px-5 py-4 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 flex justify-between items-center sticky top-0 z-30">
+            <div onClick={onBack} className="cursor-pointer group">
+                <h1 className="text-xl font-black italic tracking-tighter text-emerald-400">WOD GEN</h1>
+                <p className="text-[9px] text-slate-500 font-bold tracking-widest">V7.0 ULTIMATE</p>
+            </div>
+            <div className="flex gap-2">
+                <button onClick={onLangToggle} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 font-bold text-xs border border-slate-700 flex items-center gap-1">
+                    <Globe size={14} /> {lang.toUpperCase()}
+                </button>
+                <button onClick={onHistory} className={`p-2 rounded-full transition-all ${appState === 'history' ? "bg-slate-700 text-emerald-400" : "hover:bg-slate-800 text-slate-400"}`}>
+                    <HistoryIcon size={18} />
+                </button>
+            </div>
+        </header>
+    );
+};
