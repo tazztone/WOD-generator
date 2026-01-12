@@ -158,5 +158,6 @@ The project now supports building a native Android `.apk` using Capacitor.
     ```
     The APK will be at: `android/app/build/outputs/apk/debug/app-debug.apk`
 
-👉 **[See Full Mobile Build Guide](docs/MOBILE_BUILD.md)** for detailed instructions on release builds, signing, and troubleshooting.
+👉 **[See Full Mobile Build Guide](docs/MOBILE_BUILD.md)** for detailed technical build instructions.
+👉 **[Google Play Publishing Guide](docs/GOOGLE_PLAY_PUBLISH.md)** for store listing and account setup.
 

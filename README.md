@@ -83,7 +83,11 @@ Once generated, you see the WOD (Workout of the Day) preview.
     Open `http://localhost:5173` in your browser.
 
 ### Building & Deployment
-See [`AGENTS.md`](AGENTS.md) for detailed build instructions (Web & Android).
+See [`AGENTS.md`](AGENTS.md) for detailed build instructions.
+
+### 🚀 Google Play Store
+*   **Publishing Guide**: [`docs/GOOGLE_PLAY_PUBLISH.md`](docs/GOOGLE_PLAY_PUBLISH.md)
+*   **Privacy Policy**: [`PRIVACY.md`](PRIVACY.md)
 
 ---
 

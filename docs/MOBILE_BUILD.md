@@ -55,6 +55,10 @@ cd android
 5.  Select **Release** build variant.
 6.  Upload the `.aab` file to the Google Play Console.
 
+## 4. Publishing to the Store
+For administrative steps (Account setup, Store Listing, Privacy Policy), see:
+👉 **[Google Play Publishing Guide](GOOGLE_PLAY_PUBLISH.md)**
+
 ## Troubleshooting
 
 -   **"SDK location not found"**: Check `android/local.properties`.
