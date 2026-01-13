@@ -14,7 +14,7 @@ export const useWakeLock = () => {
         };
         requestWakeLock();
         return () => wakelock && wakelock.release();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return wakelock;
 };

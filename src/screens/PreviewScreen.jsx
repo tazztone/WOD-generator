@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle } from 'lucide-react';
 import { getExerciseName, isExerciseValid } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
@@ -36,7 +36,7 @@ const T = {
     }
 };
 
-const APP_VERSION = "";
+
 
 export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, onBack }) => {
     const [copied, setCopied] = useState(false);

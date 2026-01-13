@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ArrowLeft, Trash2, History as HistoryIcon } from 'lucide-react';
 
 const T = {

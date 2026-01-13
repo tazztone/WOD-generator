@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Shell, Header } from './components/layout/Layout';
 import { Tooltip } from './components/ui/Tooltip';
 import { ConfigScreen } from './screens/ConfigScreen';
 import { PreviewScreen } from './screens/PreviewScreen';
 import { ActiveTimer } from './screens/ActiveTimer';
 import { HistoryScreen } from './screens/HistoryScreen';
-import { generateWorkout, swapExercise, isExerciseValid } from './engine/generator';
+import { generateWorkout, swapExercise } from './engine/generator';
 import { loadConfig, saveConfig, HISTORY_STORAGE_KEY } from './engine/storage';
 
 export default function CrossFitGenerator() {

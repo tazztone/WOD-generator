@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const VARIANTS = {
     primary: "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]",

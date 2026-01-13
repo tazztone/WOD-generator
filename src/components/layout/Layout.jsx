@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Globe, History as HistoryIcon } from 'lucide-react';
 
 export const Shell = ({ children }) => {

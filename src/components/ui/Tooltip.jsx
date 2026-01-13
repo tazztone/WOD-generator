@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 export const Tooltip = ({ x, y, text }) => {
     return (
