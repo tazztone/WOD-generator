@@ -1,0 +1,83 @@
+name: Build & Publish Android Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag Name (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0-debug'
+      release_name:
+        description: 'Release Title'
+        required: false
+        default: 'New Android Debug Build'
+
+jobs:
+  build-and-release:
+    name: Build APK & Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create releases
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      # 1. Setup Environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      
+      - name: Setup Gradle Cache
+        uses: gradle/actions/setup-gradle@v3
+          
+      # 2. Quality Gate (Test & Lint)
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Lint Code
+        run: npm run lint
+        
+      - name: Run Unit Tests
+        run: npm test
+        
+      # 3. Build Web Assets
+      - name: Build Web App
+        run: npm run build
+        
+      # 4. Android Build
+      - name: Sync Capacitor
+        run: npx cap sync android
+        
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x android/gradlew
+        
+      - name: Build Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+          
+      # 5. Rename Artifact
+      - name: Rename APK
+        run: |
+          mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/wod-gen-${{ github.event.inputs.tag_name }}.apk
+          
+      # 6. Create Release & Upload
+      - name: Create Release & Upload APK
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.tag_name }}
+          name: ${{ github.event.inputs.release_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: true
+          files: android/app/build/outputs/apk/debug/wod-gen-${{ github.event.inputs.tag_name }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

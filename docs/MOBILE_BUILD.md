@@ -63,3 +63,21 @@ For administrative steps (Account setup, Store Listing, Privacy Policy), see:
 
 -   **"SDK location not found"**: Check `android/local.properties`.
 -   **Native Native changes not reflecting**: Run `npx cap sync`.
+
+## CI/CD Automation
+
+We use GitHub Actions to automate the build and release process.
+
+### Build & Publish Android Release
+This workflow builds the APK and automatically creates a new GitHub Release for it.
+
+*   **Trigger**: Manual. Go to **Actions** tab -> **Build & Publish Android Release** -> **Run workflow**.
+*   **Quality Gate**: Runs `lint` and `tests` before building. Fails if code is broken.
+*   **Inputs**:
+    *   `Tag Name`: The version tag (e.g., `v7.0.1-debug`).
+    *   `Release Title`: A name for the release.
+*   **Output**:
+    *   Creates a new GitHub Release with **auto-generated release notes**.
+    *   Uploads a named APK: `wod-gen-[TAG_NAME].apk`.
+
+
