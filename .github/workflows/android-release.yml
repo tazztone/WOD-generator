@@ -37,6 +37,8 @@ jobs:
       
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-disabled: true
           
       # 2. Quality Gate (Test & Lint)
       - name: Install Dependencies
