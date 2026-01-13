@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Shell, Header } from './components/layout/Layout';
+import { Tooltip } from './components/ui/Tooltip';
 import { ConfigScreen } from './screens/ConfigScreen';
 import { PreviewScreen } from './screens/PreviewScreen';
 import { ActiveTimer } from './screens/ActiveTimer';
 import { HistoryScreen } from './screens/HistoryScreen';
 import { generateWorkout, swapExercise, isExerciseValid } from './engine/generator';
-import { loadConfig, saveConfig } from './engine/storage';
+import { loadConfig, saveConfig, HISTORY_STORAGE_KEY } from './engine/storage';
 
 export default function CrossFitGenerator() {
     const [appState, setAppState] = useState('config'); // config, preview, active, history
@@ -18,9 +19,31 @@ export default function CrossFitGenerator() {
 
     // Load History
     useEffect(() => {
-        const saved = localStorage.getItem('wod_history_v7');
+        const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
         if (saved) setHistory(JSON.parse(saved));
     }, []);
+
+    // Handle Browser Back Button
+    useEffect(() => {
+        const handlePopState = (event) => {
+            if (event.state?.appState) {
+                setAppState(event.state.appState);
+            } else {
+                setAppState('config'); // Default fallback
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
+
+    // Sync state to History
+    useEffect(() => {
+        // If current state is different from history state, push it
+        if (window.history.state?.appState !== appState) {
+            window.history.pushState({ appState }, '', '');
+        }
+    }, [appState]);
 
     // Save Config on Change
     useEffect(() => {
@@ -31,7 +54,7 @@ export default function CrossFitGenerator() {
         const newEntry = { ...result, id: Date.now(), date: new Date().toISOString() };
         const updated = [newEntry, ...history];
         setHistory(updated);
-        localStorage.setItem('wod_history_v7', JSON.stringify(updated));
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
     };
 
     const handleGenerate = () => {
@@ -57,13 +80,7 @@ export default function CrossFitGenerator() {
 
     return (
         <Shell>
-            {tooltip && (
-                <div className="fixed z-[100] px-3 py-2 bg-slate-800 text-xs text-slate-200 rounded-lg shadow-xl border border-slate-600 pointer-events-none transform -translate-x-1/2 -translate-y-full mb-2 animate-in fade-in zoom-in-95 duration-200 max-w-[250px] text-center"
-                    style={{ left: tooltip.x, top: tooltip.y }}>
-                    {tooltip.text}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800" />
-                </div>
-            )}
+            {tooltip && <Tooltip x={tooltip.x} y={tooltip.y} text={tooltip.text} />}
 
             <Header
                 onBack={() => setAppState('config')}
@@ -104,7 +121,7 @@ export default function CrossFitGenerator() {
                 {appState === 'history' && (
                     <HistoryScreen
                         history={history}
-                        clearHistory={() => { setHistory([]); localStorage.removeItem('wod_history_v7'); }}
+                        clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}
                         onBack={() => setAppState('config')}
                         lang={lang}
                     />

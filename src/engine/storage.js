@@ -1,4 +1,5 @@
 export const CONFIG_STORAGE_KEY = 'wod_config_v1';
+export const HISTORY_STORAGE_KEY = 'wod_history_v7';
 
 export const DEFAULT_CONFIG = {
     duration: 15,

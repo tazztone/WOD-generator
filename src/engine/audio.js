@@ -1,20 +1,49 @@
 
 // --- AUDIO ENGINE (Oscillators for Beeps) ---
+// Singleton AudioContext
+let audioCtx = null;
+
+const getAudioContext = () => {
+    if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) {
+            audioCtx = new Ctx();
+        }
+    }
+    // Resume if suspended (browser autoplay policy)
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    return audioCtx;
+};
+
 export const playBeep = (freq = 880, type = 'sine', duration = 0.1) => {
     try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
+
         osc.type = type;
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+
+        // Envelope to avoid clicking
+        gain.gain.setValueAtTime(0.01, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.1, ctx.currentTime + 0.01);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
         osc.connect(gain);
         gain.connect(ctx.destination);
+
         osc.start();
-        osc.stop(ctx.currentTime + duration);
+        osc.stop(ctx.currentTime + duration + 0.1);
+
+        // Cleanup helps garbage collection, though nodes disconnect automatically on stop
+        osc.onended = () => {
+            osc.disconnect();
+            gain.disconnect();
+        };
     } catch (e) { console.error("Audio Error", e); }
 };
 
