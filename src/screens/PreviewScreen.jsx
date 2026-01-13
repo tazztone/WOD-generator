@@ -36,7 +36,7 @@ const T = {
     }
 };
 
-const APP_VERSION = "V7.0 ULTIMATE";
+const APP_VERSION = "";
 
 export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, onBack }) => {
     const [copied, setCopied] = useState(false);
@@ -44,7 +44,7 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
     const t = T[lang];
 
     const copyToClipboard = () => {
-        const text = `WOD GEN ${APP_VERSION}\n${workout.template} - ${config.duration} Mins\n\n${workout.exercises.map(e => `${e.reps} ${getExerciseName(e.exercise, lang)}`).join('\n')}`;
+        const text = `WOD GEN\n${workout.template} - ${config.duration} Mins\n\n${workout.exercises.map(e => `${e.reps} ${getExerciseName(e.exercise, lang)}`).join('\n')}`;
         navigator.clipboard.writeText(text).then(() => {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);

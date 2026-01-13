@@ -13,10 +13,9 @@ export const Shell = ({ children }) => {
 
 export const Header = ({ onBack, onLangToggle, onHistory, lang, appState }) => {
     return (
-        <header className="px-5 pb-4 pt-12 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 flex justify-between items-center sticky top-0 z-30">
+        <header className="px-5 pb-4 pt-16 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 flex justify-between items-center sticky top-0 z-30">
             <div onClick={onBack} className="cursor-pointer group">
                 <h1 className="text-xl font-black italic tracking-tighter text-emerald-400">WOD GEN</h1>
-                <p className="text-[9px] text-slate-500 font-bold tracking-widest">V7.0 ULTIMATE</p>
             </div>
             <div className="flex gap-2">
                 <button onClick={onLangToggle} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 font-bold text-xs border border-slate-700 flex items-center gap-1">
