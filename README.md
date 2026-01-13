@@ -1,10 +1,10 @@
-# WOD Gen Ultimate (V7)
+# WOD Gen 
 
 ![Version](https://img.shields.io/badge/version-7.0.0-emerald)
 ![Tech](https://img.shields.io/badge/react-18-blue)
 ![Style](https://img.shields.io/badge/tailwind-3.4-cyan)
 
-**WOD Gen Ultimate** is a professional-grade CrossFit®-style workout generator and timer designed for athletes, garage gym owners, and coaches. Unlike simple randomizers, it uses a smart algorithmic engine to create balanced, effective workouts tailored to your specific equipment, skill level, and time constraints.
+**WOD Gen ** is a professional-grade CrossFit®-style workout generator and timer designed for athletes, garage gym owners, and coaches. Unlike simple randomizers, it uses a smart algorithmic engine to create balanced, effective workouts tailored to your specific equipment, skill level, and time constraints.
 
 It runs completely client-side as a Progressive Web App (PWA), meaning it works offline and can be installed specifically on mobile devices. It also supports **Native Android** builds via Capacitor.
 
