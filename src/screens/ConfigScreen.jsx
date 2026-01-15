@@ -1,12 +1,12 @@
 
-import { Activity, HelpCircle } from 'lucide-react';
+import { Activity, HelpCircle, RotateCcw } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 
 import { LOCALES } from '../data/locales';
+import { DEFAULT_CONFIG } from '../engine/storage';
 
 // TODO: Add form validation - ensure at least one equipment type is selected
-// TODO: Add Reset to Defaults button for easy configuration reset
 export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip }) => {
     const t = LOCALES[lang];
 
@@ -108,9 +108,14 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
             </div>
 
             {/* TODO: Add accessibility attributes (aria-labels) to toggle buttons */}
-            <Button onClick={onGenerate} size="lg" fullWidth>
-                <Activity size={20} /> {t.generate}
-            </Button>
+            <div className="flex gap-2">
+                <Button onClick={onGenerate} size="lg" fullWidth>
+                    <Activity size={20} /> {t.generate}
+                </Button>
+                <Button onClick={() => setConfig(DEFAULT_CONFIG)} size="lg" variant="ghost">
+                    <RotateCcw size={20} />
+                </Button>
+            </div>
         </div>
     );
 };
