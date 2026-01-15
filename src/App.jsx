@@ -1,3 +1,5 @@
+// TODO: Add React Error Boundary wrapper to gracefully handle runtime errors
+// TODO: Consider extracting app state management to useReducer or a state management library for better scalability
 import { useState, useEffect } from 'react';
 import { Shell, Header } from './components/layout/Layout';
 import { Tooltip } from './components/ui/Tooltip';
@@ -18,6 +20,7 @@ export default function CrossFitGenerator() {
     const [tooltip, setTooltip] = useState(null);
 
     // Load History
+    // TODO: Add try-catch for JSON.parse to handle corrupted localStorage data gracefully
     useEffect(() => {
         const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
         if (saved) setHistory(JSON.parse(saved));
@@ -119,6 +122,7 @@ export default function CrossFitGenerator() {
                     />
                 )}
                 {appState === 'history' && (
+                    // TODO: Add confirmation dialog before clearing history (destructive action)
                     <HistoryScreen
                         history={history}
                         clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}

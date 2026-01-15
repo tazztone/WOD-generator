@@ -1,3 +1,7 @@
+# TODO: Add signed release build support (requires keystore setup)
+# TODO: Add automatic version code increment based on commit count or tag
+# TODO: Add Play Store upload via Gradle Play Publisher plugin
+# TODO: Add E2E tests job before build (playwright tests)
 name: Build & Publish Android Release
 
 on:

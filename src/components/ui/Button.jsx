@@ -1,5 +1,8 @@
 
 
+// TODO: Add loading/spinner state variant for async actions
+// TODO: Add disabled state styling
+// TODO: Consider adding aria-busy and aria-disabled attributes
 const VARIANTS = {
     primary: "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]",
     secondary: "bg-slate-800 border border-slate-700 hover:border-emerald-500 text-slate-200 group",

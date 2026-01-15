@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+// TODO: Re-acquire wake lock when page becomes visible again (visibilitychange event)
+// TODO: Add user-facing indicator when wake lock is active
 export const useWakeLock = () => {
     const [wakelock, setWakelock] = useState(null);
 

@@ -1,3 +1,6 @@
+// TODO: Add build-time asset optimization (image compression)
+// TODO: Configure chunk splitting for better caching
+// TODO: Add build analytics plugin to track bundle size
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';

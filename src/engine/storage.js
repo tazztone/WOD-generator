@@ -1,3 +1,5 @@
+// TODO: Add schema version migration logic when DEFAULT_CONFIG changes
+// TODO: Add export/import functionality for users to backup their data
 export const CONFIG_STORAGE_KEY = 'wod_config_v1';
 export const HISTORY_STORAGE_KEY = 'wod_history_v7';
 
@@ -9,6 +11,7 @@ export const DEFAULT_CONFIG = {
     includeStrength: false,
     numExercises: 3,
     avoid: [],
+    // TODO: Add more equipment options: kettlebell, jump rope, box, rings
     equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true }
 };
 

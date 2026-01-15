@@ -1,3 +1,6 @@
+// TODO: Add support for more languages (Spanish, French, Portuguese common in CrossFit)
+// TODO: Add RTL language support if needed
+// TODO: Extract all inline translations from component files (PreviewScreen, ActiveTimer, HistoryScreen)
 export const LOCALES = {
     en: {
         duration: "Duration",

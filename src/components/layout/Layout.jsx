@@ -1,6 +1,8 @@
 
 import { Globe, History as HistoryIcon } from 'lucide-react';
 
+// TODO: Add dark/light theme toggle support
+// TODO: Extract safe-area-inset handling for notched devices (currently hardcoded pt-16)
 export const Shell = ({ children }) => {
     return (
         <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black text-slate-100 font-sans selection:bg-emerald-500 selection:text-white">

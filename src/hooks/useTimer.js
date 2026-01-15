@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { SOUNDS, speak } from '../engine/audio';
 
+// TODO: Add pause/resume functionality - currently timer cannot be paused
+// TODO: Persist timer state to localStorage to survive page refresh
+// TODO: Add haptic feedback support for mobile devices
 export const useTimer = (workout, lang, voiceEnabled) => {
     const [status, setStatus] = useState('pre'); // pre, work, rest, finished
     const [timeLeft, setTimeLeft] = useState(10); // Start with 10s countdown
@@ -43,6 +46,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
 
             if (workout.template === 'EMOM') {
                 if (timeLeft === 10) speak("10 seconds", lang);
+                // TODO: Add half-time audio cue (e.g., "30 seconds" for EMOM)
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
                 if (timeLeft === 0) {
                     // New Minute
@@ -79,6 +83,8 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                 }
             } else {
                 // AMRAP, RFT, Chipper (Count DOWN or UP)
+                // TODO: Add "halfway there" audio cue for AMRAP/RFT
+                // TODO: Add countdown beeps at 3-2-1 for AMRAP/RFT final seconds
                 if (workout.template === 'AMRAP' || workout.template === 'RFT') {
                     if (timeLeft === 0) {
                         setStatus('finished');

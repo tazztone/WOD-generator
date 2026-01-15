@@ -4,6 +4,7 @@ import { getExerciseName, isExerciseValid } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
 import { Button } from '../components/ui/Button';
 
+// TODO: Merge these translations with the main locales.js file to avoid duplication
 // Temporary T
 const T = {
     en: {
@@ -68,6 +69,8 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
     const t = T[lang];
     const explanations = EXPLANATIONS[lang];
 
+    // TODO: Add Web Share API support for native sharing on mobile devices
+    // TODO: Add fallback sharing method for devices that don't support clipboard API
     const copyToClipboard = () => {
         const text = `WOD GEN\n${workout.template} - ${config.duration} Mins\n\n${workout.exercises.map(e => `${e.reps} ${getExerciseName(e.exercise, lang)}`).join('\n')}`;
         navigator.clipboard.writeText(text).then(() => {
@@ -116,8 +119,8 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                         <button onClick={() => setSwapModal({ show: false, index: -1 })} className="p-2 bg-slate-800 rounded-full"><XCircle size={20} /></button>
                     </div>
                     <div className="mb-4 bg-slate-800/50 p-3 rounded-lg flex items-start gap-2 border border-slate-700/50">
-                         <Info size={16} className="text-emerald-400 mt-0.5 shrink-0" />
-                         <p className="text-xs text-slate-400 leading-snug">{t.whySwap}</p>
+                        <Info size={16} className="text-emerald-400 mt-0.5 shrink-0" />
+                        <p className="text-xs text-slate-400 leading-snug">{t.whySwap}</p>
                     </div>
                     <div className="flex-1 overflow-y-auto space-y-2 pb-4">
                         {getSwapCandidates(swapModal.index).map(ex => (
@@ -165,7 +168,7 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                     <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-1">
                         <Activity size={10} /> {t.partB} • {t.conditioning}
                         <button onClick={() => showInfo('metcon')} className="ml-1 text-slate-600 hover:text-emerald-500">
-                             <Info size={12} />
+                            <Info size={12} />
                         </button>
                     </span>
                     <button onClick={copyToClipboard} className="text-xs flex items-center gap-1 text-slate-500 hover:text-emerald-400 transition-colors">
@@ -190,8 +193,8 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                                         <span className="text-slate-200 font-bold group-hover:text-emerald-300 transition-colors">{getExerciseName(item.exercise, lang)}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                         <span className="text-[9px] text-slate-600 font-bold uppercase tracking-wider group-hover:text-slate-500">{item.exercise.pattern}</span>
-                                         <RefreshCw size={12} className="text-slate-700 group-hover:text-emerald-500 opacity-50 group-hover:opacity-100 transition-all" />
+                                        <span className="text-[9px] text-slate-600 font-bold uppercase tracking-wider group-hover:text-slate-500">{item.exercise.pattern}</span>
+                                        <RefreshCw size={12} className="text-slate-700 group-hover:text-emerald-500 opacity-50 group-hover:opacity-100 transition-all" />
                                     </div>
                                 </div>
                             ))}

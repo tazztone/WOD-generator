@@ -4,6 +4,7 @@ import { useTimer } from '../hooks/useTimer';
 import { useWakeLock } from '../hooks/useWakeLock';
 import { Button } from '../components/ui/Button';
 
+// TODO: Merge translations with main locales.js file
 // T
 const T = {
     en: {
@@ -32,8 +33,10 @@ const T = {
 
 export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
     const t = T[lang];
+    // TODO: Persist voice preference in localStorage
     const [voiceEnabled, setVoiceEnabled] = useState(true);
 
+    // TODO: Add landscape mode support for larger timer display
     useWakeLock();
     const { status, setStatus, timeLeft, totalTime, currentRound, setCurrentRound } = useTimer(workout, lang, voiceEnabled);
 
@@ -53,6 +56,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
 
                 <div className="w-full bg-slate-800 p-4 rounded-xl mb-4">
                     <label className="text-xs font-bold text-slate-500 uppercase">{t.score}</label>
+                    {/* TODO: Convert to controlled input with React state instead of DOM query */}
                     <input id="scoreInput" type="text" placeholder={workout.template === 'AMRAP' ? 'e.g. 5 Rounds + 10' : 'e.g. 12:45'}
                         className="w-full bg-transparent border-b border-slate-600 text-white text-xl py-2 focus:outline-none focus:border-emerald-500" />
                 </div>
@@ -78,6 +82,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
             {status === 'work' && <div className="absolute inset-0 bg-emerald-500/5 animate-pulse pointer-events-none" />}
 
             {/* Header */}
+            {/* TODO: Add quick settings menu (voice, sounds, haptic) accessible from timer */}
             <div className="flex justify-between items-center p-5 z-10">
                 <button onClick={() => setStatus('finished')} className="p-2 bg-slate-800/50 rounded-full text-slate-400"><XCircle size={20} /></button>
                 <div className="flex gap-4">

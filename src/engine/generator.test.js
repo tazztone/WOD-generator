@@ -2,6 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { generateWorkout, getReps, isExerciseValid } from './generator';
 import { EXERCISE_DB } from '../data/exercises';
 
+// TODO: Add test coverage for generateWarmupLogic function
+// TODO: Add test coverage for generateStrengthLogic function
+// TODO: Add tests for swapExercise function
+// TODO: Add integration tests for full workout generation + swap flow
 describe('Generator Engine', () => {
 
     it('should generate a workout structure', () => {
@@ -71,4 +75,8 @@ describe('Generator Engine', () => {
 
         expect(scaledReps).toBeLessThan(rxReps);
     });
+
+    // TODO: Add tests for each workout template type (AMRAP, RFT, EMOM, Tabata, Chipper)
+    // TODO: Add tests for edge cases (no available exercises, all equipment disabled)
+    // TODO: Add snapshot tests for generated workout structure
 });

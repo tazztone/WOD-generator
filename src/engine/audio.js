@@ -1,5 +1,7 @@
 
 // --- AUDIO ENGINE (Oscillators for Beeps) ---
+// TODO: Add volume control setting for users (currently hardcoded gain values)
+// TODO: Add fallback audio using Audio API for older browsers that don't support AudioContext
 // Singleton AudioContext
 let audioCtx = null;
 
@@ -59,6 +61,8 @@ export const SOUNDS = {
     }
 };
 
+// TODO: Add voice selection in settings (some users prefer different voices/accents)
+// TODO: Queue speech synthesis to prevent overlapping announcements
 export const speak = (text, lang = 'en') => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel(); // Stop previous

@@ -1,3 +1,4 @@
+// TODO: Consider adding seeded randomness option for reproducible workouts (useful for sharing/testing)
 import { EXERCISE_DB, INJURY_MAP } from '../data/exercises';
 
 export const getReps = (exercise, difficulty, format, duration) => {
@@ -38,6 +39,8 @@ export const getReps = (exercise, difficulty, format, duration) => {
 
 export const getExerciseName = (ex, lang) => (lang === 'de' && ex.name_de) ? ex.name_de : ex.name;
 
+// TODO: Make warmup duration/intensity configurable via user settings
+// TODO: Add stretching/mobility recommendations based on selected exercises
 export const generateWarmupLogic = (exercises, lang) => {
     const isDe = lang === 'de';
     let moves = new Set([isDe ? '3 min Cardio (Easy)' : '3 min Cardio (Easy)']);
@@ -53,6 +56,8 @@ export const generateWarmupLogic = (exercises, lang) => {
     return Array.from(moves);
 };
 
+// TODO: Expand strength pairing options - currently limited to 3 exercises
+// TODO: Add user preference for strength exercise type (e.g., prefer Olympic lifts vs powerlifting)
 export const generateStrengthLogic = (exercises, config, lang) => {
     if (!config.includeStrength) return null;
     const patterns = exercises.map(e => e.exercise.pattern);
@@ -110,6 +115,7 @@ export const generateWorkout = (config, lang = 'en') => {
         availableExercises = [...availableExercises, ...priorityMoves];
     }
 
+    // TODO: Add more workout templates: Ladder, Death By, Buy-In/Buy-Out, Partner WOD
     const templates = ['AMRAP', 'RFT', 'EMOM'];
     let template = config.templateType;
     if (template === 'Random') template = templates[Math.floor(Math.random() * templates.length)];
@@ -132,6 +138,7 @@ export const generateWorkout = (config, lang = 'en') => {
 
     const selectedExercises = [];
     const targetCount = config.numExercises;
+    // TODO: Consider weighted random selection based on user exercise history/preferences
     let usedPatterns = [];
 
     for (let i = 0; i < targetCount; i++) {

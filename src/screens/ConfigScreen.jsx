@@ -5,6 +5,8 @@ import { Card } from '../components/ui/Card';
 
 import { LOCALES } from '../data/locales';
 
+// TODO: Add form validation - ensure at least one equipment type is selected
+// TODO: Add Reset to Defaults button for easy configuration reset
 export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip }) => {
     const t = LOCALES[lang];
 
@@ -64,6 +66,8 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </div>
             </div>
 
+            {/* TODO: Add Focus selector (Cardio, Strength, Gymnastics, Balanced) - currently not exposed in UI */}
+
             {/* Strength Toggle */}
             <div className="flex items-center justify-between bg-slate-800/60 p-4 rounded-xl border border-slate-700">
                 <div>
@@ -103,6 +107,7 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </div>
             </div>
 
+            {/* TODO: Add accessibility attributes (aria-labels) to toggle buttons */}
             <Button onClick={onGenerate} size="lg" fullWidth>
                 <Activity size={20} /> {t.generate}
             </Button>

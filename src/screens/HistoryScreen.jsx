@@ -1,6 +1,9 @@
 
 import { ArrowLeft, Trash2, History as HistoryIcon } from 'lucide-react';
 
+// TODO: Add swipe-to-delete for individual history entries
+// TODO: Add ability to repeat/re-run a past workout
+// TODO: Add filtering and search for history (by date, template type, etc.)
 const T = {
     en: { logbook: "Logbook", noLogs: "No workouts logged yet." },
     de: { logbook: "Logbuch", noLogs: "Noch keine Workouts gespeichert." }
@@ -17,6 +20,8 @@ export const HistoryScreen = ({ history, clearHistory, onBack, lang }) => {
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-3">
+                {/* TODO: Add pagination or infinite scroll for large history lists */}
+                {/* TODO: Add tap to expand and see full workout details */}
                 {history.length === 0 ? (
                     <div className="text-center text-slate-500 mt-20">
                         <HistoryIcon size={48} className="mx-auto mb-4 opacity-20" />

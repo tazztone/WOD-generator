@@ -1,5 +1,7 @@
 
 
+// TODO: Add edge detection to flip tooltip when near viewport edges
+// TODO: Add proper ARIA attributes for screen reader support
 export const Tooltip = ({ x, y, text }) => {
     return (
         <div
