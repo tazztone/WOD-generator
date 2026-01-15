@@ -1,4 +1,5 @@
 
+import { useMemo } from 'react';
 import { ArrowLeft, Trash2, History as HistoryIcon } from 'lucide-react';
 
 // TODO: Add swipe-to-delete for individual history entries
@@ -11,6 +12,14 @@ const T = {
 
 export const HistoryScreen = ({ history, clearHistory, onBack, lang }) => {
     const t = T[lang];
+
+    const formattedHistory = useMemo(() => {
+        return history.map(entry => ({
+            ...entry,
+            formattedDate: new Date(entry.date).toLocaleDateString()
+        }));
+    }, [history]);
+
     return (
         <div className="flex flex-col h-full bg-slate-900 p-5">
             <div className="flex justify-between items-center mb-6">
@@ -27,11 +36,11 @@ export const HistoryScreen = ({ history, clearHistory, onBack, lang }) => {
                         <HistoryIcon size={48} className="mx-auto mb-4 opacity-20" />
                         <p>{t.noLogs}</p>
                     </div>
-                ) : history.map(entry => (
+                ) : formattedHistory.map(entry => (
                     <div key={entry.id} className="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <div className="flex justify-between mb-2">
                             <span className="text-emerald-400 font-black italic uppercase">{entry.template}</span>
-                            <span className="text-xs text-slate-500">{new Date(entry.date).toLocaleDateString()}</span>
+                            <span className="text-xs text-slate-500">{entry.formattedDate}</span>
                         </div>
                         <div className="text-white font-bold text-lg mb-2">{entry.score}</div>
                         <p className="text-xs text-slate-400 line-clamp-2">
