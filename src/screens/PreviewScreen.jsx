@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame } from 'lucide-react';
 import { getExerciseName, isExerciseValid } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
@@ -69,6 +69,10 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
     const t = T[lang];
     const explanations = EXPLANATIONS[lang];
 
+    const validExercises = useMemo(() => {
+        return EXERCISE_DB.filter(ex => isExerciseValid(ex, config));
+    }, [config]);
+
     // TODO: Add Web Share API support for native sharing on mobile devices
     // TODO: Add fallback sharing method for devices that don't support clipboard API
     const copyToClipboard = () => {
@@ -81,9 +85,8 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
 
     const getSwapCandidates = (index) => {
         const current = workout.exercises[index];
-        return EXERCISE_DB.filter(ex =>
+        return validExercises.filter(ex =>
             ex.pattern === current.exercise.pattern &&
-            isExerciseValid(ex, config) &&
             !workout.exercises.find(existing => existing.exercise.id === ex.id)
         );
     };
