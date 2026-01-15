@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Trophy, XCircle, Volume2, VolumeX, ChevronLeft, Zap } from 'lucide-react';
 import { useTimer } from '../hooks/useTimer';
 import { useWakeLock } from '../hooks/useWakeLock';
@@ -33,8 +33,23 @@ const T = {
 
 export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
     const t = T[lang];
-    // TODO: Persist voice preference in localStorage
-    const [voiceEnabled, setVoiceEnabled] = useState(true);
+    const [voiceEnabled, setVoiceEnabled] = useState(() => {
+        try {
+            const saved = localStorage.getItem('voiceEnabled');
+            return saved !== null ? saved === 'true' : true;
+        } catch (err) {
+            console.warn('Failed to load voice preference', err);
+            return true;
+        }
+    });
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('voiceEnabled', voiceEnabled);
+        } catch (err) {
+            console.warn('Failed to save voice preference', err);
+        }
+    }, [voiceEnabled]);
 
     // TODO: Add landscape mode support for larger timer display
     useWakeLock();
