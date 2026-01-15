@@ -19,13 +19,18 @@ sdk.dir=C:\\Path\\To\\Your\\Android\\Sdk
 *Note: On Windows, use double backslashes (`\\`).*
 
 ### 2. Assets (Icons & Splash)
-Place your source icon (512x512 recommended) in `assets/logo.png`.
-To generate Android resources:
-```bash
-# Configuration is handled by capacitor-assets (if installed) or manual placement
-# Current resource strategy: Manual / Capacitor Text
-```
-*TODO: Formalize @capacitor/assets workflow.*
+To update the app icon and splash screen:
+
+1.  Place your source icon (1024x1024 recommended) in `assets/logo.png`.
+    *   *Optional:* Place a separate splash image in `assets/splash.png` (2732x2732 recommended). If omitted, `logo.png` is used.
+    *   *Optional:* For dark mode, provide `assets/logo-dark.png` and `assets/splash-dark.png`.
+
+2.  Run the generation script:
+    ```bash
+    npm run resources
+    ```
+
+This command uses `@capacitor/assets` to generate all required icon and splash screen densities for Android (and PWA/iOS if configured).
 
 ## Building the App
 
