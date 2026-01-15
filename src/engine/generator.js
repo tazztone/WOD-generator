@@ -137,6 +137,7 @@ export const generateWorkout = (config, lang = 'en') => {
     }
 
     const selectedExercises = [];
+    const selectedExerciseIds = new Set();
     const targetCount = config.numExercises;
     // TODO: Consider weighted random selection based on user exercise history/preferences
     let usedPatterns = [];
@@ -144,7 +145,7 @@ export const generateWorkout = (config, lang = 'en') => {
     for (let i = 0; i < targetCount; i++) {
         // Filter out already used IDs and prevent same pattern back-to-back (unless mono-structural)
         const pool = availableExercises.filter(ex => {
-            if (selectedExercises.find(s => s.exercise.id === ex.id)) return false;
+            if (selectedExerciseIds.has(ex.id)) return false;
             if (usedPatterns.length > 0) {
                 const lastPattern = usedPatterns[usedPatterns.length - 1];
                 if (ex.pattern === lastPattern) return false;
@@ -159,6 +160,7 @@ export const generateWorkout = (config, lang = 'en') => {
             exercise: picked,
             reps: getReps(picked, config.difficulty, template, timeCap)
         });
+        selectedExerciseIds.add(picked.id);
         usedPatterns.push(picked.pattern);
     }
 
