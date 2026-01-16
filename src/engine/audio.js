@@ -61,7 +61,6 @@ export const SOUNDS = {
     }
 };
 
-// TODO: Add voice selection in settings (some users prefer different voices/accents)
 // TODO: Queue speech synthesis to prevent overlapping announcements
 export const speak = (text, lang = 'en') => {
     if (!window.speechSynthesis) return;

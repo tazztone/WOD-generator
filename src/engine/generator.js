@@ -40,7 +40,6 @@ export const getReps = (exercise, difficulty, format, duration) => {
 export const getExerciseName = (ex, lang) => (lang === 'de' && ex.name_de) ? ex.name_de : ex.name;
 
 // TODO: Make warmup duration/intensity configurable via user settings
-// TODO: Add stretching/mobility recommendations based on selected exercises
 export const generateWarmupLogic = (exercises, lang) => {
     const isDe = lang === 'de';
     let moves = new Set([isDe ? '3 min Cardio (Easy)' : '3 min Cardio (Easy)']);
@@ -57,7 +56,6 @@ export const generateWarmupLogic = (exercises, lang) => {
 };
 
 // TODO: Expand strength pairing options - currently limited to 3 exercises
-// TODO: Add user preference for strength exercise type (e.g., prefer Olympic lifts vs powerlifting)
 export const generateStrengthLogic = (exercises, config, lang) => {
     if (!config.includeStrength) return null;
     const patterns = exercises.map(e => e.exercise.pattern);
@@ -139,7 +137,6 @@ export const generateWorkout = (config, lang = 'en') => {
     const selectedExercises = [];
     const selectedExerciseIds = new Set();
     const targetCount = config.numExercises;
-    // TODO: Consider weighted random selection based on user exercise history/preferences
     let usedPatterns = [];
 
     for (let i = 0; i < targetCount; i++) {

@@ -1,8 +1,7 @@
 
 // --- DATABASE (V7 UPGRADE: ADDED TAGS) ---
-// TODO: Add video links or descriptions for each exercise for beginners
-// TODO: Add muscle group metadata for more detailed warmup generation
-// TODO: Consider adding user-defined custom exercises
+
+// --- DATABASE (V7 UPGRADE: ADDED TAGS) ---
 // TODO: Add exercise difficulty scale separate from intensity (skill level)
 export const EXERCISE_DB = [
     // HINGE
@@ -86,11 +85,9 @@ export const EXERCISE_DB = [
     { id: 'plank_shoulder_tap', name: 'Plank Shoulder Taps', name_de: 'Plank Schultertippen', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['shoulders', 'core'] },
     { id: 'broad_jump', name: 'Broad Jump', name_de: 'Weitsprung', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact'] },
     // TODO: Add more bodyweight exercises for users with limited equipment
-    // TODO: Add mobility/stretching exercises for cooldown generation
 ];
 
 // TODO: Add more injury categories (wrists, ankles, hips)
-// TODO: Allow users to add custom injury exclusions
 export const INJURY_MAP = {
     'Shoulders': ['shoulders', 'overhead'],
     'Knees': ['knees', 'impact'],

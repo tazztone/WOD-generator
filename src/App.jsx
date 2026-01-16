@@ -1,5 +1,5 @@
 // TODO: Add React Error Boundary wrapper to gracefully handle runtime errors
-// TODO: Consider extracting app state management to useReducer or a state management library for better scalability
+// TODO: Consider extracting app state to Context API if prop drilling becomes an issue
 import { useState, useEffect } from 'react';
 import { Shell, Header } from './components/layout/Layout';
 import { Tooltip } from './components/ui/Tooltip';
@@ -122,7 +122,6 @@ export default function CrossFitGenerator() {
                     />
                 )}
                 {appState === 'history' && (
-                    // TODO: Add confirmation dialog before clearing history (destructive action)
                     <HistoryScreen
                         history={history}
                         clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}
