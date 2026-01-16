@@ -5,12 +5,26 @@ import { ArrowLeft, Trash2, History as HistoryIcon } from 'lucide-react';
 // TODO: Add swipe-to-delete for individual history entries
 // TODO: Add ability to repeat/re-run a past workout
 const T = {
-    en: { logbook: "Logbook", noLogs: "No workouts logged yet." },
-    de: { logbook: "Logbuch", noLogs: "Noch keine Workouts gespeichert." }
+    en: {
+        logbook: "Logbook",
+        noLogs: "No workouts logged yet.",
+        confirmClear: "Are you sure you want to delete all entries?"
+    },
+    de: {
+        logbook: "Logbuch",
+        noLogs: "Noch keine Workouts gespeichert.",
+        confirmClear: "Möchten Sie wirklich alle Einträge löschen?"
+    }
 };
 
 export const HistoryScreen = ({ history, clearHistory, onBack, lang }) => {
     const t = T[lang];
+
+    const handleClearHistory = () => {
+        if (window.confirm(t.confirmClear)) {
+            clearHistory();
+        }
+    };
 
     const formattedHistory = useMemo(() => {
         return history.map(entry => ({
@@ -24,7 +38,7 @@ export const HistoryScreen = ({ history, clearHistory, onBack, lang }) => {
             <div className="flex justify-between items-center mb-6">
                 <button onClick={onBack} className="text-slate-400 hover:text-white"><ArrowLeft size={24} /></button>
                 <h2 className="text-xl font-black text-white italic">{t.logbook}</h2>
-                <button onClick={clearHistory} className="text-red-400 hover:text-red-300"><Trash2 size={20} /></button>
+                <button onClick={handleClearHistory} className="text-red-400 hover:text-red-300"><Trash2 size={20} /></button>
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-3">
