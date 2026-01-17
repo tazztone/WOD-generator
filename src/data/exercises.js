@@ -10,10 +10,12 @@ export const EXERCISE_DB = [
     { id: 'clean_bb', name: 'Clean', name_de: 'Umsetzen', pattern: 'Hinge', equipment: 'Barbell', intensity: 'VeryHigh', tags: ['back', 'shoulders', 'knees', 'impact', 'skill'] },
     { id: 'pwr_clean', name: 'Power Clean', name_de: 'Power Clean', pattern: 'Hinge', equipment: 'Barbell', intensity: 'High', tags: ['back', 'shoulders', 'impact'] },
     { id: 'snatch_bb', name: 'Snatch', name_de: 'Reißen', pattern: 'Hinge', equipment: 'Barbell', intensity: 'VeryHigh', tags: ['back', 'shoulders', 'overhead', 'knees', 'impact', 'skill'] },
+    { id: 'pwr_snatch', name: 'Power Snatch', name_de: 'Power Snatch', pattern: 'Hinge', equipment: 'Barbell', intensity: 'High', tags: ['back', 'shoulders', 'overhead', 'impact'] },
     { id: 'kb_swing', name: 'KB Swing', name_de: 'Kettlebell Swing', pattern: 'Hinge', equipment: 'Dumbbell', intensity: 'Medium', tags: ['back', 'grip'] },
     { id: 'snatch_db', name: 'Alt. DB Snatch', name_de: 'Alt. KH Reißen', pattern: 'Hinge', equipment: 'Dumbbell', intensity: 'High', tags: ['back', 'shoulders', 'overhead'] },
     { id: 'db_clean', name: 'DB Power Clean', name_de: 'KH Umsetzen', pattern: 'Hinge', equipment: 'Dumbbell', intensity: 'High', tags: ['back', 'shoulders'] },
     { id: 'db_dl', name: 'DB Deadlift', name_de: 'KH Kreuzheben', pattern: 'Hinge', equipment: 'Dumbbell', intensity: 'Medium', tags: ['back', 'legs'] },
+    { id: 'sl_deadlift', name: 'Single-Leg Deadlift', name_de: 'Einbeiniges Kreuzheben', pattern: 'Hinge', equipment: 'Dumbbell', intensity: 'Medium', tags: ['back', 'balance'] },
     { id: 'devil_press', name: 'Devil Press', name_de: 'Devil Press', pattern: 'Hinge', equipment: 'Dumbbell', intensity: 'VeryHigh', tags: ['back', 'shoulders', 'overhead', 'cardio'] },
 
     // SQUAT
@@ -27,6 +29,7 @@ export const EXERCISE_DB = [
     { id: 'wall_ball', name: 'Wall Ball', name_de: 'Wall Ball', pattern: 'Squat', equipment: 'Dumbbell', intensity: 'High', tags: ['knees', 'shoulders', 'overhead'] },
     { id: 'air_squat', name: 'Air Squat', name_de: 'Air Squat', pattern: 'Squat', equipment: 'Bodyweight', intensity: 'Low', tags: ['knees'] },
     { id: 'pistol', name: 'Pistol Squat', name_de: 'Pistols', pattern: 'Squat', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'balance', 'skill'] },
+    { id: 'wall_sit', name: 'Wall Sit', name_de: 'Wandsitz', pattern: 'Squat', equipment: 'Bodyweight', intensity: 'Low', tags: ['knees'] },
     { id: 'lunge_weighted', name: 'Walking Lunge', name_de: 'Ausfallschritt', pattern: 'Squat', equipment: 'Dumbbell', intensity: 'High', tags: ['knees'] },
     { id: 'oh_lunge_db', name: 'DB Overhead Lunge', name_de: 'KH Überkopf Ausfallschritt', pattern: 'Squat', equipment: 'Dumbbell', intensity: 'VeryHigh', tags: ['knees', 'shoulders', 'overhead', 'balance'] },
     { id: 'box_step_over', name: 'DB Box Step-Over', name_de: 'Box Step-Over', pattern: 'Squat', equipment: 'Dumbbell', intensity: 'High', tags: ['knees', 'grip'] },
@@ -46,6 +49,7 @@ export const EXERCISE_DB = [
     { id: 'dip_bar', name: 'Bar Dip', name_de: 'Bar Dips', pattern: 'Push', equipment: 'PullupBar', intensity: 'High', tags: ['shoulders', 'chest'] },
     { id: 'burpee', name: 'Burpee', name_de: 'Burpee', pattern: 'Push', equipment: 'Bodyweight', intensity: 'High', tags: ['shoulders', 'knees', 'cardio'] },
     { id: 'burpee_box_jump', name: 'Burpee Box Jump', name_de: 'Burpee Box Jump', pattern: 'Push', equipment: 'Bodyweight', intensity: 'VeryHigh', tags: ['shoulders', 'knees', 'cardio', 'impact'] },
+    { id: 'bbjo', name: 'Burpee Box Jump-Over', name_de: 'Burpee Box Jump-Over', pattern: 'Push', equipment: 'Bodyweight', intensity: 'VeryHigh', tags: ['shoulders', 'knees', 'cardio', 'impact'] },
 
     // PULL
     { id: 'pullup', name: 'Pull-Up', name_de: 'Klimmzug', pattern: 'Pull', equipment: 'PullupBar', intensity: 'High', tags: ['shoulders', 'grip'] },
@@ -62,6 +66,7 @@ export const EXERCISE_DB = [
     // CARDIO
     { id: 'box_jump', name: 'Box Jump', name_de: 'Box Jump', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact'] },
     { id: 'du', name: 'Double Unders', name_de: 'Double Unders', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact', 'skill'] },
+    { id: 'su', name: 'Single Unders', name_de: 'Seilspringen (einfach)', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Low', tags: ['knees', 'impact'] },
     { id: 'run', name: 'Run', name_de: 'Laufen', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Low', tags: ['knees', 'impact'] },
     { id: 'row', name: 'Row', name_de: 'Rudern', pattern: 'Cardio', equipment: 'Machine', intensity: 'Low', tags: ['back', 'knees'] },
     { id: 'bike', name: 'Bike', name_de: 'Radfahren', pattern: 'Cardio', equipment: 'Machine', intensity: 'High', tags: ['knees'] },
@@ -73,6 +78,7 @@ export const EXERCISE_DB = [
     { id: 'situp', name: 'AbMat Sit-Up', name_de: 'Sit-Up', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'back'] },
     { id: 'v_up', name: 'V-Up', name_de: 'Klappmesser', pattern: 'Core', equipment: 'Bodyweight', intensity: 'High', tags: ['core', 'back'] },
     { id: 'tgu', name: 'Turkish Get-Up', name_de: 'Turkish Get-Up', pattern: 'Core', equipment: 'Dumbbell', intensity: 'Medium', tags: ['shoulders', 'core', 'coordination'] },
+    { id: 'farmers_walk', name: "Farmer's Walk", name_de: "Farmer's Walk", pattern: 'Core', equipment: 'Dumbbell', intensity: 'Medium', tags: ['grip', 'back'] },
     { id: 'hollow_rock', name: 'Hollow Rock', name_de: 'Hollow Rock', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['core'] },
     { id: 'l_sit', name: 'L-Sit', name_de: 'L-Sit', pattern: 'Core', equipment: 'PullupBar', intensity: 'High', tags: ['core', 'hip_flexor'] },
 

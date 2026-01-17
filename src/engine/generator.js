@@ -7,18 +7,19 @@ export const getReps = (exercise, difficulty, format, duration) => {
     const isShort = duration < 12;
 
     if (exercise.name.includes('Run')) return isShort ? '200m' : '400m';
-    if (exercise.name.includes('Plank')) return '45s';
+    if (exercise.name.includes('Plank') || exercise.name.includes('Wall Sit')) return '45s';
     if (exercise.equipment === 'Machine') return format === 'Chipper' ? '40/30 cal' : (isShort ? '10 cal' : '15 cal');
 
     let baseReps = 15;
     if (exercise.intensity === 'High') baseReps = 10;
     if (exercise.intensity === 'VeryHigh') baseReps = 6;
     if (exercise.name.includes('Double')) baseReps = 40;
+    if (exercise.name.includes('Single Unders')) baseReps = 60;
 
     // Scale down for beginners
     if (difficulty === 'Beginner') {
         baseReps = Math.ceil(baseReps * 0.6);
-        if (exercise.name.includes('Double')) baseReps = 30; // or Singles
+        if (exercise.name.includes('Double') || exercise.name.includes('Single')) baseReps = 30;
     }
 
     // Format adjustments
@@ -29,6 +30,7 @@ export const getReps = (exercise, difficulty, format, duration) => {
         // Chippers are high volume
         baseReps = baseReps * 4;
         if (exercise.name.includes('Double')) baseReps = 100;
+        if (exercise.name.includes('Single')) baseReps = 150;
     } else if (isLong && format === 'AMRAP') {
         // Pacing for long workouts
         if (baseReps > 10) baseReps = 10;

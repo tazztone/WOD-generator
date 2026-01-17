@@ -76,6 +76,16 @@ describe('Generator Engine', () => {
         expect(scaledReps).toBeLessThan(rxReps);
     });
 
+    it('should handle specialized exercise logic (SU, Wall Sit)', () => {
+        const su = { name: 'Single Unders', intensity: 'Low', equipment: 'Bodyweight' };
+        const du = { name: 'Double Unders', intensity: 'High', equipment: 'Bodyweight' };
+        const wallSit = { name: 'Wall Sit', intensity: 'Low', equipment: 'Bodyweight' };
+
+        expect(getReps(su, 'Rx', 'AMRAP', 15)).toBe(60);
+        expect(getReps(du, 'Rx', 'AMRAP', 15)).toBe(40);
+        expect(getReps(wallSit, 'Rx', 'AMRAP', 15)).toBe('45s');
+    });
+
     // TODO: Add tests for each workout template type (AMRAP, RFT, EMOM, Tabata, Chipper)
     // TODO: Add tests for edge cases (no available exercises, all equipment disabled)
     // TODO: Add snapshot tests for generated workout structure
