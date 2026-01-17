@@ -26,27 +26,42 @@ export default function CrossFitGenerator() {
         if (saved) setHistory(JSON.parse(saved));
     }, []);
 
-    // Handle Browser Back Button
+    // Handle Android Back Button (Capacitor native listener)
+    // This is cleaner than browser history API and prevents app from closing unexpectedly
     useEffect(() => {
-        const handlePopState = (event) => {
-            if (event.state?.appState) {
-                setAppState(event.state.appState);
-            } else {
-                setAppState('config'); // Default fallback
+        let backButtonListener = null;
+
+        const setupBackButton = async () => {
+            try {
+                // Dynamically import to avoid issues in web-only mode
+                const { App } = await import('@capacitor/app');
+                backButtonListener = await App.addListener('backButton', () => {
+                    // Navigate based on current React state - no browser history API needed
+                    setAppState(current => {
+                        switch (current) {
+                            case 'preview': return 'config';
+                            case 'active': return 'preview';
+                            case 'history': return 'config';
+                            case 'config':
+                            default:
+                                // At root screen - do nothing (prevent app close)
+                                return current;
+                        }
+                    });
+                });
+            } catch {
+                // Not running in Capacitor (e.g., web browser) - silently ignore
             }
         };
 
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-    }, []);
+        setupBackButton();
 
-    // Sync state to History
-    useEffect(() => {
-        // If current state is different from history state, push it
-        if (window.history.state?.appState !== appState) {
-            window.history.pushState({ appState }, '', '');
-        }
-    }, [appState]);
+        return () => {
+            if (backButtonListener) {
+                backButtonListener.remove();
+            }
+        };
+    }, []);
 
     // Save Config on Change
     useEffect(() => {
