@@ -5,26 +5,55 @@
 name: Build & Publish Android Release
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       tag_name:
-        description: 'Tag Name (e.g. v1.0.0)'
-        required: true
-        default: 'v1.0.0-debug'
-      release_name:
-        description: 'Release Title'
+        description: 'Tag Name (leave empty to use package.json version)'
         required: false
-        default: 'New Android Debug Build'
+      release_name:
+        description: 'Release Title (leave empty for default)'
+        required: false
 
 jobs:
   build-and-release:
     name: Build APK & Create Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Required to create releases
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
+      
+      # 0. Determine Versioning
+      - name: Set Version Variables
+        id: vars
+        run: |
+          # 1. Get version from package.json
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          
+          # 2. Determine TAG
+          if [ "${{ github.event_name }}" == "push" ]; then
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+          elif [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG_NAME="${{ github.event.inputs.tag_name }}"
+          else
+            TAG_NAME="v${PKG_VERSION}-build.${{ github.run_number }}"
+          fi
+          
+          # 3. Determine RELEASE TITLE
+          if [ -n "${{ github.event.inputs.release_name }}" ]; then
+            RELEASE_TITLE="${{ github.event.inputs.release_name }}"
+          else
+            RELEASE_TITLE="Release ${TAG_NAME}"
+          fi
+          
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "title=$RELEASE_TITLE" >> $GITHUB_OUTPUT
+          echo "Using Tag: $TAG_NAME"
+          echo "Using Title: $RELEASE_TITLE"
       
       # 1. Setup Environment
       - name: Setup Node.js
@@ -81,20 +110,20 @@ jobs:
       # 5. Rename & Prepare Artifacts
       - name: Prepare Artifacts
         run: |
-          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/wod-gen-${{ github.event.inputs.tag_name }}.aab
-          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/wod-gen-${{ github.event.inputs.tag_name }}.apk
+          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/wod-gen-${{ steps.vars.outputs.tag }}.aab
+          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/wod-gen-${{ steps.vars.outputs.tag }}.apk
           
       # 6. Create Release & Upload
       - name: Create Release & Upload Artifacts
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.event.inputs.tag_name }}
-          name: ${{ github.event.inputs.release_name }}
+          tag_name: ${{ steps.vars.outputs.tag }}
+          name: ${{ steps.vars.outputs.title }}
           generate_release_notes: true
           draft: false
           prerelease: false
           files: |
-            android/app/build/outputs/bundle/release/wod-gen-${{ github.event.inputs.tag_name }}.aab
-            android/app/build/outputs/apk/release/wod-gen-${{ github.event.inputs.tag_name }}.apk
+            android/app/build/outputs/bundle/release/wod-gen-${{ steps.vars.outputs.tag }}.aab
+            android/app/build/outputs/apk/release/wod-gen-${{ steps.vars.outputs.tag }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
