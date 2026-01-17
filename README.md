@@ -86,7 +86,7 @@ Once generated, you see the WOD (Workout of the Day) preview.
 See [`AGENTS.md`](AGENTS.md) for detailed build instructions.
 
 ### 🚀 Google Play Store
-*   **Publishing Guide**: [`docs/GOOGLE_PLAY_PUBLISH.md`](docs/GOOGLE_PLAY_PUBLISH.md)
+*   **Android Build & Publishing Guide**: [`docs/ANDROID_GUIDE.md`](docs/ANDROID_GUIDE.md)
 *   **Privacy Policy**: [`PRIVACY.md`](PRIVACY.md)
 
 ---

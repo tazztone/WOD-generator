@@ -7,7 +7,9 @@ android {
         applicationId "com.wodgen.ultimate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7000
+        // Base version 7000 + GitHub Run Number (or 0 for local) ensures unique, increasing codes
+        def buildNumber = System.getenv("BUILD_NUMBER")?.toInteger() ?: 0
+        versionCode 7000 + buildNumber
         versionName "7.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -30,8 +32,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
