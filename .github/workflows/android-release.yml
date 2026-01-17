@@ -62,28 +62,39 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
         
+      - name: Decode Keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.keystore
+
       - name: Grant Execute Permission for Gradlew
         run: chmod +x android/gradlew
         
-      - name: Build Debug APK
+      - name: Build Release App Bundle & APK
         run: |
           cd android
-          ./gradlew assembleDebug
+          ./gradlew bundleRelease assembleRelease
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           
-      # 5. Rename Artifact
-      - name: Rename APK
+      # 5. Rename & Prepare Artifacts
+      - name: Prepare Artifacts
         run: |
-          mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/wod-gen-${{ github.event.inputs.tag_name }}.apk
+          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/wod-gen-${{ github.event.inputs.tag_name }}.aab
+          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/wod-gen-${{ github.event.inputs.tag_name }}.apk
           
       # 6. Create Release & Upload
-      - name: Create Release & Upload APK
+      - name: Create Release & Upload Artifacts
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.inputs.tag_name }}
           name: ${{ github.event.inputs.release_name }}
           generate_release_notes: true
           draft: false
-          prerelease: true
-          files: android/app/build/outputs/apk/debug/wod-gen-${{ github.event.inputs.tag_name }}.apk
+          prerelease: false
+          files: |
+            android/app/build/outputs/bundle/release/wod-gen-${{ github.event.inputs.tag_name }}.aab
+            android/app/build/outputs/apk/release/wod-gen-${{ github.event.inputs.tag_name }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

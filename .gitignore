@@ -142,3 +142,5 @@ vite.config.ts.timestamp-*
 
 # others
 
+my-release-key.keystore
+keystore-base64.txt
