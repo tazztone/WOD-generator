@@ -1,12 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 import { ActiveTimer } from './ActiveTimer';
 
 // Mock dependencies
 vi.mock('../hooks/useWakeLock', () => ({
-    useWakeLock: () => {}
+    useWakeLock: () => { }
 }));
 
 // Mock AudioContext and SpeechSynthesis
@@ -32,7 +31,7 @@ window.speechSynthesis = {
     speak: vi.fn(),
 };
 
-global.SpeechSynthesisUtterance = vi.fn();
+window.SpeechSynthesisUtterance = vi.fn();
 
 const mockWorkout = {
     template: 'AMRAP',
@@ -70,12 +69,12 @@ describe('ActiveTimer', () => {
 
     it('should initialize voiceEnabled to true by default', () => {
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => {}} onSave={() => {}} lang="en" />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />);
         });
 
         // Find the toggle button. It's the 2nd button (index 1).
         const buttons = container.querySelectorAll('button');
-        const voiceButton = buttons[1];
+        expect(buttons[1]).toBeDefined();
 
         // Assume default is voice on.
         // We can't easily check internal state, but we can verify subsequent actions.
@@ -83,7 +82,7 @@ describe('ActiveTimer', () => {
 
     it('should persist voice preference to localStorage', () => {
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => {}} onSave={() => {}} lang="en" />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />);
         });
 
         const buttons = container.querySelectorAll('button');
@@ -108,7 +107,7 @@ describe('ActiveTimer', () => {
         localStorage.setItem('voiceEnabled', 'false');
 
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => {}} onSave={() => {}} lang="en" />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />);
         });
 
         // If it initialized to false, clicking it should turn it true and save 'true'
