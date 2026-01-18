@@ -30,11 +30,14 @@ export default function CrossFitGenerator() {
     // This is cleaner than browser history API and prevents app from closing unexpectedly
     useEffect(() => {
         let backButtonListener = null;
+        let lastBackPress = 0;
 
         const setupBackButton = async () => {
             try {
                 // Dynamically import to avoid issues in web-only mode
                 const { App } = await import('@capacitor/app');
+                const { Toast } = await import('@capacitor/toast');
+
                 backButtonListener = await App.addListener('backButton', () => {
                     // Navigate based on current React state - no browser history API needed
                     setAppState(current => {
@@ -43,9 +46,19 @@ export default function CrossFitGenerator() {
                             case 'active': return 'preview';
                             case 'history': return 'config';
                             case 'config':
-                            default:
-                                // At root screen - do nothing (prevent app close)
+                            default: {
+                                // At root screen - double tap to exit
+                                const now = Date.now();
+                                if (now - lastBackPress < 2000) {
+                                    // Second tap within 2 seconds - exit app
+                                    App.exitApp();
+                                } else {
+                                    // First tap - show toast
+                                    lastBackPress = now;
+                                    Toast.show({ text: 'Tap back again to exit', duration: 'short' });
+                                }
                                 return current;
+                            }
                         }
                     });
                 });
