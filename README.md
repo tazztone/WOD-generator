@@ -30,6 +30,7 @@ It runs completely client-side as a Progressive Web App (PWA), meaning it works 
 *   **Audio Coach**: Synthesized voice announcements ("Up Next: Thrusters") so you don't have to look at the screen.
 *   **Sound Effects**: Clear beeps for countdowns, round changes, and rest intervals.
 *   **Wake Lock**: Prevents your phone screen from turning off mid-workout.
+*   **Background Persistence**: Timer continues to run accurately even if you switch apps or lock your phone (Native Android).
 
 ### 📊 Logbook & History
 *   **Local Storage**: Automatically saves every completed workout to your device.

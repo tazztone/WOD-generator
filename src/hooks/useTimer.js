@@ -21,13 +21,44 @@ export const useTimer = (workout, lang, voiceEnabled) => {
         speak(`${nextText} ${moveList}`, lang);
     }, [workout, voiceEnabled, status, lang]);
 
+    // App State / Background handling
+    useEffect(() => {
+        let lastDate = Date.now();
+        let appListener = null;
+
+        const setupListener = async () => {
+            try {
+                const { App } = await import('@capacitor/app');
+                appListener = await App.addListener('appStateChange', ({ isActive }) => {
+                    if (!isActive) {
+                        // App going to background
+                        lastDate = Date.now();
+                    } else {
+                        // App returning to foreground
+                        const now = Date.now();
+                        const passed = Math.floor((now - lastDate) / 1000);
+                        if (passed > 0) {
+                            console.log(`App resumed. Catching up ${passed}s`);
+                            setTimeLeft(t => Math.max(0, t - passed)); // Reduce time, trigger transitions
+                            setTotalTime(t => t + passed);
+                            setRoundTime(t => t + passed);
+                        }
+                    }
+                });
+            } catch (e) { console.log('Background handling disabled (non-native)'); }
+        };
+
+        setupListener();
+        return () => { if (appListener) appListener.remove(); };
+    }, []);
+
     useEffect(() => {
         timerRef.current = setInterval(() => {
             if (status === 'finished') return;
 
             if (status === 'pre') {
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                if (timeLeft === 0) {
+                if (timeLeft <= 0) {
                     SOUNDS.start();
                     setStatus('work');
                     setTimeLeft(workout.timeCap * 60); // Set main timer
@@ -48,7 +79,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                 if (timeLeft === 10) speak("10 seconds", lang);
                 // TODO: Add half-time audio cue (e.g., "30 seconds" for EMOM)
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                if (timeLeft === 0) {
+                if (timeLeft <= 0) {
                     // New Minute
                     SOUNDS.round();
                     setCurrentRound(r => r + 1);
@@ -63,7 +94,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                 }
             } else if (workout.template === 'Tabata') {
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                if (timeLeft === 0) {
+                if (timeLeft <= 0) {
                     if (status === 'work') {
                         setStatus('rest');
                         setTimeLeft(10);
@@ -86,7 +117,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                 // TODO: Add "halfway there" audio cue for AMRAP/RFT
                 // TODO: Add countdown beeps at 3-2-1 for AMRAP/RFT final seconds
                 if (workout.template === 'AMRAP' || workout.template === 'RFT') {
-                    if (timeLeft === 0) {
+                    if (timeLeft <= 0) {
                         setStatus('finished');
                         SOUNDS.end();
                     } else {

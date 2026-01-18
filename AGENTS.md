@@ -132,7 +132,26 @@ We use **Vitest**.
 
 ## 🤖 9. Native Android Support (Capacitor)
 
-The project now supports building a native Android `.apk` using Capacitor.
+The project now supports building a native Android `.apk` using Capacitor. We use a **Hybrid Architecture** where native functionalities extend the React PWA.
+
+### 9.1 Native Capabilities (Key Differences from Web)
+
+1.  **Navigation (Back Button)**
+    *   **Web**: Uses browser history API.
+    *   **Android**: Uses `@capacitor/app` to intercept the hardware back button.
+    *   **Logic**: `App.jsx` handles custom routing logic (e.g., `Active -> Preview`). On the root screen, double-tap back within 2s to exit.
+
+2.  **Screen Wake Lock** (`src/hooks/useWakeLock.js`)
+    *   **Web**: Uses native `navigator.wakeLock` API.
+    *   **Android**: Ues `@capacitor-community/keep-awake` for reliable screen keeping.
+    *   **Auto-Restore**: Re-acquires lock when app returns from background (`visibilitychange`).
+
+3.  **Background Timer Persistence** (`src/hooks/useTimer.js`)
+    *   **Problem**: In standard PWAs, timers throttle/stop when backgrounded.
+    *   **Solution**: We listen to `appStateChange`.
+    *   **Implementation**: When app resumes, we calculate elapsed time (`Date.now() - timestamp`) and fast-forward the timer state.
+
+### 9.2 Build & Deploy
 
 ### Prerequisites
 *   Android Studio (installed and configured with an SDK).
