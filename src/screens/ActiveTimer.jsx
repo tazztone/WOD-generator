@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Trophy, XCircle, Volume2, VolumeX, ChevronLeft, Zap } from 'lucide-react';
 import { useTimer } from '../hooks/useTimer';
 import { useWakeLock } from '../hooks/useWakeLock';
@@ -53,6 +53,10 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
 
     useWakeLock();
     const { status, setStatus, timeLeft, totalTime, currentRound, setCurrentRound } = useTimer(workout, lang, voiceEnabled);
+
+    const exerciseList = useMemo(() => {
+        return workout.exercises.map(e => `${e.reps} ${e.exercise.name}`).join(' + ');
+    }, [workout.exercises]);
 
     const formatTime = (seconds) => {
         const m = Math.floor(seconds / 60);
@@ -133,7 +137,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
                     <Zap size={12} /> {t.next}
                 </div>
                 <div className="text-sm text-slate-300 leading-relaxed font-medium">
-                    {workout.exercises.map(e => `${e.reps} ${e.exercise.name}`).join(' + ')}
+                    {exerciseList}
                 </div>
             </div>
         </div>
