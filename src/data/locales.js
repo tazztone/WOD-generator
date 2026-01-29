@@ -20,7 +20,13 @@ export const LOCALES = {
         equip: { barbell: "Barbell", dumbbell: "Dumbbells / KBs", pullup: "Pull-Up Bar", machine: "Cardio Machine" },
         tt: {
             injuries: "Smart-Filter: Excludes aggravating movements."
-        }
+        },
+        calculator: "1 Rep Max",
+        weight: "Weight",
+        reps: "Reps",
+        calculate: "Calculate",
+        estimated1RM: "Estimated 1 Rep Max",
+        percentages: "Percentages"
     },
     de: {
         duration: "Dauer",
@@ -42,6 +48,12 @@ export const LOCALES = {
         equip: { barbell: "Langhantel", dumbbell: "Kurzhantel / KB", pullup: "Klimmzugstange", machine: "Cardio Gerät" },
         tt: {
             injuries: "Smart-Filter: Entfernt belastende Übungen."
-        }
+        },
+        calculator: "1 Rep Max",
+        weight: "Gewicht",
+        reps: "Wiederholungen",
+        calculate: "Berechnen",
+        estimated1RM: "Geschätztes 1RM",
+        percentages: "Prozentsätze"
     }
 };

@@ -7,6 +7,7 @@ import { ConfigScreen } from './screens/ConfigScreen';
 import { PreviewScreen } from './screens/PreviewScreen';
 import { ActiveTimer } from './screens/ActiveTimer';
 import { HistoryScreen } from './screens/HistoryScreen';
+import { OneRepMaxScreen } from './screens/OneRepMaxScreen';
 import { generateWorkout, swapExercise } from './engine/generator';
 import { loadConfig, saveConfig, HISTORY_STORAGE_KEY } from './engine/storage';
 
@@ -45,6 +46,7 @@ export default function CrossFitGenerator() {
                             case 'preview': return 'config';
                             case 'active': return 'preview';
                             case 'history': return 'config';
+                            case 'calculator': return 'config';
                             case 'config':
                             default: {
                                 // At root screen - double tap to exit
@@ -117,6 +119,7 @@ export default function CrossFitGenerator() {
                 onBack={() => setAppState('config')}
                 onLangToggle={() => setLang(l => l === 'en' ? 'de' : 'en')}
                 onHistory={() => setAppState('history')}
+                onCalculator={() => setAppState('calculator')}
                 lang={lang}
                 appState={appState}
             />
@@ -155,6 +158,12 @@ export default function CrossFitGenerator() {
                         clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}
                         onBack={() => setAppState('config')}
                         lang={lang}
+                    />
+                )}
+                {appState === 'calculator' && (
+                    <OneRepMaxScreen
+                        lang={lang}
+                        onBack={() => setAppState('config')}
                     />
                 )}
             </main>
