@@ -1,43 +1,30 @@
 # ROADMAP.md
 
-### v1.7 - Content Expansion & Tuning
-**Status**: ✅ Completed
-- [x] **Content**: Add 15+ Core exercises.
-- [x] **Content**: Add 10+ Cardio/Bodyweight variants.
-- [x] **Logic**: Refine "Skill Leakage" (Beginner subs).
-- [x] **Logic**: Tweaks for "Chipper" flow.
+> **Current Milestone**: v1.8
+> **Goal**: Improve code maintainability, data management, and user experience for updates.
 
-### Phase 1: Research & Audit
-**Status**: ✅ Completed
-**Objective**: Analyze current exercise frequency and identify the best candidates for expansion.
+## Must-Haves
+- [ ] **Data**: Migrate `exercises.js` to `src/data/exercises.json`.
+- [ ] **Architecture**: Refactor `App.jsx` state to use React Context API (`AppContext`).
+- [ ] **UX**: Replace default PWA update prompt with a custom UI notification.
 
-### Phase 2: Core Expansion
-**Status**: ✅ Completed
-**Objective**: Implement and test 15+ new core exercises.
+## Phases
 
-### Phase 3: Cardio & Bodyweight Variants
-**Status**: ✅ Completed
-**Objective**: Implement and test 10+ new cardio/bodyweight variants.
-
-### Phase 4: Logic Refinement
-**Status**: ✅ Completed
-**Objective**: Implement beginner substitutions for high-skill moves and tune Chipper flow.
-
-### Phase 5: Empirical Validation
-**Status**: ✅ Completed
-**Objective**: Run 10k simulations to verify balanced distribution and logic correctness.
-
-### Phase 3: Cardio & Bodyweight Variants
+### Phase 1: Data Migration
 **Status**: ⬜ Not Started
-**Objective**: Implement and test 10+ new cardio/bodyweight variants.
+**Objective**: Convert the hardcoded exercise database into a JSON file and update the import logic.
 
-### Phase 4: Logic Refinement
+### Phase 2: State Management Refactor
 **Status**: ⬜ Not Started
-**Objective**: Implement beginner substitutions for high-skill moves and tune Chipper flow.
+**Objective**: Extract global state from `App.jsx` into a React Context provider.
 
-### Phase 5: Empirical Validation
+### Phase 3: PWA Update UI
 **Status**: ⬜ Not Started
-**Objective**: Run 10k simulations to verify balanced distribution and logic correctness.
+**Objective**: Implement a user-friendly "New Update Available" toast/banner.
+
+### Phase 4: Regression Testing
+**Status**: ⬜ Not Started
+**Objective**: Verify all application features (generation, timer, settings) function correctly after refactoring.
 
 ## Future Milestones
 
@@ -51,6 +38,14 @@
 ---
 
 ## Completed Milestones
+
+### v1.7 - Content Expansion & Tuning
+**Status**: ✅ Completed
+- [x] **Content**: Add 15+ Core exercises.
+- [x] **Content**: Add 10+ Cardio/Bodyweight variants.
+- [x] **Logic**: Refine "Skill Leakage" (Beginner subs).
+- [x] **Logic**: Tweaks for "Chipper" flow.
+
 
 ### v1.6 - Smart Engine Upgrade
 **Status**: ✅ Completed
