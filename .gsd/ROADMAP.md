@@ -15,11 +15,11 @@
 **Objective**: Convert the hardcoded exercise database into a JSON file and update the import logic.
 
 ### Phase 2: State Management Refactor
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Extract global state from `App.jsx` into a React Context provider.
 
 ### Phase 3: PWA Update UI
-**Status**: ⬜ Not Started
+**Status**: ▶️ In Progress
 **Objective**: Implement a user-friendly "New Update Available" toast/banner.
 
 ### Phase 4: Regression Testing

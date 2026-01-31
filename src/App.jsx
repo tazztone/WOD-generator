@@ -1,6 +1,4 @@
-// TODO: Add React Error Boundary wrapper to gracefully handle runtime errors
-// TODO: Consider extracting app state to Context API if prop drilling becomes an issue
-import { useState, useEffect, useRef } from 'react';
+// TODO: Add React Error Boundary wrapper to gracefully handle runtime errors (Done in main.jsx)
 import { Shell, Header } from './components/layout/Layout';
 import { Tooltip } from './components/ui/Tooltip';
 import { ConfigScreen } from './screens/ConfigScreen';
@@ -8,153 +6,37 @@ import { PreviewScreen } from './screens/PreviewScreen';
 import { ActiveTimer } from './screens/ActiveTimer';
 import { HistoryScreen } from './screens/HistoryScreen';
 import { OneRepMaxScreen } from './screens/OneRepMaxScreen';
-import { generateWorkout, swapExercise } from './engine/generator';
-import { loadConfig, saveConfig, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './engine/storage';
-import { setGlobalVolume } from './engine/audio';
+import { useAppContext } from './context/AppContext';
 
 export default function CrossFitGenerator() {
-    const [appState, setAppState] = useState('config'); // config, preview, active, history
-    const [lang, setLang] = useState('en');
-    const [config, setConfig] = useState(loadConfig());
+    const { state, actions } = useAppContext();
+    const {
+        appState,
+        lang,
+        config,
+        workout,
+        history,
+        savedWorkouts,
+        tooltip,
+        modalOpen
+    } = state;
 
-    const [workout, setWorkout] = useState(null);
-    const [history, setHistory] = useState([]);
-    const [savedWorkouts, setSavedWorkouts] = useState([]);
-    const [tooltip, setTooltip] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
-
-    // Keep a ref to modalOpen so the long-lived Capacitor listener can access the latest value
-    const modalOpenRef = useRef(false);
-    useEffect(() => {
-        modalOpenRef.current = modalOpen;
-    }, [modalOpen]);
-
-    useEffect(() => {
-        try {
-            const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
-            if (savedHistory) setHistory(JSON.parse(savedHistory));
-
-            const savedWorkoutsData = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
-            if (savedWorkoutsData) setSavedWorkouts(JSON.parse(savedWorkoutsData));
-        } catch (e) {
-            console.error('Failed to parse storage data', e);
-        }
-    }, []);
-
-    // Handle Android Back Button (Capacitor native listener)
-    // This is cleaner than browser history API and prevents app from closing unexpectedly
-    useEffect(() => {
-        let backButtonListener = null;
-        let lastBackPress = 0;
-
-        const setupBackButton = async () => {
-            try {
-                // Dynamically import to avoid issues in web-only mode
-                const { App } = await import('@capacitor/app');
-                const { Toast } = await import('@capacitor/toast');
-
-                backButtonListener = await App.addListener('backButton', () => {
-                    // Check if a modal is open first
-                    if (modalOpenRef.current) {
-                        setModalOpen(false);
-                        return;
-                    }
-
-                    // Navigate based on current React state - no browser history API needed
-                    setAppState(current => {
-                        switch (current) {
-                            case 'preview': return 'config';
-                            case 'active': return 'preview';
-                            case 'history': return 'config';
-                            case 'calculator': return 'config';
-                            case 'config':
-                            default: {
-                                // At root screen - double tap to exit
-                                const now = Date.now();
-                                if (now - lastBackPress < 2000) {
-                                    // Second tap within 2 seconds - exit app
-                                    App.exitApp();
-                                } else {
-                                    // First tap - show toast
-                                    lastBackPress = now;
-                                    Toast.show({ text: 'Tap back again to exit', duration: 'short' });
-                                }
-                                return current;
-                            }
-                        }
-                    });
-                });
-            } catch {
-                // Not running in Capacitor (e.g., web browser) - silently ignore
-            }
-        };
-
-        setupBackButton();
-
-        return () => {
-            if (backButtonListener) {
-                backButtonListener.remove();
-            }
-        };
-    }, []);
-
-    // Save Config on Change
-    useEffect(() => {
-        saveConfig(config);
-        if (config.volume !== undefined) {
-            setGlobalVolume(config.volume);
-        }
-    }, [config]);
-
-    const saveToHistory = (result) => {
-        const newEntry = {
-            ...result,
-            id: Date.now(),
-            date: new Date().toISOString()
-        };
-        const updated = [newEntry, ...history];
-        setHistory(updated);
-        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
-    };
-
-    const deleteEntry = (id) => {
-        const updated = history.filter(entry => entry.id !== id);
-        setHistory(updated);
-        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
-    };
-
-    const toggleSaveWorkout = (w) => {
-        const isSaved = savedWorkouts.some(sw => sw.id === w.id);
-        let updated;
-        if (isSaved) {
-            updated = savedWorkouts.filter(sw => sw.id !== w.id);
-        } else {
-            updated = [w, ...savedWorkouts];
-        }
-        setSavedWorkouts(updated);
-        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(updated));
-    };
-
-    const handleGenerate = () => {
-        const newWorkout = generateWorkout(config, lang);
-        setWorkout(newWorkout);
-        setAppState('preview');
-    };
-
-    const handleManualSwap = (index, newExId) => {
-        if (!workout) return;
-        const updatedWorkout = swapExercise(workout, index, newExId, config, lang);
-        setWorkout(updatedWorkout);
-    };
-
-    // Tooltip Logic
-    const handleTooltip = (e, text) => {
-        if (!text) return;
-        e.stopPropagation();
-        const rect = e.currentTarget.getBoundingClientRect();
-        setTooltip({ x: rect.left + rect.width / 2, y: rect.top - 10, text });
-    };
-    const clearTooltip = () => setTooltip(null);
+    const {
+        setAppState,
+        setLang,
+        toggleLang,
+        setConfig,
+        setWorkout,
+        setModalOpen,
+        generateWorkout,
+        swapExercise,
+        saveToHistory,
+        deleteHistoryEntry,
+        clearHistory,
+        toggleSaveWorkout,
+        handleTooltip,
+        clearTooltip
+    } = actions;
 
     return (
         <Shell>
@@ -162,7 +44,7 @@ export default function CrossFitGenerator() {
 
             <Header
                 onBack={() => setAppState('config')}
-                onLangToggle={() => setLang(l => l === 'en' ? 'de' : 'en')}
+                onLangToggle={toggleLang}
                 onHistory={() => setAppState('history')}
                 onCalculator={() => setAppState('calculator')}
                 lang={lang}
@@ -174,7 +56,7 @@ export default function CrossFitGenerator() {
                     <ConfigScreen
                         config={config}
                         setConfig={setConfig}
-                        onGenerate={handleGenerate}
+                        onGenerate={generateWorkout}
                         lang={lang}
                         onTooltip={handleTooltip}
                     />
@@ -183,7 +65,7 @@ export default function CrossFitGenerator() {
                     <PreviewScreen
                         workout={workout}
                         config={config}
-                        onManualSwap={handleManualSwap}
+                        onManualSwap={swapExercise}
                         onStart={() => setAppState('active')}
                         lang={lang}
                         onBack={() => setAppState('config')}
@@ -208,10 +90,10 @@ export default function CrossFitGenerator() {
                     <HistoryScreen
                         history={history}
                         savedWorkouts={savedWorkouts}
-                        onDeleteEntry={deleteEntry}
+                        onDeleteEntry={deleteHistoryEntry}
                         onDeleteSaved={(id) => toggleSaveWorkout({ id })}
                         onStartWorkout={(w) => { setWorkout(w); setAppState('active'); }}
-                        clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}
+                        clearHistory={clearHistory}
                         onBack={() => setAppState('config')}
                         lang={lang}
                     />
