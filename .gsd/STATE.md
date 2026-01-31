@@ -1,9 +1,9 @@
 # STATE.md
 
 ## Last Session Summary
-Identified Node.js version conflict (Node 20 vs Capacitor 8 requirements).
+Resolved Node.js version conflict by downgrading Capacitor to v7. Restored Android native bridge and verified Gradle sync.
 
 ## Current Position
 - **Milestone**: v1.2-env-fix
-- **Phase**: Not started
-- **Status**: Milestone planned
+- **Phase**: Done
+- **Status**: Milestone complete

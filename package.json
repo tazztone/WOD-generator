@@ -13,10 +13,10 @@
     "resources": "capacitor-assets generate"
   },
   "dependencies": {
-    "@capacitor/android": "^8.0.0",
+    "@capacitor/android": "^7.0.0",
     "@capacitor/app": "^7.0.0",
-    "@capacitor/cli": "^8.0.0",
-    "@capacitor/core": "^8.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
     "@capacitor/toast": "^7.0.0",
     "@capacitor-community/keep-awake": "^6.0.0",
     "lucide-react": "^0.344.0",
