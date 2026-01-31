@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-> **Current Milestone**: v1.4 - System Stability & Global Release
+> **Current Milestone**: v1.4 - System Stability & Global Release (Gap Closure)
 > **Goal**: Complete all remaining pending items to reach full feature parity and stability.
 
 ## Must-Haves
@@ -59,3 +59,10 @@
 - [x] Merge screen-specific translations into main locales.js
 - [x] Add integration tests for full workout generation + swap flow
 - [x] Final end-to-end verification
+
+### Phase 6: Gap Closure
+**Status**: ⬜ Not Started
+**Objective**: Address gaps identified in v1.4 Audit (Cleanup & Stability).
+- [ ] Clean up outdated TODO.md
+- [ ] Implement React Error Boundary
+- [ ] Add basic accessibility (ARIA) attributes
