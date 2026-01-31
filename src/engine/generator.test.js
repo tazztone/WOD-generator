@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { generateWorkout, getReps, isExerciseValid } from './generator';
+import { generateWorkout, isExerciseValid } from './generator';
+import { getReps } from './scaling';
 import { EXERCISE_DB } from '../data/exercises';
 
 describe('Generator Engine', () => {

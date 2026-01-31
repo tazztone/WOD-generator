@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { generateWorkout, swapExercise, getReps } from './generator';
+import { generateWorkout, swapExercise } from './generator';
+import { getReps } from './scaling';
 import { EXERCISE_DB } from '../data/exercises';
 
 describe('Workout Generation Integration', () => {
