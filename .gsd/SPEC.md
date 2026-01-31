@@ -9,6 +9,7 @@ Rectify the GitHub Action workflow for Android releases by aligning parameters w
 1. Synchronize the `packageName` in `.github/workflows/android-release.yml` with the `applicationId` in `android/app/build.gradle`.
 2. Resolve the "whatsnew" directory warning by either creating the directory or removing the reference in the workflow.
 3. Verify that the build process correctly identifies and uses the new package identity.
+4. Switch the Google Play release track to `internal` to bypass production publishing restrictions during the 14-day testing period.
 
 ## Non-Goals (Out of Scope)
 - Modifying the app's functionality or logic.
@@ -28,3 +29,4 @@ Rectify the GitHub Action workflow for Android releases by aligning parameters w
 - [ ] The "whatsnew" directory warning is addressed (reference removed or directory created).
 - [ ] A successful local dry-run or validation of the YAML syntax.
 - [ ] Change is committed and pushed to the repository.
+- [ ] Workflow track is set to `internal`.
