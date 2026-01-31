@@ -4,6 +4,11 @@
 - [ ] Add seeded randomness for reproducible workouts (v2.0)
 - [ ] Add user profiles and cloud sync (v2.0)
 
+## COMPLETED (v1.9)
+🟢 [x] Refactor: Template Strategy pattern
+🟢 [x] Testing: Setup UI testing infrastructure (RTL)
+🟢 [x] Testing: 35 tests covering logic and UI screens
+
 ## COMPLETED (v1.8)
 🟢 [x] Refactor: Move global state to `AppContext`
 🟢 [x] Refactor: Extract exercise data to JSON
