@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Trophy, XCircle, Volume2, VolumeX, ChevronLeft, Zap } from 'lucide-react';
+import { Trophy, XCircle, Volume2, VolumeX, ChevronLeft, Zap, Pause, Play } from 'lucide-react';
 import { useTimer } from '../hooks/useTimer';
 import { useWakeLock } from '../hooks/useWakeLock';
 import { Button } from '../components/ui/Button';
@@ -52,7 +52,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
     }, [voiceEnabled]);
 
     useWakeLock();
-    const { status, setStatus, timeLeft, totalTime, currentRound, setCurrentRound } = useTimer(workout, lang, voiceEnabled);
+    const { status, setStatus, timeLeft, totalTime, currentRound, setCurrentRound, isPaused, setIsPaused } = useTimer(workout, lang, voiceEnabled);
 
     const exerciseList = useMemo(() => {
         return workout.exercises.map(e => `${e.reps} ${e.exercise.name}`).join(' + ');
@@ -90,7 +90,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
 
                 <Button onClick={() => {
                     const score = document.getElementById('scoreInput').value || 'Completed';
-                    onSave({ ...workout, score, duration: totalTime });
+                    onSave({ ...workout, score, timeTaken: totalTime });
                     onExit();
                 }} variant="primary" fullWidth className="mb-3">
                     {t.save}
@@ -136,6 +136,19 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
                             <span className="text-4xl font-mono font-bold text-emerald-400">{currentRound}</span>
                             <button onClick={() => setCurrentRound(currentRound + 1)} className="p-3 bg-slate-800 rounded-full text-slate-400 hover:bg-slate-700"><ChevronLeft size={20} className="rotate-180" /></button>
                         </div>
+                    </div>
+                )}
+
+                {/* Pause/Resume Button */}
+                {status !== 'pre' && (
+                    <div className="mt-8">
+                        <button
+                            onClick={() => setIsPaused(!isPaused)}
+                            className={`flex items-center gap-2 px-8 py-3 rounded-full font-black uppercase tracking-widest transition-all ${isPaused ? 'bg-emerald-500 text-slate-950 scale-110 shadow-lg' : 'bg-slate-800 text-slate-400'}`}
+                        >
+                            {isPaused ? <Play size={20} fill="currentColor" /> : <Pause size={20} fill="currentColor" />}
+                            {isPaused ? 'Resume' : 'Pause'}
+                        </button>
                     </div>
                 )}
             </div>

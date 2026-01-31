@@ -10,6 +10,7 @@ import { HistoryScreen } from './screens/HistoryScreen';
 import { OneRepMaxScreen } from './screens/OneRepMaxScreen';
 import { generateWorkout, swapExercise } from './engine/generator';
 import { loadConfig, saveConfig, HISTORY_STORAGE_KEY } from './engine/storage';
+import { setGlobalVolume } from './engine/audio';
 
 export default function CrossFitGenerator() {
     const [appState, setAppState] = useState('config'); // config, preview, active, history
@@ -98,11 +99,24 @@ export default function CrossFitGenerator() {
     // Save Config on Change
     useEffect(() => {
         saveConfig(config);
+        if (config.volume !== undefined) {
+            setGlobalVolume(config.volume);
+        }
     }, [config]);
 
     const saveToHistory = (result) => {
-        const newEntry = { ...result, id: Date.now(), date: new Date().toISOString() };
+        const newEntry = {
+            ...result,
+            id: Date.now(),
+            date: new Date().toISOString()
+        };
         const updated = [newEntry, ...history];
+        setHistory(updated);
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
+    };
+
+    const deleteEntry = (id) => {
+        const updated = history.filter(entry => entry.id !== id);
         setHistory(updated);
         localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
     };
@@ -175,6 +189,7 @@ export default function CrossFitGenerator() {
                 {appState === 'history' && (
                     <HistoryScreen
                         history={history}
+                        onDeleteEntry={deleteEntry}
                         clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}
                         onBack={() => setAppState('config')}
                         lang={lang}
