@@ -219,8 +219,8 @@ export const PreviewScreen = ({
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent">
-                <Button onClick={onStart} size="lg" fullWidth>
-                    <Play size={24} fill="currentColor" /> {t.start}
+                <Button onClick={onStart} size="lg" fullWidth data-testid="start-btn">
+                    <Play size={24} fill="currentColor" /> {pt.start}
                 </Button>
             </div>
         </div >

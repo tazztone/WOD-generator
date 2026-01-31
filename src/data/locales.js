@@ -23,6 +23,11 @@ export const LOCALES = {
         focusTypes: { balanced: "Balanced", cardio: "Cardio", strength: "Strength", gymnastics: "Gymnastics", core: "Core" },
         parts: { shoulders: "Shoulders", knees: "Knees", back: "Back" },
         equip: { barbell: "Barbell", dumbbell: "Dumbbells / KBs", pullup: "Pull-Up Bar", machine: "Cardio Machine" },
+        audioSettings: {
+            countdowns: "Countdowns (3-2-1)",
+            announcements: "Announcements (Next, Rest)",
+            beeps: "Transition Beeps"
+        },
         tt: {
             injuries: "Smart-Filter: Excludes aggravating movements.",
             level: "Rx uses 100% standard volume. Scaled reduces reps to 60% and simplifies complex movements.",
@@ -107,6 +112,11 @@ export const LOCALES = {
         focusTypes: { balanced: "Ausgeglichen", cardio: "Cardio", strength: "Kraft", gymnastics: "Gymnastik", core: "Core" },
         parts: { shoulders: "Schultern", knees: "Knie", back: "Rücken" },
         equip: { barbell: "Langhantel", dumbbell: "Kurzhantel / KB", pullup: "Klimmzugstange", machine: "Cardio Gerät" },
+        audioSettings: {
+            countdowns: "Countdowns (3-2-1)",
+            announcements: "Ansagen (Nächste, Pause)",
+            beeps: "Übergangs-Signaltöne"
+        },
         tt: {
             injuries: "Smart-Filter: Entfernt belastende Übungen.",
             level: "Rx nutzt 100% Volumen. Skaliert reduziert die Wiederholungen auf 60% und vereinfacht komplexe Übungen.",

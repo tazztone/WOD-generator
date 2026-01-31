@@ -29,6 +29,7 @@ export default function CrossFitGenerator() {
         setWorkout,
         setModalOpen,
         generateWorkout,
+        clearWorkout,
         swapExercise,
         saveToHistory,
         deleteHistoryEntry,
@@ -44,7 +45,7 @@ export default function CrossFitGenerator() {
             {tooltip && <Tooltip x={tooltip.x} y={tooltip.y} text={tooltip.text} />}
 
             <Header
-                onBack={() => setAppState('config')}
+                onBack={clearWorkout}
                 onLangToggle={toggleLang}
                 onHistory={() => setAppState('history')}
                 onCalculator={() => setAppState('calculator')}
@@ -69,7 +70,7 @@ export default function CrossFitGenerator() {
                         onManualSwap={swapExercise}
                         onStart={() => setAppState('active')}
                         lang={lang}
-                        onBack={() => setAppState('config')}
+                        onBack={clearWorkout}
                         modalOpen={modalOpen}
                         setModalOpen={setModalOpen}
                         isSaved={savedWorkouts.some(sw => sw.id === workout.id)}

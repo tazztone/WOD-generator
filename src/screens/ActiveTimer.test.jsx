@@ -42,6 +42,11 @@ const mockWorkout = {
     ]
 };
 
+const mockConfig = {
+    volume: 0.7,
+    audioSettings: { countdowns: true, announcements: true, beeps: true }
+};
+
 describe('ActiveTimer', () => {
     let container = null;
     let root = null;
@@ -67,56 +72,41 @@ describe('ActiveTimer', () => {
         flushSync(callback);
     }
 
-    it('should initialize voiceEnabled to true by default', () => {
+    it('should open audio settings popover when clicking settings button', () => {
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => {}} />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => { }} config={mockConfig} setConfig={() => { }} />);
         });
 
-        // Find the toggle button. It's the 2nd button (index 1).
+        // The settings button is the second button in the header
         const buttons = container.querySelectorAll('button');
-        expect(buttons[1]).toBeDefined();
+        const settingsBtn = buttons[1];
 
-        // Assume default is voice on.
-        // We can't easily check internal state, but we can verify subsequent actions.
+        act(() => {
+            settingsBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        });
+
+        expect(container.textContent).toContain('Audio Settings');
     });
 
-    it('should persist voice preference to localStorage', () => {
+    it('should call setConfig when toggling an audio setting', () => {
+        const setConfigMock = vi.fn();
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => {}} />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => { }} config={mockConfig} setConfig={setConfigMock} />);
         });
 
+        // Open popover
         const buttons = container.querySelectorAll('button');
-        const voiceButton = buttons[1];
-
-        // Click to toggle off
         act(() => {
-            voiceButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            buttons[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
         });
 
-        // EXPECTED FAIL: Currently does not persist
-        expect(localStorage.getItem('voiceEnabled')).toBe('false');
-
-        // Click to toggle on
+        // Find a toggle button in the popover
+        const toggles = container.querySelectorAll('.absolute button');
+        // The first toggle is usually countdowns
         act(() => {
-            voiceButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        });
-        expect(localStorage.getItem('voiceEnabled')).toBe('true');
-    });
-
-    it('should initialize voiceEnabled from localStorage', () => {
-        localStorage.setItem('voiceEnabled', 'false');
-
-        act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => {}} />);
+            toggles[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
         });
 
-        // If it initialized to false, clicking it should turn it true and save 'true'
-        const buttons = container.querySelectorAll('button');
-        const voiceButton = buttons[1];
-
-        act(() => {
-            voiceButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        });
-        expect(localStorage.getItem('voiceEnabled')).toBe('true');
+        expect(setConfigMock).toHaveBeenCalled();
     });
 });

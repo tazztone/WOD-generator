@@ -16,15 +16,15 @@
 **Objective**: Transition tooltips to floating components and add the "buy-in" tooltip.
 
 ### Phase 2: Logic Refinement
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Ensure the "saved" button state resets when a new workout is generated.
 
 ### Phase 3: Audio Control Granularity
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Implement settings to toggle individual audio feedback types.
 
 ### Phase 4: Verification
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Validate all UI changes and logic resets across devices.
 
 ## Future Milestones

@@ -2,13 +2,15 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { SOUNDS, speak } from '../engine/audio';
 
 // TODO: Add haptic feedback support for mobile devices
-export const useTimer = (workout, lang, voiceEnabled) => {
+export const useTimer = (workout, lang, audioSettings) => {
     const [status, setStatus] = useState('pre'); // pre, work, rest, finished
     const [timeLeft, setTimeLeft] = useState(10); // Start with 10s countdown
     const [totalTime, setTotalTime] = useState(0);
     const [currentRound, setCurrentRound] = useState(1);
     const [roundTime, setRoundTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+
+    const { countdowns, announcements, beeps } = audioSettings || { countdowns: true, announcements: true, beeps: true };
 
     // Initial Load from Persistence
     useEffect(() => {
@@ -53,11 +55,11 @@ export const useTimer = (workout, lang, voiceEnabled) => {
 
     // Speak helper
     const speakMovements = useCallback(() => {
-        if (!voiceEnabled || status === 'finished') return;
+        if (!announcements || status === 'finished') return;
         const nextText = lang === 'de' ? "Als nächstes:" : "Up Next:";
         const moveList = workout.exercises.map(e => e.exercise.name).join(', ');
         speak(`${nextText} ${moveList}`, lang);
-    }, [workout, voiceEnabled, status, lang]);
+    }, [workout, announcements, status, lang]);
 
     // App State / Background handling
     useEffect(() => {
@@ -95,14 +97,9 @@ export const useTimer = (workout, lang, voiceEnabled) => {
             if (status === 'finished' || isPaused) return;
 
             if (status === 'pre') {
-                if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                if (timeLeft <= 1) {
-                    // Logic handled in next tick or immediate?
-                    // The original had if (timeLeft <= 0) which means it hits 0 then starts.
-                    // We want 3-2-1-GO.
-                }
+                if (timeLeft <= 3 && timeLeft > 0 && countdowns) SOUNDS.countdown();
                 if (timeLeft <= 0) {
-                    SOUNDS.start();
+                    if (beeps) SOUNDS.start();
                     setStatus('work');
                     const initialTime = workout.template === 'Tabata' ? 20 : (workout.template === 'EMOM' ? 60 : workout.timeCap * 60);
                     setTimeLeft(initialTime);
@@ -121,11 +118,11 @@ export const useTimer = (workout, lang, voiceEnabled) => {
             const isTabata = workout.template === 'Tabata';
 
             if (isEMOM) {
-                if (timeLeft === 31) SOUNDS.halfway();
-                if (timeLeft === 11) speak("10 seconds", lang);
-                if (timeLeft <= 4 && timeLeft > 1) SOUNDS.countdown();
+                if (timeLeft === 31 && beeps) SOUNDS.halfway();
+                if (timeLeft === 11 && announcements) speak("10 seconds", lang);
+                if (timeLeft <= 4 && timeLeft > 1 && countdowns) SOUNDS.countdown();
                 if (timeLeft <= 1) {
-                    SOUNDS.round();
+                    if (beeps) SOUNDS.round();
                     setCurrentRound(r => r + 1);
                     setTimeLeft(60);
                     setRoundTime(0);
@@ -137,17 +134,17 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                     setTimeLeft(t => t - 1);
                 }
             } else if (isTabata) {
-                if (timeLeft <= 4 && timeLeft > 1) SOUNDS.countdown();
+                if (timeLeft <= 4 && timeLeft > 1 && countdowns) SOUNDS.countdown();
                 if (timeLeft <= 1) {
                     if (status === 'work') {
                         setStatus('rest');
                         setTimeLeft(10);
-                        SOUNDS.round();
+                        if (beeps) SOUNDS.round();
                     } else {
                         setStatus('work');
                         setTimeLeft(20);
                         setCurrentRound(r => r + 1);
-                        SOUNDS.start();
+                        if (beeps) SOUNDS.start();
                         if (currentRound >= 8) {
                             setStatus('finished');
                             SOUNDS.end();
@@ -159,10 +156,10 @@ export const useTimer = (workout, lang, voiceEnabled) => {
             } else {
                 // AMRAP, RFT, Chipper
                 const totalDuration = workout.timeCap * 60;
-                if (timeLeft === Math.floor(totalDuration / 2) + 1) SOUNDS.halfway();
-                if (timeLeft === 61) speak(lang === 'de' ? "Noch eine Minute" : "One minute remaining", lang);
+                if (timeLeft === Math.floor(totalDuration / 2) + 1 && beeps) SOUNDS.halfway();
+                if (timeLeft === 61 && announcements) speak(lang === 'de' ? "Noch eine Minute" : "One minute remaining", lang);
                 
-                if (timeLeft <= 4 && timeLeft > 1) SOUNDS.countdown();
+                if (timeLeft <= 4 && timeLeft > 1 && countdowns) SOUNDS.countdown();
                 if (timeLeft <= 1) {
                     setStatus('finished');
                     SOUNDS.end();
@@ -173,7 +170,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
         }, 1000);
 
         return () => clearInterval(timerRef.current);
-    }, [status, timeLeft, workout, currentRound, voiceEnabled, speakMovements, lang, isPaused]);
+    }, [status, timeLeft, workout, currentRound, countdowns, announcements, beeps, speakMovements, lang, isPaused]);
 
     return {
         status,

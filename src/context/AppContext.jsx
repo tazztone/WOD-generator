@@ -103,6 +103,7 @@ export const useAppContext = () => {
             setWorkout: workout.setWorkout,
             setModalOpen: settings.setModalOpen,
             generateWorkout: workout.generateWorkout,
+            clearWorkout: workout.clearWorkout,
             swapExercise: workout.swapExercise,
             saveToHistory: workout.saveToHistory,
             deleteHistoryEntry: workout.deleteHistoryEntry,

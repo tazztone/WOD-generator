@@ -1,10 +1,10 @@
-import { AmrapStrategy } from './AmrapStrategy';
-import { RftStrategy } from './RftStrategy';
-import { EmomStrategy } from './EmomStrategy';
-import { ChipperStrategy } from './ChipperStrategy';
-import { TabataStrategy } from './TabataStrategy';
-import { LadderStrategy } from './LadderStrategy';
-import { DeathByStrategy } from './DeathByStrategy';
+import { AmrapStrategy } from './AmrapStrategy.js';
+import { RftStrategy } from './RftStrategy.js';
+import { EmomStrategy } from './EmomStrategy.js';
+import { ChipperStrategy } from './ChipperStrategy.js';
+import { TabataStrategy } from './TabataStrategy.js';
+import { LadderStrategy } from './LadderStrategy.js';
+import { DeathByStrategy } from './DeathByStrategy.js';
 
 const STRATEGIES = {
     'AMRAP': AmrapStrategy,

@@ -32,6 +32,11 @@ export const WorkoutProvider = ({ children }) => {
         setAppState('preview');
     };
 
+    const clearWorkout = () => {
+        setWorkout(null);
+        setAppState('config');
+    };
+
     const swapExercise = (index, newExId) => {
         if (!workout) return;
         const updatedWorkout = engineSwap(workout, index, newExId, config, lang);
@@ -80,6 +85,7 @@ export const WorkoutProvider = ({ children }) => {
         history,
         savedWorkouts,
         generateWorkout,
+        clearWorkout,
         swapExercise,
         saveToHistory,
         deleteHistoryEntry,

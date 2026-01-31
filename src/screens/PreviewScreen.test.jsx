@@ -27,7 +27,8 @@ describe('PreviewScreen', () => {
         isSaved: false,
         onToggleSave: vi.fn(),
         modalOpen: false,
-        setModalOpen: vi.fn()
+        setModalOpen: vi.fn(),
+        onTooltip: vi.fn()
     };
 
     it('renders workout details correctly', () => {
@@ -40,7 +41,7 @@ describe('PreviewScreen', () => {
 
     it('calls onStart when start button is clicked', () => {
         render(<PreviewScreen {...mockProps} />);
-        const startBtn = screen.getByRole('button', { name: /start/i });
+        const startBtn = screen.getByTestId('start-btn');
         fireEvent.click(startBtn);
         expect(mockProps.onStart).toHaveBeenCalledTimes(1);
     });
