@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame } from 'lucide-react';
 import { getExerciseName, isExerciseValid } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
@@ -62,7 +62,7 @@ const EXPLANATIONS = {
     }
 };
 
-export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, onBack }) => {
+export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, onBack, modalOpen, setModalOpen }) => {
     const [copied, setCopied] = useState(false);
     const [swapModal, setSwapModal] = useState({ show: false, index: -1 });
     const [infoModal, setInfoModal] = useState({ show: false, title: '', text: '' });
@@ -72,6 +72,23 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
     const validExercises = useMemo(() => {
         return EXERCISE_DB.filter(ex => isExerciseValid(ex, config));
     }, [config]);
+
+    // Sync internal modal state with global App state to support Android back button
+    useEffect(() => {
+        if (swapModal.show || infoModal.show) {
+            setModalOpen(true);
+        } else {
+            setModalOpen(false);
+        }
+    }, [swapModal.show, infoModal.show, setModalOpen]);
+
+    // If global modalOpen is closed (e.g. by back button), close local modals
+    useEffect(() => {
+        if (!modalOpen) {
+            setSwapModal({ show: false, index: -1 });
+            setInfoModal({ show: false, title: '', text: '' });
+        }
+    }, [modalOpen]);
 
     // TODO: Add Web Share API support for native sharing on mobile devices
     // TODO: Add fallback sharing method for devices that don't support clipboard API
@@ -197,7 +214,7 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <span className="text-[9px] text-slate-600 font-bold uppercase tracking-wider group-hover:text-slate-500">{item.exercise.pattern}</span>
-                                        <RefreshCw size={12} className="text-slate-700 group-hover:text-emerald-500 opacity-50 group-hover:opacity-100 transition-all" />
+                                        <RefreshCw size={12} className="text-slate-500 group-hover:text-emerald-500 opacity-50 group-hover:opacity-100 transition-all" />
                                     </div>
                                 </div>
                             ))}
@@ -218,7 +235,7 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                 </div>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent">
+            <div className="absolute bottom-0 left-0 right-0 p-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent">
                 <Button onClick={onStart} size="lg" fullWidth>
                     <Play size={24} fill="currentColor" /> {t.start}
                 </Button>

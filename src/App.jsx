@@ -1,6 +1,6 @@
 // TODO: Add React Error Boundary wrapper to gracefully handle runtime errors
 // TODO: Consider extracting app state to Context API if prop drilling becomes an issue
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Shell, Header } from './components/layout/Layout';
 import { Tooltip } from './components/ui/Tooltip';
 import { ConfigScreen } from './screens/ConfigScreen';
@@ -19,6 +19,13 @@ export default function CrossFitGenerator() {
     const [workout, setWorkout] = useState(null);
     const [history, setHistory] = useState([]);
     const [tooltip, setTooltip] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // Keep a ref to modalOpen so the long-lived Capacitor listener can access the latest value
+    const modalOpenRef = useRef(false);
+    useEffect(() => {
+        modalOpenRef.current = modalOpen;
+    }, [modalOpen]);
 
     // Load History
     // TODO: Add try-catch for JSON.parse to handle corrupted localStorage data gracefully
@@ -40,6 +47,12 @@ export default function CrossFitGenerator() {
                 const { Toast } = await import('@capacitor/toast');
 
                 backButtonListener = await App.addListener('backButton', () => {
+                    // Check if a modal is open first
+                    if (modalOpenRef.current) {
+                        setModalOpen(false);
+                        return;
+                    }
+
                     // Navigate based on current React state - no browser history API needed
                     setAppState(current => {
                         switch (current) {
@@ -142,6 +155,8 @@ export default function CrossFitGenerator() {
                         onStart={() => setAppState('active')}
                         lang={lang}
                         onBack={() => setAppState('config')}
+                        modalOpen={modalOpen}
+                        setModalOpen={setModalOpen}
                     />
                 )}
                 {appState === 'active' && workout && (
@@ -150,6 +165,7 @@ export default function CrossFitGenerator() {
                         onExit={() => setAppState('preview')}
                         onSave={saveToHistory}
                         lang={lang}
+                        setModalOpen={setModalOpen}
                     />
                 )}
                 {appState === 'history' && (

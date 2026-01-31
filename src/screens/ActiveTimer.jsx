@@ -31,7 +31,7 @@ const T = {
     }
 };
 
-export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
+export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => {
     const t = T[lang];
     const [voiceEnabled, setVoiceEnabled] = useState(() => {
         try {
@@ -63,6 +63,15 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
         const s = seconds % 60;
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
+
+    useEffect(() => {
+        if (status === 'finished') {
+            setModalOpen(true);
+        } else {
+            setModalOpen(false);
+        }
+        return () => setModalOpen(false);
+    }, [status, setModalOpen]);
 
     // FINISHED SCREEN
     if (status === 'finished') {
