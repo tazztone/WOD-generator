@@ -6,7 +6,7 @@ import { Button } from '../components/ui/Button';
 
 import { LOCALES } from '../data/locales';
 
-export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => {
+export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen, config, setConfig }) => {
     const t = LOCALES[lang].screens.activeTimer;
     const [voiceEnabled, setVoiceEnabled] = useState(() => {
         try {
@@ -91,8 +91,18 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
             {/* Header */}
             <div className="flex justify-between items-center p-5 z-10">
                 <button onClick={() => setStatus('finished')} className="p-2 bg-slate-800/50 rounded-full text-slate-400"><XCircle size={20} /></button>
-                <div className="flex gap-4">
-                    <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-2 rounded-full ${voiceEnabled ? 'text-white bg-slate-700' : 'text-slate-500'}`}>
+                <div className="flex gap-4 items-center bg-slate-800/50 p-2 rounded-full backdrop-blur-sm">
+                    <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        value={config?.volume ?? 0.7}
+                        onChange={(e) => setConfig({ ...config, volume: parseFloat(e.target.value) })}
+                        className="w-24 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-emerald-500 mx-2"
+                        aria-label="Volume"
+                    />
+                    <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded-full ${voiceEnabled ? 'text-white' : 'text-slate-500'}`}>
                         {voiceEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
                     </button>
                 </div>

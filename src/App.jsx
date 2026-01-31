@@ -200,6 +200,8 @@ export default function CrossFitGenerator() {
                         onSave={saveToHistory}
                         lang={lang}
                         setModalOpen={setModalOpen}
+                        config={config}
+                        setConfig={setConfig}
                     />
                 )}
                 {appState === 'history' && (

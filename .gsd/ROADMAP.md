@@ -4,8 +4,8 @@
 > **Goal**: Enhance UI/UX, improve app reliability, and establish robust testing infrastructure.
 
 ## Must-Haves
-- [ ] UI: Focus selector as dropdown in 3rd column
-- [ ] UI: Move volume control to timer page (combine with mute)
+- [x] UI: Focus selector as dropdown in 3rd column
+- [x] UI: Move volume control to timer page (combine with mute)
 - [ ] Reliability: React Error Boundary
 - [ ] Accessibility: Basic ARIA attributes
 - [ ] Testing: Mass generation and analysis script
@@ -13,7 +13,7 @@
 ## Phases
 
 ### Phase 1: UI/UX Enhancements
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Refine the workout setup and timer interfaces for better usability and compactness.
 
 ### Phase 2: Reliability & Accessibility

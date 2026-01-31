@@ -68,25 +68,8 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </Card>
             </div>
 
-            {/* Volume Control */}
-            <Card className="flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-slate-400 uppercase">Beep Volume</span>
-                    <span className="text-emerald-400 font-mono font-bold">{Math.round(config.volume * 100)}%</span>
-                </div>
-                <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={config.volume}
-                    onChange={(e) => setConfig({ ...config, volume: parseFloat(e.target.value) })}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-                />
-            </Card>
-
-            {/* Style & Level */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Style, Level & Focus */}
+            <div className="grid grid-cols-3 gap-4">
                 <div>
                     <span className="text-xs font-bold text-slate-400 uppercase mb-1 block">{t.style}</span>
                     <select value={config.templateType} onChange={(e) => setConfig({ ...config, templateType: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white focus:ring-1 focus:ring-emerald-500">
@@ -110,24 +93,20 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                         <option value="Beginner">{t.scaled}</option>
                     </select>
                 </div>
-            </div>
-
-            {/* Focus Selector */}
-            <div>
-                <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold text-slate-400 uppercase">{t.focus}</span>
-                    <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.focus)} />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                    {Object.entries(t.focusTypes).map(([key, label]) => (
-                        <button
-                            key={key}
-                            onClick={() => setConfig({ ...config, focus: key.charAt(0).toUpperCase() + key.slice(1) })}
-                            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border ${config.focus.toLowerCase() === key ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500'}`}
-                        >
-                            {label}
-                        </button>
-                    ))}
+                <div>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-bold text-slate-400 uppercase">{t.focus}</span>
+                        <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.focus)} />
+                    </div>
+                    <select
+                        value={config.focus.toLowerCase()}
+                        onChange={(e) => setConfig({ ...config, focus: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1) })}
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white focus:ring-1 focus:ring-emerald-500"
+                    >
+                        {Object.entries(t.focusTypes).map(([key, label]) => (
+                            <option key={key} value={key}>{label}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
 
