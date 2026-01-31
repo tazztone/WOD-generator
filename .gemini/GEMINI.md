@@ -86,6 +86,7 @@ A fresh context with documented state often immediately sees the solution.
 | API changes | Terminal command showing correct response |
 | Build changes | Successful build/test command output |
 | Config changes | Verification command proving effect |
+| **Code changes** | **Mandatory: `npm run lint` must pass before completing a phase** |
 
 **Never mark a phase "Done" based on:**
 - "The code looks correct"

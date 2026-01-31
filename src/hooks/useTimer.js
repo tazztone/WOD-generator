@@ -96,12 +96,16 @@ export const useTimer = (workout, lang, voiceEnabled) => {
 
             if (status === 'pre') {
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
+                if (timeLeft <= 1) {
+                    // Logic handled in next tick or immediate?
+                    // The original had if (timeLeft <= 0) which means it hits 0 then starts.
+                    // We want 3-2-1-GO.
+                }
                 if (timeLeft <= 0) {
                     SOUNDS.start();
                     setStatus('work');
-                    setTimeLeft(workout.timeCap * 60); // Set main timer
-                    if (workout.template === 'Tabata') setTimeLeft(20);
-                    if (workout.template === 'EMOM') setTimeLeft(60);
+                    const initialTime = workout.template === 'Tabata' ? 20 : (workout.template === 'EMOM' ? 60 : workout.timeCap * 60);
+                    setTimeLeft(initialTime);
                     speakMovements();
                 } else {
                     setTimeLeft(t => t - 1);
@@ -113,12 +117,14 @@ export const useTimer = (workout, lang, voiceEnabled) => {
             setTotalTime(tt => tt + 1);
             setRoundTime(rt => rt + 1);
 
-            if (workout.template === 'EMOM') {
-                if (timeLeft === 10) speak("10 seconds", lang);
-                // TODO: Add half-time audio cue (e.g., "30 seconds" for EMOM)
-                if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                if (timeLeft <= 0) {
-                    // New Minute
+            const isEMOM = workout.template === 'EMOM';
+            const isTabata = workout.template === 'Tabata';
+
+            if (isEMOM) {
+                if (timeLeft === 31) SOUNDS.halfway();
+                if (timeLeft === 11) speak("10 seconds", lang);
+                if (timeLeft <= 4 && timeLeft > 1) SOUNDS.countdown();
+                if (timeLeft <= 1) {
                     SOUNDS.round();
                     setCurrentRound(r => r + 1);
                     setTimeLeft(60);
@@ -130,13 +136,13 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                 } else {
                     setTimeLeft(t => t - 1);
                 }
-            } else if (workout.template === 'Tabata') {
-                if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                if (timeLeft <= 0) {
+            } else if (isTabata) {
+                if (timeLeft <= 4 && timeLeft > 1) SOUNDS.countdown();
+                if (timeLeft <= 1) {
                     if (status === 'work') {
                         setStatus('rest');
                         setTimeLeft(10);
-                        SOUNDS.start();
+                        SOUNDS.round();
                     } else {
                         setStatus('work');
                         setTimeLeft(20);
@@ -151,16 +157,17 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                     setTimeLeft(t => t - 1);
                 }
             } else {
-                // AMRAP, RFT, Chipper (Count DOWN or UP)
-                // TODO: Add "halfway there" audio cue for AMRAP/RFT
-                if (workout.template === 'AMRAP' || workout.template === 'RFT') {
-                    if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
-                    if (timeLeft <= 0) {
-                        setStatus('finished');
-                        SOUNDS.end();
-                    } else {
-                        setTimeLeft(t => t - 1);
-                    }
+                // AMRAP, RFT, Chipper
+                const totalDuration = workout.timeCap * 60;
+                if (timeLeft === Math.floor(totalDuration / 2) + 1) SOUNDS.halfway();
+                if (timeLeft === 61) speak(lang === 'de' ? "Noch eine Minute" : "One minute remaining", lang);
+                
+                if (timeLeft <= 4 && timeLeft > 1) SOUNDS.countdown();
+                if (timeLeft <= 1) {
+                    setStatus('finished');
+                    SOUNDS.end();
+                } else {
+                    setTimeLeft(t => t - 1);
                 }
             }
         }, 1000);

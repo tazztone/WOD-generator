@@ -1,12 +1,17 @@
 # TODOs
 
 ## PENDING
-- [ ] De-bloat AppContext (Split contexts/Extract hooks) (v1.10)
-- [ ] Refactor WorkoutDirector to declarative pipeline (v1.10)
-- [ ] Externalize hardcoded constants (v1.10)
-- [ ] Add Context integration tests (v1.10)
 - [ ] Add seeded randomness for reproducible workouts (v2.0)
 - [ ] Add user profiles and cloud sync (v2.0)
+- [ ] Implement real voice samples (MP3/WAV) for countdowns, movement announcements, and motivational cues
+
+## COMPLETED (v1.10)
+🟢 [x] De-bloat AppContext (Split into Settings/Workout contexts)
+🟢 [x] Refactor WorkoutDirector to declarative pipeline (`pipeline.js`)
+🟢 [x] Externalize hardcoded constants (`workoutConfig.js`)
+🟢 [x] Add Context integration tests (`Context.test.jsx`)
+🟢 [x] UI Polish: Optimized mobile header spacing
+🟢 [x] Audio: Improved beeps and added halfway/1-minute cues
 
 ## COMPLETED (v1.9)
 🟢 [x] Refactor: Template Strategy pattern

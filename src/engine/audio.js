@@ -23,7 +23,7 @@ const getAudioContext = () => {
     return audioCtx;
 };
 
-export const playBeep = (freq = 880, type = 'sine', duration = 0.1) => {
+export const playBeep = (freq = 880, type = 'sine', duration = 0.1, volumeMult = 1.0) => {
     try {
         const ctx = getAudioContext();
         if (!ctx) return;
@@ -34,10 +34,12 @@ export const playBeep = (freq = 880, type = 'sine', duration = 0.1) => {
         osc.type = type;
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
 
+        const finalVolume = globalVolume * volumeMult;
+
         // Envelope to avoid clicking
-        gain.gain.setValueAtTime(0.01 * globalVolume, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.1 * globalVolume, ctx.currentTime + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.001 * globalVolume, ctx.currentTime + duration);
+        gain.gain.setValueAtTime(0.01 * finalVolume, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.2 * finalVolume, ctx.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001 * finalVolume, ctx.currentTime + duration);
 
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -45,7 +47,6 @@ export const playBeep = (freq = 880, type = 'sine', duration = 0.1) => {
         osc.start();
         osc.stop(ctx.currentTime + duration + 0.1);
 
-        // Cleanup helps garbage collection, though nodes disconnect automatically on stop
         osc.onended = () => {
             osc.disconnect();
             gain.disconnect();
@@ -54,14 +55,19 @@ export const playBeep = (freq = 880, type = 'sine', duration = 0.1) => {
 };
 
 export const SOUNDS = {
-    click: () => playBeep(1200, 'sine', 0.05),
-    countdown: () => playBeep(600, 'square', 0.1),
-    start: () => playBeep(1000, 'square', 0.6),
-    round: () => playBeep(880, 'sine', 0.3),
+    click: () => playBeep(1200, 'sine', 0.05, 0.5),
+    countdown: () => playBeep(440, 'triangle', 0.15, 0.8),
+    start: () => playBeep(880, 'square', 0.5, 1.0),
+    round: () => playBeep(660, 'sine', 0.3, 0.7),
+    halfway: () => {
+        playBeep(523, 'sine', 0.1, 0.6);
+        setTimeout(() => playBeep(659, 'sine', 0.1, 0.6), 150);
+    },
+    warning: () => playBeep(330, 'triangle', 0.4, 0.9),
     end: () => {
-        playBeep(600, 'square', 0.1);
-        setTimeout(() => playBeep(600, 'square', 0.1), 150);
-        setTimeout(() => playBeep(1000, 'square', 0.8), 300);
+        playBeep(440, 'square', 0.2, 1.0);
+        setTimeout(() => playBeep(440, 'square', 0.2, 1.0), 250);
+        setTimeout(() => playBeep(880, 'square', 0.8, 1.0), 500);
     }
 };
 

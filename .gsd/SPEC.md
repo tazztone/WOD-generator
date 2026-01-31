@@ -3,17 +3,19 @@
 > **Status**: `FINALIZED`
 
 ## Vision
-Enhance the WOD Generator's usability, reliability, and maintainability. This milestone focuses on UI refinements to maximize screen real estate, adding critical error recovery mechanisms, ensuring basic accessibility, and creating a data-driven testing infrastructure.
+Finalize architectural cleanup and technical debt reduction before moving into v2.0 feature development. This milestone focuses on de-bloating the global state, refactoring the generation engine for better extensibility, and polishing the user experience with improved UI layout and high-quality audio feedback.
 
 ## Goals
-1. **UI/UX Optimization**: Consolidate controls (Focus selector, Volume) to improve layout efficiency.
-2. **Reliability**: Implement error boundaries to prevent white-screen crashes.
-3. **Accessibility**: Add ARIA labels to ensure basic screen reader support.
-4. **Testing Infrastructure**: Create a system to mass-generate workouts for statistical analysis and bug detection.
+1. **Architectural Decoupling**: Split `AppContext` into smaller, focused contexts (e.g., Settings, WorkoutState) to reduce unnecessary re-renders.
+2. **Engine Refactoring**: Transition `WorkoutDirector` to a declarative pipeline to make adding new balancing rules easier.
+3. **Configuration**: Externalize all hardcoded workout constants and template metadata into structured config files.
+4. **UX Polish**: Optimize the header layout for Android/Mobile to eliminate dead space and improve "vibe".
+5. **Audio Experience**: Upgrade the timer audio system with better beep timing, high-quality sounds, and voice announcements.
 
 ## Success Criteria
-- [ ] **UI**: "Focus" selector rendered as a dropdown in the 3rd column of the generator.
-- [ ] **UI**: Volume slider moved to the Timer page; global volume logic updated.
-- [ ] **Reliability**: `ErrorBoundary` component wraps the main app; crash UI shown on error.
-- [ ] **Accessibility**: Interactive elements (buttons, inputs) have `aria-label` or equivalent.
-- [ ] **Testing**: A script (e.g., `scripts/analyze-distribution.js`) exists that generates >1000 workouts and outputs JSON stats.
+- [ ] **Context**: `AppContext.jsx` is refactored into at least two sub-contexts or use hooks for state slices.
+- [ ] **Engine**: `WorkoutDirector` uses a sequence of filter/weight functions instead of nested imperative logic.
+- [ ] **Config**: A new `src/config/constants.js` or `src/data/config.json` exists containing engine parameters.
+- [ ] **UI**: The top margin/padding on the main screen is reduced to better fit mobile status bars.
+- [ ] **Audio**: Audio beeps trigger precisely at 3-2-1-GO; voice samples for "Next exercise" or "Rest" are functional.
+- [ ] **Verification**: All existing tests pass, and new integration tests cover the refactored AppContext.

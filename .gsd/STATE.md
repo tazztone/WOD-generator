@@ -1,9 +1,18 @@
 # STATE.md
 
 ## Current Position
-- **Milestone**: v1.9 (Completed)
-- **Phase**: Completed
-- **Status**: Milestone Finalized
+- **Milestone**: None (v1.10 Finalized)
+- **Phase**: None
+- **Status**: Ready for v2.0 Planning
+
+## Last Session Summary
+- Finalized v1.10: Architectural refinement, declarative engine, audio polish.
+- Archived v1.10 deliverables and documentation.
+- Reset ROADMAP for v2.0.
+- All tests and linting passed.
+
+## Next Steps
+1. /new-milestone — Start v2.0 planning.
 
 ## Last Session Summary
 - Completed Phase 5 (Verification & Audit).

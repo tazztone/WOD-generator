@@ -1,3 +1,6 @@
 {
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "github-actions.workflows.pinned.workflows": [
+        ".github/workflows/auto-merge.yml"
+    ]
 }
