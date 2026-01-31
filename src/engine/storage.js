@@ -1,6 +1,7 @@
 // TODO: Add export/import functionality for users to backup their data
 export const CONFIG_STORAGE_KEY = 'wod_config_v1';
 export const HISTORY_STORAGE_KEY = 'wod_history_v7';
+export const SAVED_WORKOUTS_STORAGE_KEY = 'wod_saved_v1';
 
 export const DEFAULT_CONFIG = {
     version: 1,

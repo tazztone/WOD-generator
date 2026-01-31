@@ -9,7 +9,7 @@ import { ActiveTimer } from './screens/ActiveTimer';
 import { HistoryScreen } from './screens/HistoryScreen';
 import { OneRepMaxScreen } from './screens/OneRepMaxScreen';
 import { generateWorkout, swapExercise } from './engine/generator';
-import { loadConfig, saveConfig, HISTORY_STORAGE_KEY } from './engine/storage';
+import { loadConfig, saveConfig, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './engine/storage';
 import { setGlobalVolume } from './engine/audio';
 
 export default function CrossFitGenerator() {
@@ -19,6 +19,7 @@ export default function CrossFitGenerator() {
 
     const [workout, setWorkout] = useState(null);
     const [history, setHistory] = useState([]);
+    const [savedWorkouts, setSavedWorkouts] = useState([]);
     const [tooltip, setTooltip] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -28,14 +29,15 @@ export default function CrossFitGenerator() {
         modalOpenRef.current = modalOpen;
     }, [modalOpen]);
 
-    // Load History
-    // TODO: Add try-catch for JSON.parse to handle corrupted localStorage data gracefully
     useEffect(() => {
         try {
-            const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
-            if (saved) setHistory(JSON.parse(saved));
+            const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+            if (savedHistory) setHistory(JSON.parse(savedHistory));
+
+            const savedWorkoutsData = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
+            if (savedWorkoutsData) setSavedWorkouts(JSON.parse(savedWorkoutsData));
         } catch (e) {
-            console.error('Failed to parse history', e);
+            console.error('Failed to parse storage data', e);
         }
     }, []);
 
@@ -121,6 +123,18 @@ export default function CrossFitGenerator() {
         localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
     };
 
+    const toggleSaveWorkout = (w) => {
+        const isSaved = savedWorkouts.some(sw => sw.id === w.id);
+        let updated;
+        if (isSaved) {
+            updated = savedWorkouts.filter(sw => sw.id !== w.id);
+        } else {
+            updated = [w, ...savedWorkouts];
+        }
+        setSavedWorkouts(updated);
+        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(updated));
+    };
+
     const handleGenerate = () => {
         const newWorkout = generateWorkout(config, lang);
         setWorkout(newWorkout);
@@ -175,6 +189,8 @@ export default function CrossFitGenerator() {
                         onBack={() => setAppState('config')}
                         modalOpen={modalOpen}
                         setModalOpen={setModalOpen}
+                        isSaved={savedWorkouts.some(sw => sw.id === workout.id)}
+                        onToggleSave={() => toggleSaveWorkout(workout)}
                     />
                 )}
                 {appState === 'active' && workout && (
@@ -189,7 +205,10 @@ export default function CrossFitGenerator() {
                 {appState === 'history' && (
                     <HistoryScreen
                         history={history}
+                        savedWorkouts={savedWorkouts}
                         onDeleteEntry={deleteEntry}
+                        onDeleteSaved={(id) => toggleSaveWorkout({ id })}
+                        onStartWorkout={(w) => { setWorkout(w); setAppState('active'); }}
                         clearHistory={() => { setHistory([]); localStorage.removeItem(HISTORY_STORAGE_KEY); }}
                         onBack={() => setAppState('config')}
                         lang={lang}

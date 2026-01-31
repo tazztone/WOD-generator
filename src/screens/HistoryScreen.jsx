@@ -8,17 +8,26 @@ const T = {
     en: {
         logbook: "Logbook",
         noLogs: "No workouts logged yet.",
-        confirmClear: "Are you sure you want to delete all entries?"
+        noSaved: "No saved workouts yet.",
+        confirmClear: "Are you sure you want to delete all entries?",
+        history: "History",
+        saved: "Saved",
+        start: "Start Workout"
     },
     de: {
         logbook: "Logbuch",
         noLogs: "Noch keine Workouts gespeichert.",
-        confirmClear: "Möchten Sie wirklich alle Einträge löschen?"
+        noSaved: "Noch keine gespeicherten Workouts.",
+        confirmClear: "Möchten Sie wirklich alle Einträge löschen?",
+        history: "Verlauf",
+        saved: "Gespeichert",
+        start: "Workout Starten"
     }
 };
 
-export const HistoryScreen = ({ history, onDeleteEntry, clearHistory, onBack, lang }) => {
+export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteSaved, onStartWorkout, clearHistory, onBack, lang }) => {
     const t = T[lang];
+    const [activeTab, setActiveTab] = useState('history'); // history, saved
     const [swipedId, setSwipedId] = useState(null);
     const [touchStart, setTouchStart] = useState(null);
 
@@ -66,45 +75,98 @@ export const HistoryScreen = ({ history, onDeleteEntry, clearHistory, onBack, la
                 <button onClick={handleClearHistory} className="text-red-400 hover:text-red-300"><Trash2 size={20} /></button>
             </div>
 
-            <div className="flex-1 overflow-y-auto space-y-3 px-1">
-                {history.length === 0 ? (
-                    <div className="text-center text-slate-500 mt-20">
-                        <HistoryIcon size={48} className="mx-auto mb-4 opacity-20" />
-                        <p>{t.noLogs}</p>
-                    </div>
-                ) : formattedHistory.map(entry => (
-                    <div key={entry.id} className="relative group">
-                        <div
-                            className={`absolute inset-0 bg-red-500 rounded-xl flex items-center justify-end pr-6 transition-opacity ${swipedId === entry.id ? 'opacity-100' : 'opacity-0'}`}
-                            onClick={() => onDeleteEntry(entry.id)}
-                        >
-                            <Trash2 size={20} className="text-white" />
-                        </div>
+            {/* Tabs */}
+            <div className="flex bg-slate-800 p-1 rounded-xl mb-6">
+                <button
+                    onClick={() => { setActiveTab('history'); setSwipedId(null); }}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-slate-700 text-emerald-400 shadow-sm' : 'text-slate-500'}`}
+                >
+                    {t.history}
+                </button>
+                <button
+                    onClick={() => { setActiveTab('saved'); setSwipedId(null); }}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'saved' ? 'bg-slate-700 text-emerald-400 shadow-sm' : 'text-slate-500'}`}
+                >
+                    {t.saved}
+                </button>
+            </div>
 
-                        <div
-                            className={`bg-slate-800 p-4 rounded-xl border border-slate-700 relative z-10 transition-transform duration-300 ${swipedId === entry.id ? '-translate-x-16' : 'translate-x-0'}`}
-                            onTouchStart={(e) => handleTouchStart(e, entry.id)}
-                            onTouchMove={(e) => handleTouchMove(e, entry.id)}
-                            onClick={() => setSwipedId(null)}
-                        >
-                            <div className="flex justify-between mb-2">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-emerald-400 font-black italic uppercase">{entry.template}</span>
-                                    {entry.timeTaken && (
-                                        <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-slate-700 text-slate-300 rounded">
-                                            {formatDuration(entry.timeTaken)}
-                                        </span>
-                                    )}
-                                </div>
-                                <span className="text-xs text-slate-500">{entry.formattedDate}</span>
-                            </div>
-                            <div className="text-white font-bold text-lg mb-2">{entry.score}</div>
-                            <p className="text-xs text-slate-400 line-clamp-2">
-                                {entry.exercises.map(e => e.exercise.name).join(', ')}
-                            </p>
+            <div className="flex-1 overflow-y-auto space-y-3 px-1">
+                {activeTab === 'history' ? (
+                    history.length === 0 ? (
+                        <div className="text-center text-slate-500 mt-20">
+                            <HistoryIcon size={48} className="mx-auto mb-4 opacity-20" />
+                            <p>{t.noLogs}</p>
                         </div>
-                    </div>
-                ))}
+                    ) : formattedHistory.map(entry => (
+                        <div key={entry.id} className="relative">
+                            <div
+                                className={`absolute inset-0 bg-red-500 rounded-xl flex items-center justify-end pr-6 transition-opacity ${swipedId === entry.id ? 'opacity-100' : 'opacity-0'}`}
+                                onClick={() => onDeleteEntry(entry.id)}
+                            >
+                                <Trash2 size={20} className="text-white" />
+                            </div>
+
+                            <div
+                                className={`bg-slate-800 p-4 rounded-xl border border-slate-700 relative z-10 transition-transform duration-300 ${swipedId === entry.id ? '-translate-x-16' : 'translate-x-0'}`}
+                                onTouchStart={(e) => handleTouchStart(e, entry.id)}
+                                onTouchMove={(e) => handleTouchMove(e, entry.id)}
+                            >
+                                <div className="flex justify-between mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-emerald-400 font-black italic uppercase">{entry.template}</span>
+                                        {entry.timeTaken && (
+                                            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-slate-700 text-slate-300 rounded">
+                                                {formatDuration(entry.timeTaken)}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <span className="text-xs text-slate-500">{entry.formattedDate}</span>
+                                </div>
+                                <div className="text-white font-bold text-lg mb-2">{entry.score}</div>
+                                <p className="text-xs text-slate-400 line-clamp-2">
+                                    {entry.exercises.map(e => e.exercise.name).join(', ')}
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    savedWorkouts.length === 0 ? (
+                        <div className="text-center text-slate-500 mt-20">
+                            <Star size={48} className="mx-auto mb-4 opacity-20" />
+                            <p>{t.noSaved}</p>
+                        </div>
+                    ) : savedWorkouts.map(workout => (
+                        <div key={workout.id} className="relative">
+                            <div
+                                className={`absolute inset-0 bg-red-500 rounded-xl flex items-center justify-end pr-6 transition-opacity ${swipedId === workout.id ? 'opacity-100' : 'opacity-0'}`}
+                                onClick={() => onDeleteSaved(workout.id)}
+                            >
+                                <Trash2 size={20} className="text-white" />
+                            </div>
+
+                            <div
+                                className={`bg-slate-800 p-4 rounded-xl border border-slate-700 relative z-10 transition-transform duration-300 ${swipedId === workout.id ? '-translate-x-16' : 'translate-x-0'}`}
+                                onTouchStart={(e) => handleTouchStart(e, workout.id)}
+                                onTouchMove={(e) => handleTouchMove(e, workout.id)}
+                            >
+                                <div className="flex justify-between mb-2">
+                                    <span className="text-emerald-400 font-black italic uppercase">{workout.template}</span>
+                                    <span className="text-xs text-slate-500">{workout.timeCap} min</span>
+                                </div>
+                                <p className="text-xs text-slate-400 mb-4">
+                                    {workout.exercises.map(e => e.exercise.name).join(', ')}
+                                </p>
+                                <button
+                                    onClick={() => onStartWorkout(workout)}
+                                    className="w-full py-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold rounded-lg hover:bg-emerald-500/20 transition-colors"
+                                >
+                                    {t.start}
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
