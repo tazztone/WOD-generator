@@ -103,7 +103,7 @@ export const PreviewScreen = ({
 
     // TODO: Add Web Share API support for native sharing on mobile devices
     // TODO: Add fallback sharing method for devices that don't support clipboard API
-    const copyToClipboard = () => {
+    const handleShare = () => {
         let text = `*** WOD GENERATOR ***\n\n`;
 
         if (workout.strength) {
@@ -126,10 +126,19 @@ export const PreviewScreen = ({
 
         text += workout.exercises.map(e => `${e.reps} ${getExerciseName(e.exercise, lang)}`).join('\n');
 
-        navigator.clipboard.writeText(text).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
+        if (navigator.share) {
+            navigator.share({
+                title: 'Workout of the Day',
+                text: text
+            }).catch(() => {
+                // Ignore errors or fallback to clipboard on cancel
+            });
+        } else {
+            navigator.clipboard.writeText(text).then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            });
+        }
     };
 
     const getSwapCandidates = (index) => {
@@ -223,7 +232,7 @@ export const PreviewScreen = ({
                             <Info size={12} />
                         </button>
                     </span>
-                    <button onClick={copyToClipboard} className="text-xs flex items-center gap-1 text-slate-500 hover:text-emerald-400 transition-colors mr-3">
+                    <button onClick={handleShare} className="text-xs flex items-center gap-1 text-slate-500 hover:text-emerald-400 transition-colors mr-3">
                         {copied ? <CheckCircle size={12} /> : <Share2 size={12} />} {copied ? t.copied : t.share}
                     </button>
                     <button onClick={onToggleSave} className={`text-xs flex items-center gap-1 transition-colors ${isSaved ? 'text-emerald-400' : 'text-slate-500 hover:text-emerald-400'}`}>
