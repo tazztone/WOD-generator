@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame, Star } from 'lucide-react';
+import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame, Star, HelpCircle } from 'lucide-react';
 import { getExerciseName, isExerciseValid } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
 import { Button } from '../components/ui/Button';
