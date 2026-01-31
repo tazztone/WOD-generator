@@ -22,7 +22,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
-    const handleTouchStart = (e, id) => {
+    const handleTouchStart = (e, _id) => {
         setTouchStart(e.targetTouches[0].clientX);
     };
 

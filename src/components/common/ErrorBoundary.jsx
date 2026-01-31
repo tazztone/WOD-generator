@@ -28,7 +28,7 @@ export class ErrorBoundary extends React.Component {
                         <AlertTriangle size={48} className="text-red-500" />
                     </div>
                     <h1 className="text-2xl font-black text-white uppercase italic mb-2">Something went wrong</h1>
-                    <p className="text-slate-400 mb-8 max-w-sm">We encountered an unexpected error. Don't worry, your settings should be safe.</p>
+                    <p className="text-slate-400 mb-8 max-w-sm">We encountered an unexpected error. Don&apos;t worry, your settings should be safe.</p>
 
                     <div className="w-full max-w-xs space-y-3">
                         <Button onClick={this.handleReload} fullWidth size="lg">
@@ -44,7 +44,7 @@ export class ErrorBoundary extends React.Component {
                         </Button>
                     </div>
 
-                    {process.env.NODE_ENV === 'development' && (
+                    {import.meta.env.DEV && (
                         <div className="mt-8 p-4 bg-slate-900 rounded-lg text-left w-full overflow-auto max-h-48 border border-slate-800">
                             <code className="text-xs text-red-300 font-mono whitespace-pre-wrap">
                                 {this.state.error && this.state.error.toString()}

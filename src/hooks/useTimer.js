@@ -49,7 +49,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
     }, [status, timeLeft, totalTime, currentRound, roundTime, workout.id]);
 
     const timerRef = useRef(null);
-    const TIMER_STATE_KEY = 'wod_timer_v1';
+
 
     // Speak helper
     const speakMovements = useCallback(() => {
@@ -166,7 +166,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
         }, 1000);
 
         return () => clearInterval(timerRef.current);
-    }, [status, timeLeft, workout, currentRound, voiceEnabled, speakMovements, lang]);
+    }, [status, timeLeft, workout, currentRound, voiceEnabled, speakMovements, lang, isPaused]);
 
     return {
         status,
