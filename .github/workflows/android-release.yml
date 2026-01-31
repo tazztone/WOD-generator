@@ -1,7 +1,14 @@
-# TODO: Add signed release build support (requires keystore setup)
-# TODO: Add automatic version code increment based on commit count or tag
-# TODO: Add Play Store upload via Gradle Play Publisher plugin
-# TODO: Add E2E tests job before build (playwright tests)
+# GitHub Action: Build & Publish Android Release to GitHub and Google Play Store
+# 
+# Required Secrets:
+# - ANDROID_KEYSTORE_BASE64: Base64-encoded keystore file
+# - ANDROID_KEYSTORE_PASSWORD: Keystore password
+# - ANDROID_KEY_ALIAS: Key alias
+# - ANDROID_KEY_PASSWORD: Key password
+# - GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: Google Play Service Account JSON (for Play Store upload)
+#
+# Trigger: Push tags starting with 'v' or manual workflow_dispatch
+
 name: Build & Publish Android Release
 
 on:
@@ -16,10 +23,15 @@ on:
       release_name:
         description: 'Release Title (leave empty for default)'
         required: false
+      publish_to_play_store:
+        description: 'Publish to Play Store'
+        type: boolean
+        default: true
+        required: false
 
 jobs:
   build-and-release:
-    name: Build APK & Create Release
+    name: Build APK/AAB & Create Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -111,11 +123,13 @@ jobs:
       # 5. Rename & Prepare Artifacts
       - name: Prepare Artifacts
         run: |
-          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/wod-gen-${{ steps.vars.outputs.tag }}.aab
-          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/wod-gen-${{ steps.vars.outputs.tag }}.apk
+          mkdir -p release-artifacts
+          cp android/app/build/outputs/bundle/release/app-release.aab release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.aab
+          cp android/app/build/outputs/apk/release/app-release.apk release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.apk
+          cp android/app/build/outputs/mapping/release/mapping.txt release-artifacts/mapping-${{ steps.vars.outputs.tag }}.txt
           
-      # 6. Create Release & Upload
-      - name: Create Release & Upload Artifacts
+      # 6. Create GitHub Release & Upload Artifacts
+      - name: Create GitHub Release & Upload Artifacts
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.vars.outputs.tag }}
@@ -124,8 +138,21 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            android/app/build/outputs/bundle/release/wod-gen-${{ steps.vars.outputs.tag }}.aab
-            android/app/build/outputs/apk/release/wod-gen-${{ steps.vars.outputs.tag }}.apk
-            android/app/build/outputs/mapping/release/mapping.txt
+            release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.aab
+            release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.apk
+            release-artifacts/mapping-${{ steps.vars.outputs.tag }}.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 7. Publish to Google Play Store (Production Track)
+      - name: Publish to Google Play Store
+        if: ${{ github.event.inputs.publish_to_play_store != 'false' }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.tazztone.wodgen
+          releaseFiles: release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.aab
+          track: production
+          mappingFile: release-artifacts/mapping-${{ steps.vars.outputs.tag }}.txt
+          whatsNewDirectory: distribution/whatsnew
+          status: completed
