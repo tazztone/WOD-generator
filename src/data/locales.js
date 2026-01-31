@@ -16,6 +16,11 @@ export const LOCALES = {
         random: "Surprise Me (Random)",
         chipper: "Chipper",
         tabata: "Tabata",
+        ladder: "Ladder",
+        deathBy: "Death By",
+        partnerMode: "Partner Edition",
+        partnerSub: "Double volume, split with a friend",
+        focusTypes: { balanced: "Balanced", cardio: "Cardio", strength: "Strength", gymnastics: "Gymnastics", core: "Core" },
         parts: { shoulders: "Shoulders", knees: "Knees", back: "Back" },
         equip: { barbell: "Barbell", dumbbell: "Dumbbells / KBs", pullup: "Pull-Up Bar", machine: "Cardio Machine" },
         tt: {
@@ -44,6 +49,11 @@ export const LOCALES = {
         random: "Überraschung (Zufall)",
         chipper: "Chipper",
         tabata: "Tabata",
+        ladder: "Leiter (Ladder)",
+        deathBy: "Death By",
+        partnerMode: "Partner Modus",
+        partnerSub: "Doppeltes Volumen, gemeinsam teilen",
+        focusTypes: { balanced: "Ausgeglichen", cardio: "Cardio", strength: "Kraft", gymnastics: "Gymnastik", core: "Core" },
         parts: { shoulders: "Schultern", knees: "Knie", back: "Rücken" },
         equip: { barbell: "Langhantel", dumbbell: "Kurzhantel / KB", pullup: "Klimmzugstange", machine: "Cardio Gerät" },
         tt: {

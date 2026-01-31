@@ -199,11 +199,24 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                 <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-2xl p-5 mb-5 shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
                     <div className="relative z-10">
-                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-1">{workout.template}</h2>
+                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-1">
+                            {workout.isPartner && <span className="text-emerald-500 not-italic mr-2">Partner</span>}
+                            {workout.template}
+                        </h2>
                         <div className="flex items-center gap-3 text-slate-400 text-xs font-mono font-bold">
                             <span className="flex items-center gap-1"><Clock size={12} /> {config.duration} {t.min}</span>
                             {workout.rounds && <span>• {workout.rounds} {t.rounds}</span>}
                         </div>
+
+                        {workout.buyIn && (
+                            <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest block mb-1">Buy-In</span>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm font-bold text-slate-200">{getExerciseName(workout.buyIn.exercise, lang)}</span>
+                                    <span className="text-sm font-mono font-bold text-emerald-400">{workout.buyIn.reps}</span>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="mt-6 space-y-3">
                             {workout.exercises.map((item, idx) => (
@@ -240,6 +253,6 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
                     <Play size={24} fill="currentColor" /> {t.start}
                 </Button>
             </div>
-        </div>
+        </div >
     );
 };

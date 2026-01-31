@@ -34,16 +34,33 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                         <span className="text-xs font-bold text-slate-400">{t.duration}</span>
                         <span className="text-emerald-400 font-mono font-bold">{config.duration}m</span>
                     </div>
-                    <input type="range" min="5" max="60" step="5" value={config.duration} onChange={(e) => setConfig({ ...config, duration: parseInt(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+                    <input type="range" min="5" max="120" step="5" value={config.duration} onChange={(e) => setConfig({ ...config, duration: parseInt(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
                 </Card>
                 <Card className="flex flex-col gap-2">
                     <div className="flex justify-between">
                         <span className="text-xs font-bold text-slate-400">{t.movements}</span>
                         <span className="text-emerald-400 font-mono font-bold">{config.numExercises}</span>
                     </div>
-                    <input type="range" min="2" max="6" step="1" value={config.numExercises} onChange={(e) => setConfig({ ...config, numExercises: parseInt(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+                    <input type="range" min="2" max="12" step="1" value={config.numExercises} onChange={(e) => setConfig({ ...config, numExercises: parseInt(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
                 </Card>
             </div>
+
+            {/* Volume Control */}
+            <Card className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Beep Volume</span>
+                    <span className="text-emerald-400 font-mono font-bold">{Math.round(config.volume * 100)}%</span>
+                </div>
+                <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={config.volume}
+                    onChange={(e) => setConfig({ ...config, volume: parseFloat(e.target.value) })}
+                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                />
+            </Card>
 
             {/* Style & Level */}
             <div className="grid grid-cols-2 gap-4">
@@ -56,6 +73,8 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                         <option value="EMOM">EMOM</option>
                         <option value="Chipper">{t.chipper}</option>
                         <option value="Tabata">{t.tabata}</option>
+                        <option value="Ladder">{t.ladder}</option>
+                        <option value="Death By">{t.deathBy}</option>
                     </select>
                 </div>
                 <div>
@@ -67,7 +86,32 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </div>
             </div>
 
-            {/* TODO: Add Focus selector (Cardio, Strength, Gymnastics, Balanced) - currently not exposed in UI */}
+            {/* Focus Selector */}
+            <div>
+                <span className="text-xs font-bold text-slate-400 uppercase mb-1 block">{t.focus}</span>
+                <div className="flex flex-wrap gap-2">
+                    {Object.entries(t.focusTypes).map(([key, label]) => (
+                        <button
+                            key={key}
+                            onClick={() => setConfig({ ...config, focus: key.charAt(0).toUpperCase() + key.slice(1) })}
+                            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border ${config.focus.toLowerCase() === key ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500'}`}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Partner Mode Toggle */}
+            <div className="flex items-center justify-between bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                <div>
+                    <span className="text-sm font-bold text-white block">{t.partnerMode}</span>
+                    <span className="text-xs text-slate-500">{t.partnerSub}</span>
+                </div>
+                <button onClick={() => setConfig({ ...config, isPartner: !config.isPartner })} className={`w-12 h-7 rounded-full transition-colors relative ${config.isPartner ? 'bg-emerald-500' : 'bg-slate-600'}`}>
+                    <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${config.isPartner ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+            </div>
 
             {/* Strength Toggle */}
             <div className="flex items-center justify-between bg-slate-800/60 p-4 rounded-xl border border-slate-700">
