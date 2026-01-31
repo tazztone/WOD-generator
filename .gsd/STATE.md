@@ -1,15 +1,11 @@
 # STATE.md
 
 ## Last Session Summary
-Phase 6 (Gap Closure) executed successfully.
-- TODO.md cleaned and synchronized.
-- React Error Boundary implemented and protecting app.
-- Basic ARIA attributes added to ConfigScreen.
+Milestone v1.4 completed and archived. ROADMAP reset for v2.0.
 
 ## Current Position
-- **Phase**: 6 (completed)
-- **Task**: All tasks complete
-- **Status**: Verified
+- **Milestone**: v1.4 (Complete)
+- **Status**: Archived
 
 ## Next Steps
-1. /complete-milestone v1.4
+1. /new-milestone v2.0
