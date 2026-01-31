@@ -1,13 +1,25 @@
 # ROADMAP.md
 
-> **Current Milestone**: v2.0 - User Accounts & Cloud Sync
-> **Goal**: Implement user profiles, cloud synchronization, and social features.
+> **Current Milestone**: v1.5
+> **Goal**: Enhance UI/UX, improve app reliability, and establish robust testing infrastructure.
 
 ## Must-Haves
-- [ ] User Authentication (Sign up / Login)
-- [ ] Cloud Database Integration (Firebase/Supabase)
-- [ ] Sync History & Saved Workouts across devices
-- [ ] Social Feed (See friends' workouts)
+- [ ] UI: Focus selector as dropdown in 3rd column
+- [ ] UI: Move volume control to timer page (combine with mute)
+- [ ] Reliability: React Error Boundary
+- [ ] Accessibility: Basic ARIA attributes
+- [ ] Testing: Mass generation and analysis script
 
 ## Phases
-*(To be planned)*
+
+### Phase 1: UI/UX Enhancements
+**Status**: ⬜ Not Started
+**Objective**: Refine the workout setup and timer interfaces for better usability and compactness.
+
+### Phase 2: Reliability & Accessibility
+**Status**: ⬜ Not Started
+**Objective**: Improve application robustness with error handling and accessibility compliance.
+
+### Phase 3: Testing Infrastructure
+**Status**: ⬜ Not Started
+**Objective**: Build a system for high-volume workout generation to analyze distribution and catch bugs.
