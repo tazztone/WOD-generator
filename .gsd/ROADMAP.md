@@ -1,15 +1,11 @@
 # ROADMAP.md
 
-> **Current Milestone**: v1.7
-> **Goal**: Address the "Pool Saturation" and "Skill Leakage" identified in v1.6 analysis.
-
-## Must-Haves
-- [ ] **Content**: Add 15+ Core exercises (currently 100+ hits/ex).
-- [ ] **Content**: Add 10+ Cardio/Bodyweight variants (currently 100+ hits/ex).
-- [ ] **Logic**: Refine "Skill Leakage" (ensure moves like Box Jumps/Snatch have beginner subs).
-- [ ] **Logic**: Tweaks for "Chipper" flow based on user feedback.
-
-## Phases
+### v1.7 - Content Expansion & Tuning
+**Status**: ✅ Completed
+- [x] **Content**: Add 15+ Core exercises.
+- [x] **Content**: Add 10+ Cardio/Bodyweight variants.
+- [x] **Logic**: Refine "Skill Leakage" (Beginner subs).
+- [x] **Logic**: Tweaks for "Chipper" flow.
 
 ### Phase 1: Research & Audit
 **Status**: ✅ Completed
@@ -28,7 +24,7 @@
 **Objective**: Implement beginner substitutions for high-skill moves and tune Chipper flow.
 
 ### Phase 5: Empirical Validation
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Run 10k simulations to verify balanced distribution and logic correctness.
 
 ### Phase 3: Cardio & Bodyweight Variants
