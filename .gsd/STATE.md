@@ -1,17 +1,16 @@
 # STATE.md
 
 ## Current Position
-- **Milestone**: v1.5 (Completed)
-- **Phase**: Post-Analysis Improvements
-- **Status**: Ready for v2.0 Planning
+- **Milestone**: v1.6
+- **Phase**: Phase 2: Balancing & Substitutions
+- **Status**: Ready to Start
 
 ## Last Session Summary
-- **Content**: Added ~20 new exercises (Core, Cardio, Pull).
-- **Analysis**:
-    - Core/Cardio utilization improved significantly (140 -> 105 hits/ex).
-    - Push/Pull ratio improved (1.52 -> 1.34).
-- **Planning**: Created `docs/SMART_LOGIC_PLAN.md` detailing the next generation of the engine (Director pattern, Smart Substitutions).
+- Refactored `generator.js` into modular components (`utils.js`, `scaling.js`).
+- Implemented basic `WorkoutDirector` structure (stateful generation).
+- Verified refactor with `npm run analyze` (passed) and `npm run build` (passed).
 
 ## Next Steps
-1. **Execute Logic Plan**: Implement the improvements outlined in `docs/SMART_LOGIC_PLAN.md`.
-2. **User Profiles**: Begin v2.0 feature work.
+1. Implement the "Director" pattern logic in `src/engine/generator.js` to balance Push/Pull ratios.
+2. Implement Smart Substitutions in `src/engine/scaling.js`.
+3. Add Flow Control logic for Chippers.
