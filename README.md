@@ -13,9 +13,11 @@ It runs completely client-side as a Progressive Web App (PWA), meaning it works 
 ## 🚀 Key Features
 
 ### 🧠 Smart Generation Engine
-*   **Balanced Programming**: Ensures workouts don't just pick random moves but follow logical patterns (e.g., pairing "Push" with "Pull" or "Squat").
-*   **Dynamic Scaling**: Automatically adjusts repetitions and weights based on your selected difficulty (**Rx** vs **Scaled**) and the workout duration.
-*   **Injury Protection**: Intelligent filtering allows you to exclude specific body parts (Shoulders, Knees, Back) to prevent aggravating injuries.
+*   **Stateful Balancing**: Uses a "Director" pattern to ensure perfect movement distribution (e.g., maintaining a 1:1 "Push" vs "Pull" ratio).
+*   **Flow Control**: Intelligently prevents muscle group overlap (e.g., avoiding consecutive overhead movements) to ensure workout flow.
+*   **Smart Substitutions**: Automatically replaces advanced gymnastics (Muscle-ups, HSPUs) with appropriate variants for **Beginner** levels.
+*   **Dynamic Scaling**: Adjusts repetitions and weights based on workout duration and selected difficulty.
+*   **Injury Protection**: Exclude specific body parts (Shoulders, Knees, Back) to prevent aggravating injuries.
 
 ### ⚡ Comprehensive Workout Modes
 *   **AMRAP**: "As Many Rounds As Possible" within a fixed time.
@@ -23,11 +25,15 @@ It runs completely client-side as a Progressive Web App (PWA), meaning it works 
 *   **EMOM**: "Every Minute on the Minute" interval training.
 *   **Chipper**: High-volume, one-round endurance slogs.
 *   **Tabata**: Classic high-intensity intervals (20s work / 10s rest).
+*   **Ladder**: Ascending or descending repetition schemes.
+*   **Death By**: EMOM-style workouts that increase in volume until failure.
+*   **Partner Mode**: Optimized logic for shared workouts, including rep doubling and flow adjustments.
 *   **Strength Bias**: Option to add a heavy lifting session ("Part A") before the conditioning piece.
 
 ### ⏱️ Pro-Level Timer
 *   **Visuals**: Large, high-contrast display readable from across the garage.
 *   **Audio Coach**: Synthesized voice announcements ("Up Next: Thrusters") so you don't have to look at the screen.
+*   **Live Controls**: Adjust beep volume and toggle voice coaching directly from the timer header.
 *   **Sound Effects**: Clear beeps for countdowns, round changes, and rest intervals.
 *   **Wake Lock**: Prevents your phone screen from turning off mid-workout.
 *   **Background Persistence**: Timer continues to run accurately even if you switch apps or lock your phone (Native Android).
@@ -45,7 +51,7 @@ It runs completely client-side as a Progressive Web App (PWA), meaning it works 
 The home screen allows you to define the parameters of your session:
 *   **Time Domain**: Choose anywhere from 5 to 60 minutes.
 *   **Equipment**: Toggle what you have available (Barbell, Dumbbells, Pull-up Bar, Cardio Machine). If you untick "Barbell", no barbell movements will appear.
-*   **Focus**: Bias the generator towards specific modalities (Cardio, Strength, Gymnastics) or keep it Balanced.
+*   **Style, Level & Focus**: Fine-tune the programming (e.g., Rx vs Beginner) and bias the generator towards specific modalities (Cardio, Strength, Gymnastics).
 
 ### 2. Preview & Customization
 Once generated, you see the WOD (Workout of the Day) preview.
@@ -55,7 +61,7 @@ Once generated, you see the WOD (Workout of the Day) preview.
 ### 3. The Timer
 *   **Pre-Workout**: 10-second countdown gives you time to get into position.
 *   **Active**: Shows large timer, current round, and the movements you should be doing.
-*   **Voice**: Toggle voice coaching on/off with the speaker icon.
+*   **Audio**: Adjust beep volume slider or toggle voice coaching on/off directly in the top bar.
 
 ---
 
