@@ -16,7 +16,6 @@ import { getStrategy } from './strategies/StrategyFactory.js';
 
 export const calculateBaseReps = (exercise, difficulty, duration) => {
     // V7: Dynamic Scaling based on duration
-    const isLong = duration > 25;
     const isExtraLong = duration > 45;
     const isExtreme = duration > 80;
     const isShort = duration < 12;

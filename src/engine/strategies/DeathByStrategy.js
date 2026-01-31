@@ -7,7 +7,7 @@ export const DeathByStrategy = {
         };
     },
 
-    scaleReps(baseReps, exercise, difficulty, duration) {
+    scaleReps(_baseReps, _exercise, _difficulty, _duration) {
         return "1 + 1 every min";
     }
 };

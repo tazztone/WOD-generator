@@ -7,7 +7,7 @@ export const ChipperStrategy = {
         };
     },
 
-    scaleReps(baseReps, exercise, difficulty, duration) {
+    scaleReps(baseReps, exercise, _difficulty, _duration) {
         // Handle non-numeric base reps (e.g. "400m", "45s")
         if (typeof baseReps !== 'number') {
             // Special case for Run: Double the distance for Chipper?

@@ -24,7 +24,6 @@ export default function CrossFitGenerator() {
 
     const {
         setAppState,
-        setLang,
         toggleLang,
         setConfig,
         setWorkout,

@@ -9,7 +9,7 @@ export const RftStrategy = {
         };
     },
 
-    scaleReps(baseReps, exercise, difficulty, duration) {
+    scaleReps(baseReps, _exercise, _difficulty, _duration) {
         // RFT reps are usually standard, maybe slightly higher than AMRAP since you get rest between rounds (theoretically)
         // But for this generator, we keep them similar to base
         return baseReps;

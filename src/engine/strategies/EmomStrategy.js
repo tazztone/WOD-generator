@@ -7,7 +7,7 @@ export const EmomStrategy = {
         };
     },
 
-    scaleReps(baseReps, exercise, difficulty, duration) {
+    scaleReps(baseReps, exercise, _difficulty, _duration) {
         if (typeof baseReps !== 'number') return baseReps;
 
         // EMOMs need to be sprintable within the minute

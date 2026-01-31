@@ -1,5 +1,5 @@
 export const TabataStrategy = {
-    calculateParams(config) {
+    calculateParams(_config) {
         return {
             template: 'Tabata',
             rounds: 8,
@@ -7,7 +7,7 @@ export const TabataStrategy = {
         };
     },
 
-    scaleReps(baseReps, exercise, difficulty, duration) {
+    scaleReps(baseReps, exercise, _difficulty, _duration) {
         if (typeof baseReps !== 'number') return baseReps;
 
         // Tabata is max effort, but we provide a target per round or just "Max"
