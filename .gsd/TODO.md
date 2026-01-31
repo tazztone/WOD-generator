@@ -1,6 +1,9 @@
 # TODOs
 
 ## PENDING
+- [ ] Expand Core exercise pool (15+ new moves) (v1.7)
+- [ ] Expand Cardio/Bodyweight pool (10+ new moves) (v1.7)
+- [ ] Refine Skill Leakage (check tags for substitutions) (v1.7)
 - [ ] Add seeded randomness for reproducible workouts (v2.0)
 - [ ] Add user profiles and cloud sync (v2.0)
 

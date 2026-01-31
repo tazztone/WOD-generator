@@ -1,33 +1,38 @@
 # ROADMAP.md
 
-> **Current Milestone**: v1.6
-> **Goal**: Upgrade the generation engine with "Smart Logic" (Balancing, Flow Control, Substitutions).
+> **Current Milestone**: v1.6 (Completed)
+> **Next Milestone**: v1.7 (Planned)
 
-## Must-Haves
-- [ ] Refactor: Extract generation logic into modular functions/classes
-- [ ] Logic: "Director" pattern for Push/Pull balancing
-- [ ] Logic: Smart Substitutions (Difficulty scaling via replacement)
-- [ ] Logic: Chipper Flow Control (Muscle group non-overlap)
+## Future Milestones
 
-## Phases
+### v1.7 - Content Expansion & Tuning
+**Goal**: Address the "Pool Saturation" and "Skill Leakage" identified in v1.6 analysis.
+- [ ] **Content**: Add 15+ Core exercises (currently 100+ hits/ex).
+- [ ] **Content**: Add 10+ Cardio/Bodyweight variants (currently 100+ hits/ex).
+- [ ] **Logic**: Refine "Skill Leakage" (ensure moves like Box Jumps/Snatch have beginner subs).
+- [ ] **Logic**: Tweaks for "Chipper" flow based on user feedback.
 
-### Phase 1: Engine Refactoring
-**Status**: ✅ Completed
-**Objective**: restructure `generator.js` to allow stateful tracking during workout generation.
-
-### Phase 2: Balancing & Substitutions
-**Status**: ✅ Completed
-**Objective**: Implement the "Director" and Substitution logic.
-
-### Phase 3: Flow Control
-**Status**: ✅ Completed
-**Objective**: Ensure Chippers and long workouts flow smoothly without local fatigue.
+### v2.0 - User Systems & Cloud
+**Goal**: Transform the app from a stateless tool to a personalized training companion.
+- [ ] **Features**: User Profiles (Name, Skill Level, Equipment preset).
+- [ ] **Features**: Cloud Sync (Save history across devices).
+- [ ] **Features**: Seeded Randomness (Shareable "WOD of the Day").
+- [ ] **Features**: "Hero WOD" database integration.
 
 ---
 
 ## Completed Milestones
 
+### v1.6 - Smart Engine Upgrade
+**Status**: ✅ Completed
+- [x] **Refactor**: Modularized generation engine.
+- [x] **Logic**: Implemented `WorkoutDirector` for stateful balancing.
+- [x] **Balance**: Achieved 0.95 Push/Pull ratio (perfect balance).
+- [x] **Smart Subs**: Added automatic scaling for advanced movements (HSPU, BMU, etc.).
+- [x] **Verification**: Validated with 10k workout simulations.
+
 ### v1.5 - UI/UX & Reliability
+**Status**: ✅ Completed
 - [x] UI: Focus selector as dropdown in 3rd column
 - [x] UI: Move volume control to timer page (combine with mute)
 - [x] Reliability: React Error Boundary
