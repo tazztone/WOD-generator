@@ -1,13 +1,31 @@
 # ROADMAP.md
 
-> **Current Milestone**: None (Planning v2.0)
-> **Goal**: -
+> **Current Milestone**: 1.11
+> **Goal**: Polish UI interactions and provide granular audio feedback controls.
 
 ## Must-Haves
-- [ ] (Pending Planning)
+- [ ] Let users disable individual audio feedbacks (countdowns, announcements, etc.)
+- [ ] Floating tooltips (not fullscreen)
+- [ ] Add tooltip for "buy-in"
+- [ ] Reset "saved" button upon reroll of workout generation
 
 ## Phases
-(Pending Planning)
+
+### Phase 1: UI Polish & Tooltips
+**Status**: ⬜ Not Started
+**Objective**: Transition tooltips to floating components and add the "buy-in" tooltip.
+
+### Phase 2: Logic Refinement
+**Status**: ⬜ Not Started
+**Objective**: Ensure the "saved" button state resets when a new workout is generated.
+
+### Phase 3: Audio Control Granularity
+**Status**: ⬜ Not Started
+**Objective**: Implement settings to toggle individual audio feedback types.
+
+### Phase 4: Verification
+**Status**: ⬜ Not Started
+**Objective**: Validate all UI changes and logic resets across devices.
 
 ## Future Milestones
 
