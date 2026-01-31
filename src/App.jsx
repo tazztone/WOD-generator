@@ -7,6 +7,7 @@ import { ActiveTimer } from './screens/ActiveTimer';
 import { HistoryScreen } from './screens/HistoryScreen';
 import { OneRepMaxScreen } from './screens/OneRepMaxScreen';
 import { useAppContext } from './context/AppContext';
+import { UpdatePrompt } from './components/common/UpdatePrompt';
 
 export default function CrossFitGenerator() {
     const { state, actions } = useAppContext();
@@ -40,6 +41,7 @@ export default function CrossFitGenerator() {
 
     return (
         <Shell>
+            <UpdatePrompt />
             {tooltip && <Tooltip x={tooltip.x} y={tooltip.y} text={tooltip.text} />}
 
             <Header

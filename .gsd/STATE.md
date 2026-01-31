@@ -2,14 +2,14 @@
 
 ## Current Position
 - **Milestone**: v1.8
-- **Phase**: 3 (PWA Update UI)
+- **Phase**: 4 (Regression Testing)
 - **Status**: In Progress
 
 ## Last Session Summary
-- Completed Phase 2 (State Management Refactor).
-- Created `AppContext` and wrapped the app.
-- Simplified `App.jsx` to be a pure consumer.
+- Completed Phase 3 (PWA Update UI).
+- Implemented `UpdatePrompt` component.
+- Replaced `main.jsx` logic with component-based SW registration.
 
 ## Next Steps
-1. Create `UpdatePrompt` component.
-2. Integrate with `vite-plugin-pwa` logic in `main.jsx`.
+1. Run full test suite.
+2. Manually review code paths (since I can't browse).

@@ -19,11 +19,11 @@
 **Objective**: Extract global state from `App.jsx` into a React Context provider.
 
 ### Phase 3: PWA Update UI
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Implement a user-friendly "New Update Available" toast/banner.
 
 ### Phase 4: Regression Testing
-**Status**: ⬜ Not Started
+**Status**: ▶️ In Progress
 **Objective**: Verify all application features (generation, timer, settings) function correctly after refactoring.
 
 ## Future Milestones
