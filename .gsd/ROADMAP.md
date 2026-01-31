@@ -1,38 +1,13 @@
 # ROADMAP.md
 
-> **Current Milestone**: v1.8
-> **Goal**: Improve code maintainability, data management, and user experience for updates.
+> **Current Milestone**: None (Planning v1.9/v2.0)
+> **Goal**: -
 
 ## Must-Haves
-- [ ] **Data**: Migrate `exercises.js` to `src/data/exercises.json`.
-- [ ] **Architecture**: Refactor `App.jsx` state to use React Context API (`AppContext`).
-- [ ] **UX**: Replace default PWA update prompt with a custom UI notification.
+- [ ] (Pending Planning)
 
 ## Phases
-
-### v1.8 - Refactoring & DX
-**Status**: ✅ Completed
-- [x] **Data**: Migrate `exercises.js` to `src/data/exercises.json`.
-- [x] **Architecture**: Refactor `App.jsx` state to use React Context API (`AppContext`).
-- [x] **UX**: Replace default PWA update prompt with a custom UI notification.
-
-## Phases
-
-### Phase 1: Data Migration
-**Status**: ✅ Completed
-**Objective**: Convert the hardcoded exercise database into a JSON file and update the import logic.
-
-### Phase 2: State Management Refactor
-**Status**: ✅ Completed
-**Objective**: Extract global state from `App.jsx` into a React Context provider.
-
-### Phase 3: PWA Update UI
-**Status**: ✅ Completed
-**Objective**: Implement a user-friendly "New Update Available" toast/banner.
-
-### Phase 4: Regression Testing
-**Status**: ✅ Completed
-**Objective**: Verify all application features (generation, timer, settings) function correctly after refactoring.
+(Pending Planning)
 
 ## Future Milestones
 
@@ -51,6 +26,12 @@
 ---
 
 ## Completed Milestones
+
+### v1.8 - Refactoring & DX
+**Status**: ✅ Completed
+- [x] **Data**: Migrate `exercises.js` to `src/data/exercises.json`.
+- [x] **Architecture**: Refactor `App.jsx` state to use React Context API (`AppContext`).
+- [x] **UX**: Replace default PWA update prompt with a custom UI notification.
 
 ### v1.7 - Content Expansion & Tuning
 **Status**: ✅ Completed
