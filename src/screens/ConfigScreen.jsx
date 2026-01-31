@@ -33,14 +33,38 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                         <span className="text-xs font-bold text-slate-400">{t.duration}</span>
                         <span className="text-emerald-400 font-mono font-bold">{config.duration}m</span>
                     </div>
-                    <input type="range" min="5" max="120" step="5" value={config.duration} onChange={(e) => setConfig({ ...config, duration: parseInt(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+                    <input
+                        type="range"
+                        min="5"
+                        max="120"
+                        step="5"
+                        value={config.duration}
+                        onChange={(e) => setConfig({ ...config, duration: parseInt(e.target.value) })}
+                        className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                        aria-label={t.duration}
+                        aria-valuemin="5"
+                        aria-valuemax="120"
+                        aria-valuenow={config.duration}
+                    />
                 </Card>
                 <Card className="flex flex-col gap-2">
                     <div className="flex justify-between">
                         <span className="text-xs font-bold text-slate-400">{t.movements}</span>
                         <span className="text-emerald-400 font-mono font-bold">{config.numExercises}</span>
                     </div>
-                    <input type="range" min="2" max="12" step="1" value={config.numExercises} onChange={(e) => setConfig({ ...config, numExercises: parseInt(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+                    <input
+                        type="range"
+                        min="2"
+                        max="12"
+                        step="1"
+                        value={config.numExercises}
+                        onChange={(e) => setConfig({ ...config, numExercises: parseInt(e.target.value) })}
+                        className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                        aria-label={t.movements}
+                        aria-valuemin="2"
+                        aria-valuemax="12"
+                        aria-valuenow={config.numExercises}
+                    />
                 </Card>
             </div>
 
@@ -113,7 +137,13 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                     <span className="text-sm font-bold text-white block">{t.partnerMode}</span>
                     <span className="text-xs text-slate-500">{t.partnerSub}</span>
                 </div>
-                <button onClick={() => setConfig({ ...config, isPartner: !config.isPartner })} className={`w-12 h-7 rounded-full transition-colors relative ${config.isPartner ? 'bg-emerald-500' : 'bg-slate-600'}`}>
+                <button
+                    onClick={() => setConfig({ ...config, isPartner: !config.isPartner })}
+                    className={`w-12 h-7 rounded-full transition-colors relative ${config.isPartner ? 'bg-emerald-500' : 'bg-slate-600'}`}
+                    role="switch"
+                    aria-checked={config.isPartner}
+                    aria-label={t.partnerMode}
+                >
                     <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${config.isPartner ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
             </div>
@@ -127,7 +157,13 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                     </div>
                     <span className="text-xs text-slate-500">{t.strengthSub}</span>
                 </div>
-                <button onClick={() => setConfig({ ...config, includeStrength: !config.includeStrength })} className={`w-12 h-7 rounded-full transition-colors relative ${config.includeStrength ? 'bg-emerald-500' : 'bg-slate-600'}`}>
+                <button
+                    onClick={() => setConfig({ ...config, includeStrength: !config.includeStrength })}
+                    className={`w-12 h-7 rounded-full transition-colors relative ${config.includeStrength ? 'bg-emerald-500' : 'bg-slate-600'}`}
+                    role="switch"
+                    aria-checked={config.includeStrength}
+                    aria-label={t.includeStrength}
+                >
                     <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${config.includeStrength ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
             </div>
@@ -160,12 +196,12 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </div>
             </div>
 
-            {/* TODO: Add accessibility attributes (aria-labels) to toggle buttons */}
+            {/* Accessibility attributes added */}
             <div className="flex gap-2">
                 <Button onClick={onGenerate} size="lg" fullWidth disabled={!isEquipmentValid} className={!isEquipmentValid ? 'opacity-50 cursor-not-allowed' : ''}>
                     <Activity size={20} /> {t.generate}
                 </Button>
-                <Button onClick={() => setConfig(DEFAULT_CONFIG)} size="lg" variant="ghost">
+                <Button onClick={() => setConfig(DEFAULT_CONFIG)} size="lg" variant="ghost" aria-label="Reset Configuration">
                     <RotateCcw size={20} />
                 </Button>
             </div>
