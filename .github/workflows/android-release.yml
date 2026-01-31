@@ -152,6 +152,6 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.wodgen.ultimate
           releaseFiles: release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.aab
-          track: production
+          track: internal
           mappingFile: release-artifacts/mapping-${{ steps.vars.outputs.tag }}.txt
           status: completed
