@@ -2,15 +2,15 @@
 
 ## Current Position
 - **Milestone**: v1.9
-- **Phase**: 2 (UI Testing Infrastructure)
+- **Phase**: 3 (Core Screen Testing)
 - **Status**: In Progress
 
 ## Last Session Summary
-- Completed Phase 1 (Architecture Refactor).
-- Implemented Strategy pattern for workout templates in `src/engine/strategies/`.
-- Refactored `generator.js` and `scaling.js` to use these strategies.
-- Verified with 100% test pass rate.
+- Completed Phase 2 (UI Testing Infrastructure).
+- Installed RTL and `jest-dom`.
+- Configured Vitest setup file.
+- Created and verified `Button.test.jsx`.
 
 ## Next Steps
-1. Install `@testing-library/react` and `@testing-library/jest-dom`.
-2. Configure Vitest for UI testing.
+1. Create `src/screens/ConfigScreen.test.jsx`.
+2. Create `src/screens/PreviewScreen.test.jsx`.
