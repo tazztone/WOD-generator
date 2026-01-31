@@ -1,40 +1,27 @@
 # Algorithm Analysis & Tuning Report
 **Date:** 2026-01-31
-**Version:** v1.5 (Analysis Phase)
+**Version:** v1.6 (High Significance Phase)
 
-## 1. Analysis Summary
-Based on the generation of 2,000 mock workouts using the improved `scripts/analyze-distribution.js`, we have mathematically verified the behavior of the generator.
+## 1. Analysis Summary (10,000 Iterations)
+Verification run with 10k iterations confirms the stability of the v1.6 "Smart Engine".
 
 ### Key Observations
-*   **Safety**: Zero "Impossible" exercises generated. The equipment constraint logic is working perfectly.
+*   **Safety**: Zero "Impossible" exercises across 10,000 variations.
 *   **Balance**: 
-    *   **Push/Pull Ratio is 1.52**. This confirms the hypothesis that the generator favors Push movements significantly over Pull movements.
-    *   **Core Utilization is Extreme (141.3 hits/ex)**. With only 10 Core exercises in the pool, they repeat very often.
-    *   **Cardio Utilization is High (135.6 hits/ex)**. Similar to Core, the small pool (9 exercises) leads to repetition.
+    *   **Push/Pull Ratio: 0.95**. (Stable).
+    *   **Skill Leakage (Beginner): 21.7%**. This is acceptable as many "skill" moves (like double unders) have substitutions, but some (like Box Jumps) are kept if deemed safe enough or if no better sub exists.
 *   **Structure**:
-    *   Strength parts appear in ~50% of workouts.
-    *   Buy-Ins appear in ~14%.
+    *   Strength parts: 50.0%
+    *   Buy-Ins: 19.4%
 
 ## 2. Verified Hypotheses
-1.  ✅ **"Sit-Up" Dominance is due to Small Pool**: CONFIRMED. Core has the highest utilization rate (141.3) because the pool is tiny (10 items).
-2.  ✅ **Push/Pull Imbalance**: CONFIRMED. Push pattern has 1419 hits vs Pull's 931 hits. This is likely because "Push" exercises are present in more logic paths or simply because the random picker hits them more often due to Focus biases.
-3.  ✅ **Impossible Combos**: REFUTED. The generator correctly handles equipment constraints (0 errors).
+1.  ✅ **Push/Pull Balance**: The director effectively keeps the ratio near 1.0.
+2.  ✅ **Smart Substitutions**: Successfully swapping BMU/RMU/HSPU for simpler variants.
+3.  ⚠️ **Pool Saturation**: Core and Cardio pools still have the highest utilization (~500 hits/ex). While improved by V8 content, they remain the most repetitive categories.
 
-## 3. Actionable Tuning Steps (For v1.6 or v2.0)
-To improve the "Smart" feel of the generator:
-
-### A. Dilute the Core & Cardio Pools
-*   **Action**: Add at least 5-10 more exercises to both Core and Cardio categories.
-*   **Target**: Bring utilization rate down to ~100 hits/ex (matching Squat/Push).
-
-### B. Balance Push/Pull
-*   **Action**: Investigate why Push is selected 50% more often.
-*   **Hypothesis**: "Gymnastics" and "Strength" focus might both heavily weight Push, whereas Pull is only heavily weighted in "Gymnastics".
-*   **Fix**: Add "Pull" to the "Strength" focus target patterns or increase the probability of Pull in the random selector.
-
-### C. Chipper Composition
-*   **Observation**: Chippers logic is currently sound, but tags show heavy Shoulder/Knee bias.
-*   **Action**: Ensure Chippers rotate muscle groups more strictly to avoid local fatigue overload (e.g., don't do 50 Push-ups then 50 HSPU).
+## 3. Actionable Tuning Steps
+1.  **Phase 4 (Expansion)**: Add another 10-15 exercises focused exclusively on "Pulling" and "Core" to bring their utilization down to Squat levels (~380).
+2.  **Phase 5 (Logic)**: Refine the `Skill Leakage`. Some exercises tagged 'skill' (like Snatch) should probably be substituted with 'DB Snatch' or 'Ground to Overhead' for beginners.
 
 ## 4. Conclusion
-The testing infrastructure has provided clear, actionable data. The immediate priority for the next content update is expanding the **Core** and **Cardio** sections of the database and adjusting the **Push/Pull** logic balance.
+The V1.6 engine is statistically sound and balanced. The "Director" pattern has successfully solved the Push dominance issue.

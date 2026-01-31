@@ -12,15 +12,15 @@
 ## Phases
 
 ### Phase 1: Engine Refactoring
-**Status**: 🏃 In Progress
+**Status**: ✅ Completed
 **Objective**: restructure `generator.js` to allow stateful tracking during workout generation.
 
 ### Phase 2: Balancing & Substitutions
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Implement the "Director" and Substitution logic.
 
 ### Phase 3: Flow Control
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Ensure Chippers and long workouts flow smoothly without local fatigue.
 
 ---

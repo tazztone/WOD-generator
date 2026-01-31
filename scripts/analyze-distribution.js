@@ -2,14 +2,14 @@ import { generateWorkout } from '../src/engine/generator.js';
 import { DEFAULT_CONFIG } from '../src/engine/storage.js';
 import { EXERCISE_DB } from '../src/data/exercises.js';
 
-const iterations = 2000;
+const iterations = 10000;
 const results = {
     total: 0,
     difficulty: { Rx: 0, Beginner: 0 },
     templates: {},
     patterns: {},
     exercises: {},
-    tags: {},
+    tags: {}, 
     pairs: {},
     strengthCount: 0,
     buyInCount: 0,
@@ -18,9 +18,9 @@ const results = {
     pushCount: 0,
     pullCount: 0,
     impossibleCount: 0,
-    chipperTags: {} // To analyze "heaviness" of chippers
+    skillInBeginnerCount: 0, // Track if high-skill moves leak into beginner
+    chipperTags: {} 
 };
-
 // Calculate Pool Stats
 const poolStats = {};
 EXERCISE_DB.forEach(ex => {
@@ -93,6 +93,11 @@ for (let i = 0; i < iterations; i++) {
             if (ex.equipment === 'Barbell' && !config.equipment.barbell) results.impossibleCount++;
             if (ex.equipment === 'PullupBar' && !config.equipment.pullupBar) results.impossibleCount++;
 
+            // Skill Leak Check
+            if (difficulty === 'Beginner' && ex.tags && ex.tags.includes('skill')) {
+                results.skillInBeginnerCount++;
+            }
+
             // Per-Focus stats
             results.focusStats[focus].patterns[ex.pattern] = (results.focusStats[focus].patterns[ex.pattern] || 0) + 1;
 
@@ -136,6 +141,7 @@ console.log(`Strength Part: ${((results.strengthCount / results.total) * 100).to
 console.log(`Buy-In: ${((results.buyInCount / results.total) * 100).toFixed(1)}%`);
 console.log(`Push/Pull Ratio: ${(results.pushCount / results.pullCount).toFixed(2)} (Ideal: ~1.0)`);
 console.log(`Impossible Exercises Generated: ${results.impossibleCount} (Should be 0)`);
+console.log(`Skill Leakage (Beginner): ${((results.skillInBeginnerCount / results.difficulty.Beginner) * 100).toFixed(2)}% (Lower is better)`);
 
 console.log("\n2. POOL UTILIZATION (Hits per Available Exercise)");
 const sortedPatterns = Object.keys(results.patterns).sort((a, b) => results.patterns[b] - results.patterns[a]);

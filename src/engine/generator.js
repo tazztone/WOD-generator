@@ -1,6 +1,6 @@
 // src/engine/generator.js
 import { EXERCISE_DB } from '../data/exercises.js';
-import { getReps } from './scaling.js';
+import { getReps, getSubstitution } from './scaling.js';
 import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic } from './utils.js';
 
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic };
@@ -21,24 +21,59 @@ class WorkoutDirector {
         // 1. Basic Filter: Remove already selected
         let candidates = this.pool.filter(ex => !this.selectedExercises.some(s => s.exercise.id === ex.id));
         
-        // 2. Pattern Filter: Don't repeat the exact same pattern immediately (unless focused)
-        if (this.usedPatterns.length > 0) {
-            const lastPattern = this.usedPatterns[this.usedPatterns.length - 1];
-            candidates = candidates.filter(ex => ex.pattern !== lastPattern);
+        // 2. Flow Control (Prevent Muscle Overlap)
+        // Especially critical for Chippers, but good for all workouts to avoid local fatigue
+        if (this.selectedExercises.length > 0) {
+            const lastEx = this.selectedExercises[this.selectedExercises.length - 1].exercise;
+            
+            // Filter candidates that share significant muscle groups with the last exercise
+            // We define "clash" if they share specific tags
+            const clashTags = ['shoulders', 'legs', 'grip', 'core', 'overhead'];
+            
+            candidates = candidates.filter(ex => {
+                // Always allow switching patterns
+                if (ex.pattern !== lastEx.pattern) return true;
+                
+                // If same pattern (should be rare due to pattern filter), check tags strictly
+                if (lastEx.tags && ex.tags) {
+                     const shared = lastEx.tags.filter(t => ex.tags.includes(t) && clashTags.includes(t));
+                     // If they share a major muscle group tag, de-prioritize or filter
+                     if (shared.length > 0) return false;
+                }
+                return true;
+            });
+
+            // STRICT Pattern Filter: Don't repeat pattern immediately
+            candidates = candidates.filter(ex => ex.pattern !== lastEx.pattern);
         }
 
-        // 3. Focus Bias (Existing Logic preserved for now, to be enhanced)
+        // 3. Dynamic Balancing (Push vs Pull)
+        // If we have selected Push but no Pull, prioritize Pull
+        if (this.balance.Push > this.balance.Pull) {
+            const pullCandidates = candidates.filter(ex => ex.pattern === 'Pull');
+            if (pullCandidates.length > 0) {
+                // Boost Pull candidates by adding them again (increasing probability)
+                candidates = [...candidates, ...pullCandidates, ...pullCandidates];
+            }
+        }
+
+        // 4. Focus Bias
         if (this.config.focus !== 'Balanced') {
             const focusPatterns = {
                 'Cardio': ['Cardio'],
-                'Strength': ['Squat', 'Hinge', 'Push'],
+                'Strength': ['Squat', 'Hinge', 'Push', 'Pull'], // Added Pull to Strength focus
                 'Gymnastics': ['Pull', 'Core', 'Push'],
                 'Core': ['Core']
             };
             const targetPatterns = focusPatterns[this.config.focus] || [];
-            // We don't filter out others, but we might pick from a "favored" subset
-             const priorityMoves = candidates.filter(ex => targetPatterns.includes(ex.pattern));
-             candidates = [...candidates, ...priorityMoves];
+            
+            // Filter candidates to prefer focus patterns
+            const priorityMoves = candidates.filter(ex => targetPatterns.includes(ex.pattern));
+            
+            // Heavy Weighting: Add priority moves multiple times to sway the RNG
+            if (priorityMoves.length > 0) {
+                candidates = [...candidates, ...priorityMoves, ...priorityMoves];
+            }
         }
 
         return candidates;
@@ -48,8 +83,15 @@ class WorkoutDirector {
         const candidates = this.getWeightedPool();
         if (candidates.length === 0) return null;
         
-        const picked = candidates[Math.floor(Math.random() * candidates.length)];
+        let picked = candidates[Math.floor(Math.random() * candidates.length)];
         
+        // Apply Smart Substitution for Beginners
+        const subId = getSubstitution(picked.id, this.config.difficulty);
+        if (subId) {
+            const subEx = EXERCISE_DB.find(e => e.id === subId);
+            if (subEx) picked = subEx;
+        }
+
         // Update State
         this.usedPatterns.push(picked.pattern);
         this.balance[picked.pattern]++;
@@ -59,6 +101,8 @@ class WorkoutDirector {
 
     addSelection(exercise, reps) {
         this.selectedExercises.push({ exercise, reps });
+        // Update balance manually if added externally (like buy-in hack)
+        this.balance[exercise.pattern]++;
     }
 }
 
@@ -92,16 +136,25 @@ export const generateWorkout = (config, lang = 'en') => {
         rounds = 1;
     }
 
-    // Buy-In Logic
-    if (config.duration > 10 && Math.random() < 0.15) {
-        const buyInPool = director.pool.filter(ex => ex.pattern === 'Cardio' || ex.pattern === 'Core');
+    // Smart Buy-In Logic
+    // Only add buy-in if duration is decent
+    if (config.duration > 10 && Math.random() < 0.20) { // Increased chance slightly
+        // Complementary Logic:
+        // If Focus is Cardio -> Buy-In should be Strength/Core
+        // If Focus is Strength -> Buy-In should be Cardio/Core
+        
+        let buyInPatterns = ['Cardio', 'Core'];
+        if (config.focus === 'Cardio') buyInPatterns = ['Core']; // Avoid more cardio
+        if (config.focus === 'Strength') buyInPatterns = ['Cardio'];
+        
+        const buyInPool = director.pool.filter(ex => buyInPatterns.includes(ex.pattern));
+        
         if (buyInPool.length > 0) {
             const picked = buyInPool[Math.floor(Math.random() * buyInPool.length)];
             buyIn = {
                 exercise: picked,
                 reps: picked.pattern === 'Cardio' ? '500m / 40 cal' : 50
             };
-            // Tell director to avoid this ID (Hack: temporary add/remove handled in loop below)
         }
     }
 
@@ -152,8 +205,15 @@ export const generateWorkout = (config, lang = 'en') => {
 };
 
 export const swapExercise = (workout, index, newExerciseId, config, lang = 'en') => {
-    const newEx = EXERCISE_DB.find(e => e.id === newExerciseId);
+    let newEx = EXERCISE_DB.find(e => e.id === newExerciseId);
     if (!newEx) return workout;
+
+    // Apply Smart Substitution for Beginners
+    const subId = getSubstitution(newEx.id, config.difficulty);
+    if (subId) {
+        const subEx = EXERCISE_DB.find(e => e.id === subId);
+        if (subEx) newEx = subEx;
+    }
 
     const newExercises = [...workout.exercises];
     let reps = getReps(newEx, config.difficulty, workout.template, workout.timeCap);

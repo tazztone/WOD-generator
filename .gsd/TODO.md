@@ -4,6 +4,12 @@
 - [ ] Add seeded randomness for reproducible workouts (v2.0)
 - [ ] Add user profiles and cloud sync (v2.0)
 
+## COMPLETED (v1.6)
+🟢 [x] Refactor: Extract generation logic into modular functions/classes
+🟢 [x] Logic: "Director" pattern for Push/Pull balancing
+🟢 [x] Logic: Smart Substitutions (Difficulty scaling via replacement)
+🟢 [x] Logic: Chipper Flow Control (Muscle group non-overlap)
+
 ## COMPLETED (v1.5)
 🟢 [x] Add basic accessibility (ARIA) attributes for screen readers
 🟢 [x] Implement React Error Boundary for graceful crash handling

@@ -1,5 +1,18 @@
-
 // Logic for scaling reps and substituting exercises based on difficulty
+
+// V8 Upgrade: Smart Substitutions
+// Maps advanced movements to simpler variants for Beginner/Scaled levels
+const SUBSTITUTIONS = {
+    'hspu': 'push_press_db',      // Handstand Push-up -> DB Push Press
+    'bmu': 'pullup',              // Bar Muscle-up -> Pull-up
+    'rmu': 'c2b',                 // Ring Muscle-up -> Chest-to-Bar
+    'pistol': 'lunge_weighted',    // Pistol -> Weighted Lunge
+    'du': 'su',                    // Double Unders -> Single Unders
+    'ttb': 'v_up',                 // Toes-to-Bar -> V-Up
+    'hswalk': 'bear_crawl',        // Handstand Walk -> Bear Crawl
+    'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
+};
+
 export const getReps = (exercise, difficulty, format, duration) => {
     // V7: Dynamic Scaling based on duration
     const isLong = duration > 25;
@@ -51,4 +64,12 @@ export const getReps = (exercise, difficulty, format, duration) => {
     }
 
     return baseReps;
+};
+
+/**
+ * Returns a substituted exercise ID if applicable for the difficulty
+ */
+export const getSubstitution = (exerciseId, difficulty) => {
+    if (difficulty !== 'Beginner') return null;
+    return SUBSTITUTIONS[exerciseId] || null;
 };
