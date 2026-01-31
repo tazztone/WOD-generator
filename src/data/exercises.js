@@ -111,6 +111,25 @@ export const EXERCISE_DB = [
     // V8 UPDATE: NEW PULL (To fix ratio)
     { id: 'pendlay_row', name: 'Pendlay Row', name_de: 'Pendlay Row', pattern: 'Pull', equipment: 'Barbell', intensity: 'High', tags: ['back', 'grip'] },
     { id: 'upright_row', name: 'Upright Row', name_de: 'Aufrechtes Rudern', pattern: 'Pull', equipment: 'Barbell', intensity: 'Medium', tags: ['shoulders', 'grip'] },
+
+    // V1.7 UPDATE: NEW CORE
+    { id: 'leg_raise', name: 'Leg Raises', name_de: 'Beinheben', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['core', 'hip_flexor'] },
+    { id: 'windshield_wiper', name: 'Windshield Wipers', name_de: 'Scheibenwischer', pattern: 'Core', equipment: 'Bodyweight', intensity: 'High', tags: ['core', 'oblique'] },
+    { id: 'dragon_flag', name: 'Dragon Flag', name_de: 'Dragon Flag', pattern: 'Core', equipment: 'Bodyweight', intensity: 'VeryHigh', tags: ['core', 'skill'] },
+    { id: 'cable_crunch', name: 'Cable Crunch', name_de: 'Kabel Crunches', pattern: 'Core', equipment: 'Machine', intensity: 'Medium', tags: ['core'] },
+    { id: 'pallof_press', name: 'Pallof Press', name_de: 'Pallof Press', pattern: 'Core', equipment: 'Machine', intensity: 'Medium', tags: ['core', 'oblique', 'antiflexion'] },
+    { id: 'bird_dog', name: 'Bird Dog', name_de: 'Bird Dog', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'balance', 'back'] },
+    { id: 'tuck_crunch', name: 'Tuck Crunch', name_de: 'Tuck Crunch', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core'] },
+    { id: 'russian_kettlebell_swing', name: 'Russian Kettlebell Swing', name_de: 'Russischer Kettlebell Swing', pattern: 'Core', equipment: 'Dumbbell', intensity: 'Medium', tags: ['core', 'back', 'hinge'] },
+    { id: 'ab_rollout', name: 'Ab Rollout', name_de: 'Ab Rollout', pattern: 'Core', equipment: 'Dumbbell', intensity: 'High', tags: ['core', 'shoulders'] },
+    { id: 'medball_slam', name: 'Medicine Ball Slam', name_de: 'Medizinball Slam', pattern: 'Core', equipment: 'Dumbbell', intensity: 'High', tags: ['core', 'cardio'] },
+    { id: 'side_bend_db', name: 'Dumbbell Side Bend', name_de: 'KH Seitbeugen', pattern: 'Core', equipment: 'Dumbbell', intensity: 'Low', tags: ['core', 'oblique'] },
+    { id_g: 'plank_reach', name: 'Plank with Reach', name_de: 'Plank mit ausgestrecktem Arm', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['core', 'shoulders', 'balance'] },
+    { id: 'reverse_crunch', name: 'Reverse Crunch', name_de: 'Umgekehrter Crunch', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['core'] },
+    { id: 'copenhagen_plank', name: 'Copenhagen Plank', name_de: 'Kopenhagen Plank', pattern: 'Core', equipment: 'Bodyweight', intensity: 'High', tags: ['core', 'adductor'] },
+    { id: 'back_extension', name: 'Back Extension', name_de: 'Rückenstrecker', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['back'] },
+    { id: 'good_morning_bb', name: 'Good Morning', name_de: 'Good Morning', pattern: 'Core', equipment: 'Barbell', intensity: 'Medium', tags: ['back', 'hinge'] },
+    { id: 'weighted_situp', name: 'Weighted Sit-Up', name_de: 'Gewichteter Sit-Up', pattern: 'Core', equipment: 'Dumbbell', intensity: 'Medium', tags: ['core', 'back'] },
 ];
 
 // TODO: Add more injury categories (wrists, ankles, hips)

@@ -16,8 +16,12 @@
 **Objective**: Analyze current exercise frequency and identify the best candidates for expansion.
 
 ### Phase 2: Core Expansion
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Implement and test 15+ new core exercises.
+
+### Phase 3: Cardio & Bodyweight Variants
+**Status**: ▶️ In Progress
+**Objective**: Implement and test 10+ new cardio/bodyweight variants.
 
 ### Phase 3: Cardio & Bodyweight Variants
 **Status**: ⬜ Not Started
