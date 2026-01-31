@@ -2,14 +2,15 @@
 
 ## Current Position
 - **Milestone**: v1.7
-- **Phase**: 4 (Logic Refinement)
+- **Phase**: 5 (Empirical Validation)
 - **Status**: In Progress
 
 ## Last Session Summary
-- Completed Phase 3 (Cardio & Bodyweight Variants).
-- Added 11 new cardio/bw exercises.
-- Verified reduced pool saturation for Cardio (487.9 -> 359.8 hits/ex).
+- Completed Phase 4 (Logic Refinement).
+- Fixed "Skill Leakage" by filtering high-skill moves from beginner pool.
+- Verified fix with analysis (leakage is now 0.00%).
+- Reviewed and confirmed Chipper flow logic.
 
 ## Next Steps
-1. Investigate and fix the "Skill Leakage" issue.
-2. Review and tune the "Chipper" workout flow.
+1. Run a final, comprehensive 10k simulation to validate all milestone changes.
+2. Document the final state and close the milestone.

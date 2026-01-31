@@ -24,8 +24,12 @@
 **Objective**: Implement and test 10+ new cardio/bodyweight variants.
 
 ### Phase 4: Logic Refinement
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Implement beginner substitutions for high-skill moves and tune Chipper flow.
+
+### Phase 5: Empirical Validation
+**Status**: ▶️ In Progress
+**Objective**: Run 10k simulations to verify balanced distribution and logic correctness.
 
 ### Phase 3: Cardio & Bodyweight Variants
 **Status**: ⬜ Not Started

@@ -21,7 +21,18 @@ class WorkoutDirector {
         // 1. Basic Filter: Remove already selected
         let candidates = this.pool.filter(ex => !this.selectedExercises.some(s => s.exercise.id === ex.id));
         
-        // 2. Flow Control (Prevent Muscle Overlap)
+        // 2. Skill Filter for Beginners
+        if (this.config.difficulty === 'Beginner') {
+            candidates = candidates.filter(ex => {
+                if (!ex.tags || !ex.tags.includes('skill')) {
+                    return true; // Not a skill move, always allowed
+                }
+                // It IS a skill move, only allow if a substitution exists
+                return getSubstitution(ex.id, this.config.difficulty) !== null;
+            });
+        }
+
+        // 3. Flow Control (Prevent Muscle Overlap)
         // Especially critical for Chippers, but good for all workouts to avoid local fatigue
         if (this.selectedExercises.length > 0) {
             const lastEx = this.selectedExercises[this.selectedExercises.length - 1].exercise;
