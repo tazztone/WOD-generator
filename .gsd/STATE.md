@@ -2,13 +2,14 @@
 
 ## Current Position
 - **Milestone**: v1.7
-- **Phase**: 3 (Cardio & Bodyweight Variants)
+- **Phase**: 4 (Logic Refinement)
 - **Status**: In Progress
 
 ## Last Session Summary
-- Completed Phase 2 (Core Expansion).
-- Added 17 new core exercises to the database.
-- Verified the reduced pool saturation via analysis (476.6 -> 329.3 hits/ex).
+- Completed Phase 3 (Cardio & Bodyweight Variants).
+- Added 11 new cardio/bw exercises.
+- Verified reduced pool saturation for Cardio (487.9 -> 359.8 hits/ex).
 
 ## Next Steps
-1. Begin implementing the 10+ new Cardio & Bodyweight exercises identified in the audit.
+1. Investigate and fix the "Skill Leakage" issue.
+2. Review and tune the "Chipper" workout flow.

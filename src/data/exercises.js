@@ -130,6 +130,19 @@ export const EXERCISE_DB = [
     { id: 'back_extension', name: 'Back Extension', name_de: 'Rückenstrecker', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['back'] },
     { id: 'good_morning_bb', name: 'Good Morning', name_de: 'Good Morning', pattern: 'Core', equipment: 'Barbell', intensity: 'Medium', tags: ['back', 'hinge'] },
     { id: 'weighted_situp', name: 'Weighted Sit-Up', name_de: 'Gewichteter Sit-Up', pattern: 'Core', equipment: 'Dumbbell', intensity: 'Medium', tags: ['core', 'back'] },
+
+    // V1.7 UPDATE: NEW CARDIO & BW
+    { id: 'inchworm', name: 'Inchworm', name_de: 'Inchworm', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'shoulders'] },
+    { id: 'tuck_jump', name: 'Tuck Jump', name_de: 'Hocksprung', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact'] },
+    { id: 'butt_kicks', name: 'Butt Kicks', name_de: 'Fersen zum Po', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Low', tags: ['knees'] },
+    { id: 'stair_climb', name: 'Stair Climb', name_de: 'Treppensteigen', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Medium', tags: ['knees'] },
+    { id: 'row_sprint', name: 'Rowing (Sprint)', name_de: 'Rudern (Sprint)', pattern: 'Cardio', equipment: 'Machine', intensity: 'High', tags: ['back', 'knees', 'cardio'] },
+    { id: 'bike_sprint', name: 'Bike (Sprint)', name_de: 'Radfahren (Sprint)', pattern: 'Cardio', equipment: 'Machine', intensity: 'VeryHigh', tags: ['knees', 'cardio'] },
+    { id: 'ski_sprint', name: 'SkiErg (Sprint)', name_de: 'SkiErg (Sprint)', pattern: 'Cardio', equipment: 'Machine', intensity: 'VeryHigh', tags: ['shoulders', 'core', 'hinge', 'cardio'] },
+    { id: 'sled_drag', name: 'Sled Drag', name_de: 'Schlittenziehen', pattern: 'Cardio', equipment: 'Machine', intensity: 'High', tags: ['legs', 'back'] },
+    { id: 'jumprope_crossover', name: 'Jumping Rope (Crossover)', name_de: 'Seilspringen (Crossover)', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact', 'skill'] },
+    { id: 'pogo_jump', name: 'Pogo Jump', name_de: 'Pogo Sprung', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Medium', tags: ['knees', 'impact'] },
+    { id: 'wall_ball_target', name: 'Wall Ball (Target)', name_de: 'Wall Ball (Ziel)', pattern: 'Squat', equipment: 'Dumbbell', intensity: 'High', tags: ['knees', 'shoulders', 'overhead', 'skill'] },
 ];
 
 // TODO: Add more injury categories (wrists, ankles, hips)

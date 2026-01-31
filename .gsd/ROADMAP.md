@@ -20,8 +20,12 @@
 **Objective**: Implement and test 15+ new core exercises.
 
 ### Phase 3: Cardio & Bodyweight Variants
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Implement and test 10+ new cardio/bodyweight variants.
+
+### Phase 4: Logic Refinement
+**Status**: ▶️ In Progress
+**Objective**: Implement beginner substitutions for high-skill moves and tune Chipper flow.
 
 ### Phase 3: Cardio & Bodyweight Variants
 **Status**: ⬜ Not Started
