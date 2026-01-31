@@ -8,8 +8,8 @@
 - [x] Enhance Timer logic (Pause/Resume, Persistence, Beeps, Volume control)
 - [x] Expand Workout Generator (New templates, double limits, workout focus selection)
 - [x] Improve Data Safety (Schema migration, JSON parsing error handling, form validation)
-- [ ] UX/UI Polish (Icon visibility, Swipe-to-delete, Button loading states)
-- [ ] Sharing & Integration (Enhanced clipboard, Web Share API, Wodify research)
+- [x] UX/UI Polish (Icon visibility, Swipe-to-delete, Button loading states)
+- [x] Sharing & Integration (Enhanced clipboard, Web Share API, Wodify research)
 - [ ] Technical Debt (Merge translations, add integration tests)
 
 ## Phases
@@ -41,14 +41,16 @@
 - Expand workout templates (Ladder, Death By, Buy-In/Buy-Out)
 - Add "Partner" workout style
 
+
+
 ### Phase 4: Data Management & Integration
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Enhance history, saving capabilities, and external integrations.
-- Add feature to save workouts for later
-- Save time taken to complete workout in historical log
-- Add swipe-to-delete for history entries
-- Update "share" (clipboard) and implement Web Share API
-- Research Wodify export integration
+- [x] Add feature to save workouts for later
+- [x] Save time taken to complete workout in historical log
+- [x] Add swipe-to-delete for history entries
+- [x] Update "share" (clipboard) and implement Web Share API
+- [x] Research Wodify export integration
 
 ### Phase 5: Documentation & Testing
 **Status**: ⬜ Not Started
