@@ -1,5 +1,5 @@
 // TODO: Consider adding seeded randomness option for reproducible workouts (useful for sharing/testing)
-import { EXERCISE_DB, INJURY_MAP } from '../data/exercises';
+import { EXERCISE_DB, INJURY_MAP } from '../data/exercises.js';
 
 export const getReps = (exercise, difficulty, format, duration) => {
     // V7: Dynamic Scaling based on duration

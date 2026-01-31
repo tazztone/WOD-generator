@@ -90,7 +90,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen, confi
 
             {/* Header */}
             <div className="flex justify-between items-center p-5 z-10">
-                <button onClick={() => setStatus('finished')} className="p-2 bg-slate-800/50 rounded-full text-slate-400"><XCircle size={20} /></button>
+                <button onClick={() => setStatus('finished')} className="p-2 bg-slate-800/50 rounded-full text-slate-400" aria-label={t.cancel}><XCircle size={20} /></button>
                 <div className="flex gap-4 items-center bg-slate-800/50 p-2 rounded-full backdrop-blur-sm">
                     <input
                         type="range"
@@ -102,7 +102,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen, confi
                         className="w-24 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-emerald-500 mx-2"
                         aria-label="Volume"
                     />
-                    <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded-full ${voiceEnabled ? 'text-white' : 'text-slate-500'}`}>
+                    <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded-full ${voiceEnabled ? 'text-white' : 'text-slate-500'}`} aria-label={voiceEnabled ? "Mute Voice" : "Enable Voice"}>
                         {voiceEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
                     </button>
                 </div>
@@ -122,9 +122,9 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen, confi
                     <div className="mt-8 flex flex-col items-center">
                         <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t.rounds}</span>
                         <div className="flex items-center gap-6 mt-2">
-                            <button onClick={() => setCurrentRound(Math.max(1, currentRound - 1))} className="p-3 bg-slate-800 rounded-full text-slate-400 hover:bg-slate-700"><ChevronLeft size={20} /></button>
+                            <button onClick={() => setCurrentRound(Math.max(1, currentRound - 1))} className="p-3 bg-slate-800 rounded-full text-slate-400 hover:bg-slate-700" aria-label="Previous Round"><ChevronLeft size={20} /></button>
                             <span className="text-4xl font-mono font-bold text-emerald-400">{currentRound}</span>
-                            <button onClick={() => setCurrentRound(currentRound + 1)} className="p-3 bg-slate-800 rounded-full text-slate-400 hover:bg-slate-700"><ChevronLeft size={20} className="rotate-180" /></button>
+                            <button onClick={() => setCurrentRound(currentRound + 1)} className="p-3 bg-slate-800 rounded-full text-slate-400 hover:bg-slate-700" aria-label="Next Round"><ChevronLeft size={20} className="rotate-180" /></button>
                         </div>
                     </div>
                 )}
@@ -135,6 +135,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen, confi
                         <button
                             onClick={() => setIsPaused(!isPaused)}
                             className={`flex items-center gap-2 px-8 py-3 rounded-full font-black uppercase tracking-widest transition-all ${isPaused ? 'bg-emerald-500 text-slate-950 scale-110 shadow-lg' : 'bg-slate-800 text-slate-400'}`}
+                            aria-label={isPaused ? "Resume Timer" : "Pause Timer"}
                         >
                             {isPaused ? <Play size={20} fill="currentColor" /> : <Pause size={20} fill="currentColor" />}
                             {isPaused ? 'Resume' : 'Pause'}

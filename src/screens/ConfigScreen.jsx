@@ -155,7 +155,7 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </div>
                 <div className="flex gap-2">
                     {['Shoulders', 'Knees', 'Back'].map(part => (
-                        <button key={part} onClick={() => toggleAvoid(part)} className={`px-4 py-2 rounded-lg text-xs font-bold border transition-all ${config.avoid.includes(part) ? 'bg-red-500/20 text-red-400 border-red-500/50' : 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+                        <button key={part} onClick={() => toggleAvoid(part)} aria-pressed={config.avoid.includes(part)} className={`px-4 py-2 rounded-lg text-xs font-bold border transition-all ${config.avoid.includes(part) ? 'bg-red-500/20 text-red-400 border-red-500/50' : 'bg-slate-800 text-slate-400 border-slate-700'}`}>
                             {t.parts[part.toLowerCase()] || part}
                         </button>
                     ))}
@@ -168,6 +168,7 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 <div className="grid grid-cols-2 gap-2">
                     {Object.keys(t.equip).map(key => (
                         <button key={key} onClick={() => toggleEquipment(key)}
+                            aria-pressed={!!config.equipment[key === 'pullup' ? 'pullupBar' : key]}
                             className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${config.equipment[key === 'pullup' ? 'pullupBar' : key] ? 'bg-slate-800 border-emerald-500/30 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}>
                             {t.equip[key]}
                         </button>

@@ -6,9 +6,9 @@
 ## Must-Haves
 - [x] UI: Focus selector as dropdown in 3rd column
 - [x] UI: Move volume control to timer page (combine with mute)
-- [ ] Reliability: React Error Boundary
-- [ ] Accessibility: Basic ARIA attributes
-- [ ] Testing: Mass generation and analysis script
+- [x] Reliability: React Error Boundary
+- [x] Accessibility: Basic ARIA attributes
+- [x] Testing: Mass generation and analysis script
 
 ## Phases
 
@@ -17,9 +17,9 @@
 **Objective**: Refine the workout setup and timer interfaces for better usability and compactness.
 
 ### Phase 2: Reliability & Accessibility
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Improve application robustness with error handling and accessibility compliance.
 
 ### Phase 3: Testing Infrastructure
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Build a system for high-volume workout generation to analyze distribution and catch bugs.
