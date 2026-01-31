@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-> **Current Milestone**: v1.3 - Feature Completion & Polish
+> **Current Milestone**: v1.4 - System Stability & Global Release
 > **Goal**: Complete all remaining pending items to reach full feature parity and stability.
 
 ## Must-Haves
@@ -10,7 +10,7 @@
 - [x] Improve Data Safety (Schema migration, JSON parsing error handling, form validation)
 - [x] UX/UI Polish (Icon visibility, Swipe-to-delete, Button loading states)
 - [x] Sharing & Integration (Enhanced clipboard, Web Share API, Wodify research)
-- [ ] Technical Debt (Merge translations, add integration tests)
+- [x] Technical Debt (Merge translations, add integration tests)
 
 ## Phases
 
@@ -53,9 +53,9 @@
 - [x] Research Wodify export integration
 
 ### Phase 5: Documentation & Testing
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Finalize non-functional requirements and verify system integrity.
-- Add detailed tooltips for smart algorithms
-- Merge screen-specific translations into main locales.js
-- Add integration tests for full workout generation + swap flow
-- Final end-to-end verification
+- [x] Add detailed tooltips for smart algorithms
+- [x] Merge screen-specific translations into main locales.js
+- [x] Add integration tests for full workout generation + swap flow
+- [x] Final end-to-end verification
