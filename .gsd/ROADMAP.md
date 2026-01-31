@@ -1,16 +1,37 @@
 # ROADMAP.md
 
-> **Current Milestone**: v1.6 (Completed)
-> **Next Milestone**: v1.7 (Planned)
+> **Current Milestone**: v1.7
+> **Goal**: Address the "Pool Saturation" and "Skill Leakage" identified in v1.6 analysis.
 
-## Future Milestones
-
-### v1.7 - Content Expansion & Tuning
-**Goal**: Address the "Pool Saturation" and "Skill Leakage" identified in v1.6 analysis.
+## Must-Haves
 - [ ] **Content**: Add 15+ Core exercises (currently 100+ hits/ex).
 - [ ] **Content**: Add 10+ Cardio/Bodyweight variants (currently 100+ hits/ex).
 - [ ] **Logic**: Refine "Skill Leakage" (ensure moves like Box Jumps/Snatch have beginner subs).
 - [ ] **Logic**: Tweaks for "Chipper" flow based on user feedback.
+
+## Phases
+
+### Phase 1: Research & Audit
+**Status**: ⬜ Not Started
+**Objective**: Analyze current exercise frequency and identify the best candidates for expansion.
+
+### Phase 2: Core Expansion
+**Status**: ⬜ Not Started
+**Objective**: Implement and test 15+ new core exercises.
+
+### Phase 3: Cardio & Bodyweight Variants
+**Status**: ⬜ Not Started
+**Objective**: Implement and test 10+ new cardio/bodyweight variants.
+
+### Phase 4: Logic Refinement
+**Status**: ⬜ Not Started
+**Objective**: Implement beginner substitutions for high-skill moves and tune Chipper flow.
+
+### Phase 5: Empirical Validation
+**Status**: ⬜ Not Started
+**Objective**: Run 10k simulations to verify balanced distribution and logic correctness.
+
+## Future Milestones
 
 ### v2.0 - User Systems & Cloud
 **Goal**: Transform the app from a stateless tool to a personalized training companion.

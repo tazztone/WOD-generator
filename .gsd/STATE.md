@@ -1,14 +1,13 @@
 # STATE.md
 
 ## Current Position
-- **Milestone**: v1.6 (Completed)
-- **Phase**: Completed
-- **Status**: Milestone Finalized
+- **Milestone**: v1.7
+- **Phase**: Not started
+- **Status**: Milestone planned
 
 ## Last Session Summary
-- Upgraded Engine to v1.6 (Director Pattern).
-- Implemented Smart Substitutions.
-- Verified with 10k simulations.
+- Finalized v1.6 (Engine Upgrade & Director Pattern).
+- Validated engine with 10k simulations.
 
 ## Next Steps
-1. Plan v1.7 (User Profiles or further content expansion).
+1. /plan 1 — Create Phase 1 execution plans (Research & Audit).
