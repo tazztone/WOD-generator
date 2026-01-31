@@ -4,6 +4,11 @@
 - [ ] Add seeded randomness for reproducible workouts (v2.0)
 - [ ] Add user profiles and cloud sync (v2.0)
 
+## COMPLETED (v1.8)
+🟢 [x] Refactor: Move global state to `AppContext`
+🟢 [x] Refactor: Extract exercise data to JSON
+🟢 [x] UX: Custom PWA update notification
+
 ## COMPLETED (v1.7)
 🟢 [x] Expand Core exercise pool (15+ new moves)
 🟢 [x] Expand Cardio/Bodyweight pool (10+ new moves)
