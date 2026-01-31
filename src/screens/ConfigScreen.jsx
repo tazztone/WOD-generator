@@ -78,7 +78,10 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                     </select>
                 </div>
                 <div>
-                    <span className="text-xs font-bold text-slate-400 uppercase mb-1 block">{t.level}</span>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-bold text-slate-400 uppercase">{t.level}</span>
+                        <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.level)} />
+                    </div>
                     <select value={config.difficulty} onChange={(e) => setConfig({ ...config, difficulty: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white focus:ring-1 focus:ring-emerald-500">
                         <option value="Rx">{t.rx}</option>
                         <option value="Beginner">{t.scaled}</option>
@@ -88,7 +91,10 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
 
             {/* Focus Selector */}
             <div>
-                <span className="text-xs font-bold text-slate-400 uppercase mb-1 block">{t.focus}</span>
+                <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-slate-400 uppercase">{t.focus}</span>
+                    <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.focus)} />
+                </div>
                 <div className="flex flex-wrap gap-2">
                     {Object.entries(t.focusTypes).map(([key, label]) => (
                         <button
@@ -116,7 +122,10 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
             {/* Strength Toggle */}
             <div className="flex items-center justify-between bg-slate-800/60 p-4 rounded-xl border border-slate-700">
                 <div>
-                    <span className="text-sm font-bold text-white block">{t.includeStrength}</span>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-bold text-white uppercase">{t.includeStrength}</span>
+                        <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.strength)} />
+                    </div>
                     <span className="text-xs text-slate-500">{t.strengthSub}</span>
                 </div>
                 <button onClick={() => setConfig({ ...config, includeStrength: !config.includeStrength })} className={`w-12 h-7 rounded-full transition-colors relative ${config.includeStrength ? 'bg-emerald-500' : 'bg-slate-600'}`}>

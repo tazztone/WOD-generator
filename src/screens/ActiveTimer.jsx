@@ -4,35 +4,10 @@ import { useTimer } from '../hooks/useTimer';
 import { useWakeLock } from '../hooks/useWakeLock';
 import { Button } from '../components/ui/Button';
 
-// TODO: Merge translations with main locales.js file
-// T
-const T = {
-    en: {
-        greatJob: "Great Job",
-        completeMsg: "Workout Complete. Log it.",
-        score: "Score / Notes",
-        save: "Save to Logbook",
-        cancel: "Cancel",
-        rest: "REST",
-        workMode: "WORK",
-        rounds: "Rounds",
-        next: "Up Next:"
-    },
-    de: {
-        greatJob: "Gut Gemacht",
-        completeMsg: "Workout beendet. Ergebnis eintragen.",
-        score: "Ergebnis / Notizen",
-        save: "Speichern",
-        cancel: "Abbrechen",
-        rest: "PAUSE",
-        workMode: "ARBEIT",
-        rounds: "Runden",
-        next: "Als nächstes:"
-    }
-};
+import { LOCALES } from '../data/locales';
 
 export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => {
-    const t = T[lang];
+    const t = LOCALES[lang].screens.activeTimer;
     const [voiceEnabled, setVoiceEnabled] = useState(() => {
         try {
             const saved = localStorage.getItem('voiceEnabled');

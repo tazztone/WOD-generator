@@ -1,32 +1,10 @@
 
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Trash2, History as HistoryIcon } from 'lucide-react';
-
-// TODO: Add swipe-to-delete for individual history entries
-// TODO: Add ability to repeat/re-run a past workout
-const T = {
-    en: {
-        logbook: "Logbook",
-        noLogs: "No workouts logged yet.",
-        noSaved: "No saved workouts yet.",
-        confirmClear: "Are you sure you want to delete all entries?",
-        history: "History",
-        saved: "Saved",
-        start: "Start Workout"
-    },
-    de: {
-        logbook: "Logbuch",
-        noLogs: "Noch keine Workouts gespeichert.",
-        noSaved: "Noch keine gespeicherten Workouts.",
-        confirmClear: "Möchten Sie wirklich alle Einträge löschen?",
-        history: "Verlauf",
-        saved: "Gespeichert",
-        start: "Workout Starten"
-    }
-};
+import { ArrowLeft, Trash2, Star, History as HistoryIcon } from 'lucide-react';
+import { LOCALES } from '../data/locales';
 
 export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteSaved, onStartWorkout, clearHistory, onBack, lang }) => {
-    const t = T[lang];
+    const t = LOCALES[lang].screens.history;
     const [activeTab, setActiveTab] = useState('history'); // history, saved
     const [swipedId, setSwipedId] = useState(null);
     const [touchStart, setTouchStart] = useState(null);
