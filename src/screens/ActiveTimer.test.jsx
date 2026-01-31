@@ -69,7 +69,7 @@ describe('ActiveTimer', () => {
 
     it('should initialize voiceEnabled to true by default', () => {
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => {}} />);
         });
 
         // Find the toggle button. It's the 2nd button (index 1).
@@ -82,7 +82,7 @@ describe('ActiveTimer', () => {
 
     it('should persist voice preference to localStorage', () => {
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => {}} />);
         });
 
         const buttons = container.querySelectorAll('button');
@@ -107,7 +107,7 @@ describe('ActiveTimer', () => {
         localStorage.setItem('voiceEnabled', 'false');
 
         act(() => {
-            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />);
+            root.render(<ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => {}} />);
         });
 
         // If it initialized to false, clicking it should turn it true and save 'true'
