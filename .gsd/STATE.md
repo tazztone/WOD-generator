@@ -1,15 +1,16 @@
 # STATE.md
 
 ## Current Position
-- **Phase**: 1
-- **Task**: Completed
-- **Status**: Phase 1 completed, ready for Phase 2
+- **Phase**: 2
+- **Task**: Planning complete
+- **Status**: Ready for execution
 
 ## Last Session Summary
 - Transitioned tooltips from fullscreen modals to floating components in PreviewScreen.
 - Added "Buy-In" tooltip and localized text.
 - Ensured unique workout ID generation to reset "Saved" button on reroll.
 - Passed `onTooltip` to `PreviewScreen`.
+- Planned Phases 2, 3, and 4.
 
 ## Next Steps
 1. /plan 1 — Create Phase 1 execution plans for UI Polish & Tooltips.
