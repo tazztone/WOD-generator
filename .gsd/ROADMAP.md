@@ -12,11 +12,11 @@
 ## Phases
 
 ### Phase 1: Research & Audit
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Analyze current exercise frequency and identify the best candidates for expansion.
 
 ### Phase 2: Core Expansion
-**Status**: ⬜ Not Started
+**Status**: ▶️ In Progress
 **Objective**: Implement and test 15+ new core exercises.
 
 ### Phase 3: Cardio & Bodyweight Variants

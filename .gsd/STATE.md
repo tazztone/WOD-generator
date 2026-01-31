@@ -2,12 +2,13 @@
 
 ## Current Position
 - **Milestone**: v1.7
-- **Phase**: Not started
-- **Status**: Milestone planned
+- **Phase**: 2 (Core Expansion)
+- **Status**: In Progress
 
 ## Last Session Summary
-- Finalized v1.6 (Engine Upgrade & Director Pattern).
-- Validated engine with 10k simulations.
+- Completed Phase 1 (Research & Audit).
+- Confirmed Core/Cardio pool saturation and Skill Leakage via analysis.
+- Documented findings in `PHASE-1-AUDIT.md`.
 
 ## Next Steps
-1. /plan 1 — Create Phase 1 execution plans (Research & Audit).
+1. Begin implementing the 15+ new Core exercises identified in the audit.
