@@ -4,10 +4,10 @@
 > **Goal**: Polish UI interactions and provide granular audio feedback controls.
 
 ## Must-Haves
-- [ ] Let users disable individual audio feedbacks (countdowns, announcements, etc.)
-- [ ] Floating tooltips (not fullscreen)
-- [ ] Add tooltip for "buy-in"
-- [ ] Reset "saved" button upon reroll of workout generation
+- [x] Let users disable individual audio feedbacks (countdowns, announcements, etc.)
+- [x] Floating tooltips (not fullscreen)
+- [x] Add tooltip for "buy-in"
+- [x] Reset "saved" button upon reroll of workout generation
 
 ## Phases
 

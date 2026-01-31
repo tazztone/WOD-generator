@@ -5,6 +5,12 @@
 - [ ] Add user profiles and cloud sync (v2.0)
 - [ ] Implement real voice samples (MP3/WAV) for countdowns, movement announcements, and motivational cues
 
+## COMPLETED (v1.11)
+🟢 [x] Let users disable individual audio feedbacks
+🟢 [x] Floating tooltips (not fullscreen)
+🟢 [x] Add tooltip for "buy-in"
+🟢 [x] Reset "saved" button upon reroll
+
 ## COMPLETED (v1.10)
 🟢 [x] De-bloat AppContext (Split into Settings/Workout contexts)
 🟢 [x] Refactor WorkoutDirector to declarative pipeline (`pipeline.js`)
