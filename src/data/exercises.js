@@ -90,7 +90,27 @@ export const EXERCISE_DB = [
     { id: 'bear_crawl', name: 'Bear Crawl', name_de: 'Bärengang', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['shoulders', 'core'] },
     { id: 'plank_shoulder_tap', name: 'Plank Shoulder Taps', name_de: 'Plank Schultertippen', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['shoulders', 'core'] },
     { id: 'broad_jump', name: 'Broad Jump', name_de: 'Weitsprung', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact'] },
-    // TODO: Add more bodyweight exercises for users with limited equipment
+
+    // V8 UPDATE: NEW CORE
+    { id: 'flutter_kick', name: 'Flutter Kicks', name_de: 'Flutter Kicks', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'hip_flexor'] },
+    { id: 'russian_twist', name: 'Russian Twist', name_de: 'Russian Twist', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['core'] },
+    { id: 'plank', name: 'Plank Hold', name_de: 'Unterarmstütz', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'shoulders'] },
+    { id: 'side_plank', name: 'Side Plank', name_de: 'Seitstütz', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'shoulders'] },
+    { id: 'knee_raise', name: 'Hanging Knee Raise', name_de: 'Knieheben', pattern: 'Core', equipment: 'PullupBar', intensity: 'Medium', tags: ['core', 'grip', 'shoulders'] },
+    { id: 'superman', name: 'Superman', name_de: 'Superman', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['back', 'core'] },
+    { id: 'dead_bug', name: 'Dead Bug', name_de: 'Dead Bug', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Low', tags: ['core', 'coordination'] },
+    { id: 'bicycle_crunch', name: 'Bicycle Crunch', name_de: 'Radfahrer Crunches', pattern: 'Core', equipment: 'Bodyweight', intensity: 'Medium', tags: ['core'] },
+
+    // V8 UPDATE: NEW CARDIO
+    { id: 'jumping_jack', name: 'Jumping Jacks', name_de: 'Hampelmann', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Low', tags: ['knees', 'impact'] },
+    { id: 'high_knees', name: 'High Knees', name_de: 'Kniehebelauf', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact'] },
+    { id: 'lateral_hop', name: 'Lateral Hops', name_de: 'Seitliche Sprünge', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'Medium', tags: ['knees', 'impact', 'balance'] },
+    { id: 'shuttle_run', name: 'Shuttle Run', name_de: 'Pendellauf', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'High', tags: ['knees', 'impact'] },
+    { id: 'burpee_broad_jump', name: 'Burpee Broad Jump', name_de: 'Burpee Weitsprung', pattern: 'Cardio', equipment: 'Bodyweight', intensity: 'VeryHigh', tags: ['shoulders', 'knees', 'impact'] },
+
+    // V8 UPDATE: NEW PULL (To fix ratio)
+    { id: 'pendlay_row', name: 'Pendlay Row', name_de: 'Pendlay Row', pattern: 'Pull', equipment: 'Barbell', intensity: 'High', tags: ['back', 'grip'] },
+    { id: 'upright_row', name: 'Upright Row', name_de: 'Aufrechtes Rudern', pattern: 'Pull', equipment: 'Barbell', intensity: 'Medium', tags: ['shoulders', 'grip'] },
 ];
 
 // TODO: Add more injury categories (wrists, ankles, hips)

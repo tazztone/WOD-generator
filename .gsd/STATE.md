@@ -1,16 +1,17 @@
 # STATE.md
 
 ## Current Position
-- **Milestone**: v1.5
-- **Phase**: Completed
-- **Status**: Milestone Completed
+- **Milestone**: v1.5 (Completed)
+- **Phase**: Post-Analysis Improvements
+- **Status**: Ready for v2.0 Planning
 
 ## Last Session Summary
-Completed all phases of Milestone v1.5.
-- Implemented Focus selector dropdown and moved Volume control.
-- Verified Error Boundary and added ARIA attributes.
-- Created `scripts/analyze-distribution.js` for statistical testing.
+- **Content**: Added ~20 new exercises (Core, Cardio, Pull).
+- **Analysis**:
+    - Core/Cardio utilization improved significantly (140 -> 105 hits/ex).
+    - Push/Pull ratio improved (1.52 -> 1.34).
+- **Planning**: Created `docs/SMART_LOGIC_PLAN.md` detailing the next generation of the engine (Director pattern, Smart Substitutions).
 
 ## Next Steps
-1. Review analytics data (optional).
-2. Plan v2.0 (User profiles, Cloud sync).
+1. **Execute Logic Plan**: Implement the improvements outlined in `docs/SMART_LOGIC_PLAN.md`.
+2. **User Profiles**: Begin v2.0 feature work.
