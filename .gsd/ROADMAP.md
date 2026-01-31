@@ -1,20 +1,35 @@
 # ROADMAP.md
 
-> **Current Milestone**: None (Planning v1.9/v2.0)
-> **Goal**: -
+> **Current Milestone**: v1.9
+> **Goal**: Decouple workout logic and increase UI reliability.
 
 ## Must-Haves
-- [ ] (Pending Planning)
-
-## Phases
-(Pending Planning)
-
-## Future Milestones
-
-### v1.9 - Testing & Extensibility (Tech Debt)
-**Goal**: Decouple workout logic and increase UI reliability.
 - [ ] **Architecture**: Decouple workout templates (AMRAP, RFT, etc.) from the generator logic to allow easier expansion.
 - [ ] **Testing**: Implement comprehensive Vitest/React Testing Library tests for core UI screens (Config, Preview, History).
+
+## Phases
+
+### Phase 1: Architecture Refactor
+**Status**: ⬜ Not Started
+**Objective**: Extract template-specific logic into separate strategy modules to allow easier expansion.
+
+### Phase 2: UI Testing Infrastructure
+**Status**: ⬜ Not Started
+**Objective**: Set up React Testing Library and Vitest environment for component testing.
+
+### Phase 3: Core Screen Testing
+**Status**: ⬜ Not Started
+**Objective**: Implement tests for `ConfigScreen` and `PreviewScreen`.
+
+### Phase 4: Management Screen Testing
+**Status**: ⬜ Not Started
+**Objective**: Implement tests for `HistoryScreen` and `OneRepMaxScreen`.
+
+### Phase 5: Verification & Audit
+**Status**: ⬜ Not Started
+**Objective**: Final regression sweep and documentation of the new architecture.
+
+## Future Milestones
 
 ### v2.0 - User Systems & Cloud
 **Goal**: Transform the app from a stateless tool to a personalized training companion.
