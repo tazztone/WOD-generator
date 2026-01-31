@@ -6,7 +6,7 @@
 ## Must-Haves
 - [x] Fix Android navigation and layout issues (Back button, Timer button position)
 - [x] Enhance Timer logic (Pause/Resume, Persistence, Beeps, Volume control)
-- [ ] Expand Workout Generator (New templates, double limits, workout focus selection)
+- [x] Expand Workout Generator (New templates, double limits, workout focus selection)
 - [x] Improve Data Safety (Schema migration, JSON parsing error handling, form validation)
 - [ ] UX/UI Polish (Icon visibility, Swipe-to-delete, Button loading states)
 - [ ] Sharing & Integration (Enhanced clipboard, Web Share API, Wodify research)
@@ -34,7 +34,7 @@
 - Add loading/spinner state to Button component
 
 ### Phase 3: Generator Expansion
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Significantly increase the variety and scale of generated workouts.
 - Double max duration and movements (120min / 12 movements)
 - Add workout focus selection (Core, Cardio, Strength)
