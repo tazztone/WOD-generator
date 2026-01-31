@@ -1,7 +1,8 @@
 // src/engine/generator.js
 import { EXERCISE_DB } from '../data/exercises.js';
-import { getReps, getSubstitution } from './scaling.js';
+import { calculateBaseReps, getSubstitution } from './scaling.js';
 import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic } from './utils.js';
+import { getStrategy, getRandomTemplate } from './strategies/StrategyFactory.js';
 
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic };
 
@@ -33,37 +34,27 @@ class WorkoutDirector {
         }
 
         // 3. Flow Control (Prevent Muscle Overlap)
-        // Especially critical for Chippers, but good for all workouts to avoid local fatigue
         if (this.selectedExercises.length > 0) {
             const lastEx = this.selectedExercises[this.selectedExercises.length - 1].exercise;
-            
-            // Filter candidates that share significant muscle groups with the last exercise
-            // We define "clash" if they share specific tags
             const clashTags = ['shoulders', 'legs', 'grip', 'core', 'overhead'];
             
             candidates = candidates.filter(ex => {
-                // Always allow switching patterns
                 if (ex.pattern !== lastEx.pattern) return true;
-                
-                // If same pattern (should be rare due to pattern filter), check tags strictly
                 if (lastEx.tags && ex.tags) {
                      const shared = lastEx.tags.filter(t => ex.tags.includes(t) && clashTags.includes(t));
-                     // If they share a major muscle group tag, de-prioritize or filter
                      if (shared.length > 0) return false;
                 }
                 return true;
             });
 
-            // STRICT Pattern Filter: Don't repeat pattern immediately
+            // STRICT Pattern Filter
             candidates = candidates.filter(ex => ex.pattern !== lastEx.pattern);
         }
 
         // 3. Dynamic Balancing (Push vs Pull)
-        // If we have selected Push but no Pull, prioritize Pull
         if (this.balance.Push > this.balance.Pull) {
             const pullCandidates = candidates.filter(ex => ex.pattern === 'Pull');
             if (pullCandidates.length > 0) {
-                // Boost Pull candidates by adding them again (increasing probability)
                 candidates = [...candidates, ...pullCandidates, ...pullCandidates];
             }
         }
@@ -72,16 +63,12 @@ class WorkoutDirector {
         if (this.config.focus !== 'Balanced') {
             const focusPatterns = {
                 'Cardio': ['Cardio'],
-                'Strength': ['Squat', 'Hinge', 'Push', 'Pull'], // Added Pull to Strength focus
+                'Strength': ['Squat', 'Hinge', 'Push', 'Pull'],
                 'Gymnastics': ['Pull', 'Core', 'Push'],
                 'Core': ['Core']
             };
             const targetPatterns = focusPatterns[this.config.focus] || [];
-            
-            // Filter candidates to prefer focus patterns
             const priorityMoves = candidates.filter(ex => targetPatterns.includes(ex.pattern));
-            
-            // Heavy Weighting: Add priority moves multiple times to sway the RNG
             if (priorityMoves.length > 0) {
                 candidates = [...candidates, ...priorityMoves, ...priorityMoves];
             }
@@ -96,14 +83,12 @@ class WorkoutDirector {
         
         let picked = candidates[Math.floor(Math.random() * candidates.length)];
         
-        // Apply Smart Substitution for Beginners
         const subId = getSubstitution(picked.id, this.config.difficulty);
         if (subId) {
             const subEx = EXERCISE_DB.find(e => e.id === subId);
             if (subEx) picked = subEx;
         }
 
-        // Update State
         this.usedPatterns.push(picked.pattern);
         this.balance[picked.pattern]++;
         
@@ -112,7 +97,6 @@ class WorkoutDirector {
 
     addSelection(exercise, reps) {
         this.selectedExercises.push({ exercise, reps });
-        // Update balance manually if added externally (like buy-in hack)
         this.balance[exercise.pattern]++;
     }
 }
@@ -121,41 +105,17 @@ class WorkoutDirector {
 export const generateWorkout = (config, lang = 'en') => {
     const director = new WorkoutDirector(config);
     
-    // Templates pool
-    const templates = ['AMRAP', 'RFT', 'EMOM', 'Ladder', 'Death By'];
     let template = config.templateType;
-    if (template === 'Random') template = templates[Math.floor(Math.random() * templates.length)];
+    if (template === 'Random') template = getRandomTemplate();
 
-    let timeCap = config.duration;
-    let rounds = 0;
+    const strategy = getStrategy(template);
+    const { rounds, timeCap } = strategy.calculateParams(config);
     let buyIn = null;
 
-    // Template Config
-    if (template === 'RFT') {
-        const avgRepTimeMin = 1.5;
-        rounds = Math.max(3, Math.floor(config.duration / avgRepTimeMin));
-    } else if (template === 'EMOM') {
-        rounds = config.duration;
-    } else if (template === 'Chipper') {
-        rounds = 1;
-    } else if (template === 'Tabata') {
-        timeCap = 4;
-        rounds = 8;
-    } else if (template === 'Death By') {
-        rounds = config.duration;
-    } else if (template === 'Ladder') {
-        rounds = 1;
-    }
-
     // Smart Buy-In Logic
-    // Only add buy-in if duration is decent
-    if (config.duration > 10 && Math.random() < 0.20) { // Increased chance slightly
-        // Complementary Logic:
-        // If Focus is Cardio -> Buy-In should be Strength/Core
-        // If Focus is Strength -> Buy-In should be Cardio/Core
-        
+    if (config.duration > 10 && Math.random() < 0.20) {
         let buyInPatterns = ['Cardio', 'Core'];
-        if (config.focus === 'Cardio') buyInPatterns = ['Core']; // Avoid more cardio
+        if (config.focus === 'Cardio') buyInPatterns = ['Core'];
         if (config.focus === 'Strength') buyInPatterns = ['Cardio'];
         
         const buyInPool = director.pool.filter(ex => buyInPatterns.includes(ex.pattern));
@@ -173,7 +133,6 @@ export const generateWorkout = (config, lang = 'en') => {
     const targetCount = config.numExercises;
 
     for (let i = 0; i < targetCount; i++) {
-        // Manually filter buy-in if it exists to avoid duplicate
         if (buyIn) {
              director.selectedExercises.push({ exercise: buyIn.exercise, reps: 0 }); 
         }
@@ -186,17 +145,12 @@ export const generateWorkout = (config, lang = 'en') => {
 
         if (!picked) break;
 
-        let reps = getReps(picked, config.difficulty, template, timeCap);
+        // --- NEW STRATEGY SCALING ---
+        const baseReps = calculateBaseReps(picked, config.difficulty, config.duration);
+        let reps = strategy.scaleReps(baseReps, picked, config.difficulty, config.duration);
 
         if (config.isPartner && typeof reps === 'number') {
             reps = reps * 2;
-        }
-
-        if (template === 'Ladder') {
-            const isAsc = Math.random() > 0.5;
-            reps = isAsc ? "1-2-3-4..." : "10-9-8...1";
-        } else if (template === 'Death By') {
-            reps = "1 + 1 every min";
         }
 
         director.addSelection(picked, reps);
@@ -205,7 +159,7 @@ export const generateWorkout = (config, lang = 'en') => {
     return {
         template,
         timeCap,
-        rounds: (template === 'RFT' || template === 'EMOM' || template === 'Tabata' || template === 'Death By') ? rounds : null,
+        rounds,
         exercises: director.selectedExercises,
         buyIn,
         isPartner: config.isPartner || false,
@@ -219,7 +173,6 @@ export const swapExercise = (workout, index, newExerciseId, config, lang = 'en')
     let newEx = EXERCISE_DB.find(e => e.id === newExerciseId);
     if (!newEx) return workout;
 
-    // Apply Smart Substitution for Beginners
     const subId = getSubstitution(newEx.id, config.difficulty);
     if (subId) {
         const subEx = EXERCISE_DB.find(e => e.id === subId);
@@ -227,16 +180,13 @@ export const swapExercise = (workout, index, newExerciseId, config, lang = 'en')
     }
 
     const newExercises = [...workout.exercises];
-    let reps = getReps(newEx, config.difficulty, workout.template, workout.timeCap);
+    
+    // --- NEW STRATEGY SCALING ---
+    const strategy = getStrategy(workout.template);
+    const baseReps = calculateBaseReps(newEx, config.difficulty, config.duration);
+    let reps = strategy.scaleReps(baseReps, newEx, config.difficulty, config.duration);
 
     if (config.isPartner && typeof reps === 'number') reps = reps * 2;
-
-    if (workout.template === 'Ladder') {
-        const isAsc = Math.random() > 0.5;
-        reps = isAsc ? "1-2-3-4..." : "10-9-8...1";
-    } else if (workout.template === 'Death By') {
-        reps = "1 + 1 every min";
-    }
 
     newExercises[index] = {
         exercise: newEx,

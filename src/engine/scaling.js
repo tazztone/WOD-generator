@@ -1,7 +1,6 @@
 // Logic for scaling reps and substituting exercises based on difficulty
 
 // V8 Upgrade: Smart Substitutions
-// Maps advanced movements to simpler variants for Beginner/Scaled levels
 const SUBSTITUTIONS = {
     'hspu': 'push_press_db',      // Handstand Push-up -> DB Push Press
     'bmu': 'pullup',              // Bar Muscle-up -> Pull-up
@@ -13,7 +12,9 @@ const SUBSTITUTIONS = {
     'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
 };
 
-export const getReps = (exercise, difficulty, format, duration) => {
+import { getStrategy } from './strategies/StrategyFactory.js';
+
+export const calculateBaseReps = (exercise, difficulty, duration) => {
     // V7: Dynamic Scaling based on duration
     const isLong = duration > 25;
     const isExtraLong = duration > 45;
@@ -26,11 +27,13 @@ export const getReps = (exercise, difficulty, format, duration) => {
         return isShort ? '200m' : '400m';
     }
     if (exercise.name.includes('Plank') || exercise.name.includes('Wall Sit')) return '45s';
+    
+    // Machine is tricky because Chipper logic was embedded here.
+    // We return a standard number for now, Strategy can override if needed.
     if (exercise.equipment === 'Machine') {
-        if (format === 'Chipper') return '40/30 cal';
-        if (isExtreme) return '25 cal';
-        if (isExtraLong) return '20 cal';
-        return isShort ? '10 cal' : '15 cal';
+        if (isExtreme) return 25;
+        if (isExtraLong) return 20;
+        return isShort ? 10 : 15;
     }
 
     let baseReps = 15;
@@ -45,26 +48,22 @@ export const getReps = (exercise, difficulty, format, duration) => {
         if (exercise.name.includes('Double') || exercise.name.includes('Single')) baseReps = 30;
     }
 
-    // Format adjustments
-    if (format === 'EMOM' || format === 'Tabata') {
-        // EMOMs need to be sprintable
-        if (baseReps > 12 && !exercise.name.includes('Double')) baseReps = 10;
-    } else if (format === 'Chipper') {
-        // Chippers are high volume
-        baseReps = baseReps * 4;
-        if (exercise.name.includes('Double')) baseReps = 100;
-        if (exercise.name.includes('Single')) baseReps = 150;
-    } else if (isExtreme && format === 'AMRAP') {
-        if (baseReps > 6) baseReps = 6;
-    } else if (isExtraLong && format === 'AMRAP') {
-        if (baseReps > 8) baseReps = 8;
-    } else if (isLong && format === 'AMRAP') {
-        // Pacing for long workouts
-        if (baseReps > 10) baseReps = 10;
-    }
-
     return baseReps;
 };
+
+/**
+ * Compatibility wrapper for the new strategy pattern.
+ */
+export const getReps = (exercise, difficulty, format, duration) => {
+    const strategy = getStrategy(format);
+    const baseReps = calculateBaseReps(exercise, difficulty, duration);
+    return strategy.scaleReps(baseReps, exercise, difficulty, duration);
+};
+
+// Keep old export for backward compatibility during refactor, but it throws now?
+// No, let's just export the new one and update imports.
+// But wait, the Strategy files I just wrote rely on `baseReps` being passed in. 
+// They don't import `getReps`.
 
 /**
  * Returns a substituted exercise ID if applicable for the difficulty
