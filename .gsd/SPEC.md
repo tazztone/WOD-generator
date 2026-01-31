@@ -3,30 +3,15 @@
 > **Status**: `FINALIZED`
 
 ## Vision
-Rectify the GitHub Action workflow for Android releases by aligning parameters with the actual project structure, ensuring successful automated publishing to the Google Play Store.
+Rectify build environment issues by aligning Capacitor versions with the current Node.js environment (v20) and restoring missing Android native bridge files.
 
 ## Goals
-1. Synchronize the `packageName` in `.github/workflows/android-release.yml` with the `applicationId` in `android/app/build.gradle`.
-2. Resolve the "whatsnew" directory warning by either creating the directory or removing the reference in the workflow.
-3. Verify that the build process correctly identifies and uses the new package identity.
-4. Switch the Google Play release track to `internal` to bypass production publishing restrictions during the 14-day testing period.
-
-## Non-Goals (Out of Scope)
-- Modifying the app's functionality or logic.
-- Setting up Google Play Console permissions (must be done by user).
-- Modifying native Java/Kotlin code beyond build configuration.
-
-## Users
-- Developers managing the CI/CD pipeline.
-- Production users receiving updates via the Play Store.
-
-## Constraints
-- Must maintain compatibility with existing Capacitor/Android build structure.
-- Secrets (`GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`, etc.) are assumed to be correctly configured in GitHub.
+1. Downgrade Capacitor core packages to version 7 to support Node 20.
+2. Regenerate the `android/capacitor-cordova-android-plugins` directory.
+3. Fix the Gradle configuration errors related to missing scripts.
 
 ## Success Criteria
-- [ ] Workflow `.github/workflows/android-release.yml` is updated with `com.wodgen.ultimate`.
-- [ ] The "whatsnew" directory warning is addressed (reference removed or directory created).
-- [ ] A successful local dry-run or validation of the YAML syntax.
-- [ ] Change is committed and pushed to the repository.
-- [ ] Workflow track is set to `internal`.
+- [ ] `package.json` updated with Capacitor `^7.0.0`.
+- [ ] `npm install` and `npx cap sync android` complete successfully.
+- [ ] `android/capacitor-cordova-android-plugins/cordova.variables.gradle` exists.
+- [ ] Gradle project syncs without errors.
