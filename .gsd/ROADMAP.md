@@ -1,40 +1,15 @@
 # ROADMAP.md
 
-> **Current Milestone**: 1.11
-> **Goal**: Polish UI interactions and provide granular audio feedback controls.
+> **Current Milestone**: None (Planning v2.0)
+> **Goal**: -
 
 ## Must-Haves
-- [x] Let users disable individual audio feedbacks (countdowns, announcements, etc.)
-- [x] Floating tooltips (not fullscreen)
-- [x] Add tooltip for "buy-in"
-- [x] Reset "saved" button upon reroll of workout generation
+- [ ] (Pending Planning)
 
 ## Phases
-
-### Phase 1: UI Polish & Tooltips
-**Status**: ✅ Completed
-**Objective**: Transition tooltips to floating components and add the "buy-in" tooltip.
-
-### Phase 2: Logic Refinement
-**Status**: ✅ Completed
-**Objective**: Ensure the "saved" button state resets when a new workout is generated.
-
-### Phase 3: Audio Control Granularity
-**Status**: ✅ Completed
-**Objective**: Implement settings to toggle individual audio feedback types.
-
-### Phase 4: Verification
-**Status**: ✅ Completed
-**Objective**: Validate all UI changes and logic resets across devices.
+(Pending Planning)
 
 ## Future Milestones
-
-### v2.0 - User Systems & Cloud
-**Goal**: Transform the app from a stateless tool to a personalized training companion.
-- [ ] **Features**: User Profiles (Name, Skill Level, Equipment preset).
-- [ ] **Features**: Cloud Sync (Save history across devices).
-- [ ] **Features**: Seeded Randomness (Shareable "WOD of the Day").
-- [ ] **Features**: "Hero WOD" database integration.
 
 ### v2.0 - User Systems & Cloud
 **Goal**: Transform the app from a stateless tool to a personalized training companion.
@@ -46,6 +21,17 @@
 ---
 
 ## Completed Milestones
+
+### v1.11 - Polish & Granular Audio
+**Status**: ✅ Completed
+- [x] **Audio**: Individual toggles for countdowns, announcements, and beeps.
+- [x] **UI**: Floating tooltips for preview triggers.
+- [x] **Logic**: Workout IDs and reset behavior for "Saved" button.
+
+### v1.10 - Architectural Refinement & Audio Polish
+**Status**: ✅ Completed
+- [x] **Architecture**: Split AppContext and declarative pipeline engine.
+- [x] **Audio**: Precise beep timing and quality upgrades.
 
 ### v1.9 - Testing & Extensibility (Tech Debt)
 **Status**: ✅ Completed
