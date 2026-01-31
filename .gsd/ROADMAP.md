@@ -36,6 +36,11 @@
 
 ## Future Milestones
 
+### v1.9 - Testing & Extensibility (Tech Debt)
+**Goal**: Decouple workout logic and increase UI reliability.
+- [ ] **Architecture**: Decouple workout templates (AMRAP, RFT, etc.) from the generator logic to allow easier expansion.
+- [ ] **Testing**: Implement comprehensive Vitest/React Testing Library tests for core UI screens (Config, Preview, History).
+
 ### v2.0 - User Systems & Cloud
 **Goal**: Transform the app from a stateless tool to a personalized training companion.
 - [ ] **Features**: User Profiles (Name, Skill Level, Equipment preset).
