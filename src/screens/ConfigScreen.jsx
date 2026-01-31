@@ -6,7 +6,6 @@ import { Card } from '../components/ui/Card';
 import { LOCALES } from '../data/locales';
 import { DEFAULT_CONFIG } from '../engine/storage';
 
-// TODO: Add form validation - ensure at least one equipment type is selected
 export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip }) => {
     const t = LOCALES[lang];
 

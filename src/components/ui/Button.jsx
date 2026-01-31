@@ -1,7 +1,5 @@
+import { Loader2 } from 'lucide-react';
 
-
-
-// TODO: Add loading/spinner state variant for async actions
 const VARIANTS = {
     primary: "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]",
     secondary: "bg-slate-800 border border-slate-700 hover:border-emerald-500 text-slate-200 group",
@@ -24,6 +22,8 @@ export const Button = ({
     className = "",
     onClick,
     fullWidth = false,
+    loading = false,
+    disabled = false,
     ...props
 }) => {
     const baseClass = "rounded-xl font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-2";
@@ -33,11 +33,12 @@ export const Button = ({
 
     return (
         <button
-            className={`${baseClass} ${variantClass} ${sizeClass} ${widthClass} ${className}`}
-            onClick={onClick}
+            className={`${baseClass} ${variantClass} ${sizeClass} ${widthClass} ${className} ${disabled || loading ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`}
+            onClick={(!disabled && !loading) ? onClick : undefined}
+            disabled={disabled || loading}
             {...props}
         >
-            {children}
+            {loading ? <Loader2 className="animate-spin" size={20} /> : children}
         </button>
     );
 };

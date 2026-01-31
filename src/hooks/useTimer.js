@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { SOUNDS, speak } from '../engine/audio';
 
-// TODO: Add pause/resume functionality - currently timer cannot be paused
-// TODO: Persist timer state to localStorage to survive page refresh
 // TODO: Add haptic feedback support for mobile devices
 export const useTimer = (workout, lang, voiceEnabled) => {
     const [status, setStatus] = useState('pre'); // pre, work, rest, finished
@@ -10,8 +8,48 @@ export const useTimer = (workout, lang, voiceEnabled) => {
     const [totalTime, setTotalTime] = useState(0);
     const [currentRound, setCurrentRound] = useState(1);
     const [roundTime, setRoundTime] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+
+    // Initial Load from Persistence
+    useEffect(() => {
+        try {
+            const saved = localStorage.getItem('wod_timer_v1');
+            if (saved) {
+                const state = JSON.parse(saved);
+                if (state.workoutId === workout.id) {
+                    setStatus(state.status);
+                    setTimeLeft(state.timeLeft);
+                    setTotalTime(state.totalTime);
+                    setCurrentRound(state.currentRound);
+                    setRoundTime(state.roundTime);
+                }
+            }
+        } catch (e) {
+            console.error('Failed to restore timer state', e);
+        }
+    }, [workout.id]);
+
+    // Save to Persistence
+    useEffect(() => {
+        if (status === 'pre') return;
+        if (status === 'finished') {
+            localStorage.removeItem('wod_timer_v1');
+            return;
+        }
+
+        const state = {
+            workoutId: workout.id,
+            status,
+            timeLeft,
+            totalTime,
+            currentRound,
+            roundTime
+        };
+        localStorage.setItem('wod_timer_v1', JSON.stringify(state));
+    }, [status, timeLeft, totalTime, currentRound, roundTime, workout.id]);
 
     const timerRef = useRef(null);
+    const TIMER_STATE_KEY = 'wod_timer_v1';
 
     // Speak helper
     const speakMovements = useCallback(() => {
@@ -54,7 +92,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
 
     useEffect(() => {
         timerRef.current = setInterval(() => {
-            if (status === 'finished') return;
+            if (status === 'finished' || isPaused) return;
 
             if (status === 'pre') {
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
@@ -115,8 +153,8 @@ export const useTimer = (workout, lang, voiceEnabled) => {
             } else {
                 // AMRAP, RFT, Chipper (Count DOWN or UP)
                 // TODO: Add "halfway there" audio cue for AMRAP/RFT
-                // TODO: Add countdown beeps at 3-2-1 for AMRAP/RFT final seconds
                 if (workout.template === 'AMRAP' || workout.template === 'RFT') {
+                    if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
                     if (timeLeft <= 0) {
                         setStatus('finished');
                         SOUNDS.end();
@@ -137,6 +175,8 @@ export const useTimer = (workout, lang, voiceEnabled) => {
         totalTime,
         currentRound,
         setCurrentRound,
-        roundTime
+        roundTime,
+        isPaused,
+        setIsPaused
     };
 };

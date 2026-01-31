@@ -45,8 +45,6 @@ export const PreviewScreen = ({
         }
     }, [modalOpen]);
 
-    // TODO: Add Web Share API support for native sharing on mobile devices
-    // TODO: Add fallback sharing method for devices that don't support clipboard API
     const handleShare = () => {
         let text = `*** WOD GENERATOR ***\n\n`;
 

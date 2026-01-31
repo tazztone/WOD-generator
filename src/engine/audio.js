@@ -1,9 +1,13 @@
 
 // --- AUDIO ENGINE (Oscillators for Beeps) ---
-// TODO: Add volume control setting for users (currently hardcoded gain values)
 // TODO: Add fallback audio using Audio API for older browsers that don't support AudioContext
 // Singleton AudioContext
 let audioCtx = null;
+let globalVolume = 0.7;
+
+export const setGlobalVolume = (val) => {
+    globalVolume = Math.max(0, Math.min(1, val));
+};
 
 const getAudioContext = () => {
     if (!audioCtx) {
@@ -31,9 +35,9 @@ export const playBeep = (freq = 880, type = 'sine', duration = 0.1) => {
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
 
         // Envelope to avoid clicking
-        gain.gain.setValueAtTime(0.01, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.1, ctx.currentTime + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        gain.gain.setValueAtTime(0.01 * globalVolume, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.1 * globalVolume, ctx.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001 * globalVolume, ctx.currentTime + duration);
 
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -68,5 +72,6 @@ export const speak = (text, lang = 'en') => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang === 'de' ? 'de-DE' : 'en-US';
     utterance.rate = 1.1;
+    utterance.volume = globalVolume;
     window.speechSynthesis.speak(utterance);
 };

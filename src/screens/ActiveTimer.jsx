@@ -48,6 +48,8 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
         return () => setModalOpen(false);
     }, [status, setModalOpen]);
 
+    const [score, setScore] = useState('');
+
     // FINISHED SCREEN
     if (status === 'finished') {
         return (
@@ -58,14 +60,17 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
 
                 <div className="w-full bg-slate-800 p-4 rounded-xl mb-4">
                     <label className="text-xs font-bold text-slate-500 uppercase">{t.score}</label>
-                    {/* TODO: Convert to controlled input with React state instead of DOM query */}
-                    <input id="scoreInput" type="text" placeholder={workout.template === 'AMRAP' ? 'e.g. 5 Rounds + 10' : 'e.g. 12:45'}
-                        className="w-full bg-transparent border-b border-slate-600 text-white text-xl py-2 focus:outline-none focus:border-emerald-500" />
+                    <input
+                        type="text"
+                        value={score}
+                        onChange={(e) => setScore(e.target.value)}
+                        placeholder={workout.template === 'AMRAP' ? 'e.g. 5 Rounds + 10' : 'e.g. 12:45'}
+                        className="w-full bg-transparent border-b border-slate-600 text-white text-xl py-2 focus:outline-none focus:border-emerald-500"
+                    />
                 </div>
 
                 <Button onClick={() => {
-                    const score = document.getElementById('scoreInput').value || 'Completed';
-                    onSave({ ...workout, score, timeTaken: totalTime });
+                    onSave({ ...workout, score: score || 'Completed', timeTaken: totalTime });
                     onExit();
                 }} variant="primary" fullWidth className="mb-3">
                     {t.save}
