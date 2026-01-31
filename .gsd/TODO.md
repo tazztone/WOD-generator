@@ -1,6 +1,10 @@
 # TODOs
 
 ## PENDING
+- [ ] De-bloat AppContext (Split contexts/Extract hooks) (v1.10)
+- [ ] Refactor WorkoutDirector to declarative pipeline (v1.10)
+- [ ] Externalize hardcoded constants (v1.10)
+- [ ] Add Context integration tests (v1.10)
 - [ ] Add seeded randomness for reproducible workouts (v2.0)
 - [ ] Add user profiles and cloud sync (v2.0)
 

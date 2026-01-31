@@ -11,6 +11,13 @@
 
 ## Future Milestones
 
+### v1.10 - Architectural Refinement (Tech Debt)
+**Goal**: Finalize architectural cleanup before v2.0 feature development.
+- [ ] **Context**: De-bloat `AppContext.jsx` by splitting into domain contexts (Workout, Settings) or extracting hooks.
+- [ ] **Logic**: Refactor `WorkoutDirector` imperative weighting into a declarative "Filter/Weight" pipeline.
+- [ ] **Extensibility**: Externalize hardcoded constants and template names into configuration files.
+- [ ] **Testing**: Add integration tests specifically for `AppContext` and its interactions with UI screens.
+
 ### v2.0 - User Systems & Cloud
 **Goal**: Transform the app from a stateless tool to a personalized training companion.
 - [ ] **Features**: User Profiles (Name, Skill Level, Equipment preset).
