@@ -1,9 +1,9 @@
-// TODO: Add schema version migration logic when DEFAULT_CONFIG changes
 // TODO: Add export/import functionality for users to backup their data
 export const CONFIG_STORAGE_KEY = 'wod_config_v1';
 export const HISTORY_STORAGE_KEY = 'wod_history_v7';
 
 export const DEFAULT_CONFIG = {
+    version: 1,
     duration: 15,
     difficulty: 'Rx',
     focus: 'Balanced',
@@ -15,10 +15,31 @@ export const DEFAULT_CONFIG = {
     equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true }
 };
 
+/**
+ * Migration logic for configuration data
+ */
+function migrateConfig(config) {
+    let migrated = { ...config };
+
+    // Initial versioning
+    if (!migrated.version) {
+        migrated.version = 1;
+    }
+
+    // Add future migrations here:
+    // if (migrated.version < 2) { ... migrated.version = 2 }
+
+    return migrated;
+}
+
 export function loadConfig() {
     try {
         const saved = localStorage.getItem(CONFIG_STORAGE_KEY);
-        if (saved) return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            const migrated = migrateConfig(parsed);
+            return { ...DEFAULT_CONFIG, ...migrated };
+        }
     } catch (e) {
         console.error('Failed to load config', e);
     }

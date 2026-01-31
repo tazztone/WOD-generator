@@ -30,8 +30,12 @@ export default function CrossFitGenerator() {
     // Load History
     // TODO: Add try-catch for JSON.parse to handle corrupted localStorage data gracefully
     useEffect(() => {
-        const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
-        if (saved) setHistory(JSON.parse(saved));
+        try {
+            const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
+            if (saved) setHistory(JSON.parse(saved));
+        } catch (e) {
+            console.error('Failed to parse history', e);
+        }
     }, []);
 
     // Handle Android Back Button (Capacitor native listener)

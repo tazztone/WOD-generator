@@ -23,6 +23,7 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
             equipment: { ...prev.equipment, [key]: !prev.equipment[key] }
         }));
     };
+    const isEquipmentValid = Object.values(config.equipment).some(v => v);
 
     return (
         <div className="p-5 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-y-auto pb-24">
@@ -109,7 +110,7 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
 
             {/* TODO: Add accessibility attributes (aria-labels) to toggle buttons */}
             <div className="flex gap-2">
-                <Button onClick={onGenerate} size="lg" fullWidth>
+                <Button onClick={onGenerate} size="lg" fullWidth disabled={!isEquipmentValid} className={!isEquipmentValid ? 'opacity-50 cursor-not-allowed' : ''}>
                     <Activity size={20} /> {t.generate}
                 </Button>
                 <Button onClick={() => setConfig(DEFAULT_CONFIG)} size="lg" variant="ghost">
