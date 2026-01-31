@@ -13,8 +13,12 @@ const updateSW = registerSW({
     },
 });
 
+import { ErrorBoundary } from './components/common/ErrorBoundary';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <App />
+        <ErrorBoundary>
+            <App />
+        </ErrorBoundary>
     </React.StrictMode>,
 )
