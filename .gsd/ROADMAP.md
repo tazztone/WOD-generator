@@ -11,11 +11,11 @@
 ## Phases
 
 ### Phase 1: Data Migration
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Convert the hardcoded exercise database into a JSON file and update the import logic.
 
 ### Phase 2: State Management Refactor
-**Status**: ⬜ Not Started
+**Status**: ▶️ In Progress
 **Objective**: Extract global state from `App.jsx` into a React Context provider.
 
 ### Phase 3: PWA Update UI
