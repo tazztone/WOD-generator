@@ -8,14 +8,13 @@ Codebase mapping complete.
 - **Technical debt** logged (Error boundaries, Context API, Storage safety).
 
 ## Current Position
-- **Phase**: 3 (completed)
-- **Task**: All tasks complete
-- **Status**: Verified
+- **Phase**: Done
+- **Task**: Milestone v1.1-hotfix complete
+- **Status**: Archived
 
 ## Last Session Summary
-Phase 3 executed successfully. Switched the release track to `internal` to comply with Google Play testing requirements. All changes are committed.
+Milestone v1.1-hotfix completed. Android release workflow corrected and release track switched to internal. Documentation archived.
 
 ## Next Steps
-1. Push changes to origin.
-2. Trigger the workflow.
+1. /new-milestone — Start the next set of features or improvements.
 
