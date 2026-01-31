@@ -16,13 +16,14 @@ export const PreviewScreen = ({
     isSaved,
     onToggleSave,
     modalOpen,
-    setModalOpen
+    setModalOpen,
+    onTooltip
 }) => {
     const [copied, setCopied] = useState(false);
     const [swapModal, setSwapModal] = useState({ show: false, index: -1 });
-    const [infoModal, setInfoModal] = useState({ show: false, title: '', text: '' });
-    const t = LOCALES[lang].screens.preview;
-    const explanations = t.explanations;
+    const t = LOCALES[lang];
+    const pt = t.screens.preview;
+    const explanations = pt.explanations;
 
     const validExercises = useMemo(() => {
         return EXERCISE_DB.filter(ex => isExerciseValid(ex, config));
@@ -30,18 +31,17 @@ export const PreviewScreen = ({
 
     // Sync internal modal state with global App state to support Android back button
     useEffect(() => {
-        if (swapModal.show || infoModal.show) {
+        if (swapModal.show) {
             setModalOpen(true);
         } else {
             setModalOpen(false);
         }
-    }, [swapModal.show, infoModal.show, setModalOpen]);
+    }, [swapModal.show, setModalOpen]);
 
     // If global modalOpen is closed (e.g. by back button), close local modals
     useEffect(() => {
         if (!modalOpen) {
             setSwapModal({ show: false, index: -1 });
-            setInfoModal({ show: false, title: '', text: '' });
         }
     }, [modalOpen]);
 
@@ -91,39 +91,18 @@ export const PreviewScreen = ({
         );
     };
 
-    const showInfo = (type) => {
-        let title = "";
-        let text = "";
-        if (type === 'strength') { title = explanations.strengthTitle; text = explanations.strengthText; }
-        if (type === 'metcon') { title = explanations.metconTitle; text = explanations.metconText; }
-        if (type === 'warmup') { title = explanations.warmupTitle; text = explanations.warmupText; }
-        if (type === 'swap') { title = explanations.swapTitle; text = explanations.swapText; }
-        setInfoModal({ show: true, title, text });
-    };
-
     return (
         <div className="flex flex-col h-full animate-in fade-in zoom-in-95 duration-300 relative">
-            {/* Info Modal */}
-            {infoModal.show && (
-                <div className="absolute inset-0 z-[60] bg-slate-900/95 backdrop-blur flex flex-col p-6 animate-in fade-in duration-200 justify-center items-center" onClick={() => setInfoModal({ show: false, title: '', text: '' })}>
-                    <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 max-w-sm shadow-2xl relative w-full" onClick={e => e.stopPropagation()}>
-                        <button onClick={() => setInfoModal({ show: false, title: '', text: '' })} className="absolute top-4 right-4 text-slate-500 hover:text-white"><XCircle size={24} /></button>
-                        <h3 className="text-xl font-black text-emerald-400 mb-4 flex items-center gap-2"><Info size={24} /> {infoModal.title}</h3>
-                        <p className="text-slate-300 leading-relaxed text-sm">{infoModal.text}</p>
-                    </div>
-                </div>
-            )}
-
             {/* Swap Modal */}
             {swapModal.show && (
                 <div className="absolute inset-0 z-50 bg-slate-900/95 backdrop-blur flex flex-col p-4 animate-in fade-in duration-200">
                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-black text-white italic">{t.selectSwap}</h3>
+                        <h3 className="text-lg font-black text-white italic">{pt.selectSwap}</h3>
                         <button onClick={() => setSwapModal({ show: false, index: -1 })} className="p-2 bg-slate-800 rounded-full"><XCircle size={20} /></button>
                     </div>
                     <div className="mb-4 bg-slate-800/50 p-3 rounded-lg flex items-start gap-2 border border-slate-700/50">
                         <Info size={16} className="text-emerald-400 mt-0.5 shrink-0" />
-                        <p className="text-xs text-slate-400 leading-snug">{t.whySwap}</p>
+                        <p className="text-xs text-slate-400 leading-snug">{pt.whySwap}</p>
                     </div>
                     <div className="flex-1 overflow-y-auto space-y-2 pb-4">
                         {getSwapCandidates(swapModal.index).map(ex => (
@@ -149,17 +128,17 @@ export const PreviewScreen = ({
 
             <div className="flex-1 p-5 overflow-y-auto pb-32">
                 <button onClick={onBack} className="mb-4 flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest transition-colors">
-                    <ChevronLeft size={14} /> {t.back}
+                    <ChevronLeft size={14} /> {pt.back}
                 </button>
 
                 {workout.strength && (
                     <div className="mb-6 bg-slate-800/40 border-l-4 border-purple-500 p-4 rounded-r-xl relative">
-                        <button onClick={() => showInfo('strength')} className="absolute top-2 right-2 text-slate-600 hover:text-purple-400 transition-colors p-2">
+                        <button onClick={(e) => onTooltip(e, explanations.strengthText)} className="absolute top-2 right-2 text-slate-600 hover:text-purple-400 transition-colors p-2">
                             <Info size={16} />
                         </button>
                         <div className="flex justify-between items-start mb-1">
                             <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest flex items-center gap-1">
-                                <Dumbbell size={10} /> {t.partA} • {t.strength}
+                                <Dumbbell size={10} /> {pt.partA} • {pt.strength}
                             </span>
                         </div>
                         <h3 className="text-xl font-black text-white">{workout.strength.name}</h3>
@@ -169,13 +148,13 @@ export const PreviewScreen = ({
 
                 <div className="flex justify-between items-end mb-2">
                     <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-1">
-                        <Activity size={10} /> {t.partB} • {t.conditioning}
-                        <button onClick={() => showInfo('metcon')} className="ml-1 text-slate-600 hover:text-emerald-500">
+                        <Activity size={10} /> {pt.partB} • {pt.conditioning}
+                        <button onClick={(e) => onTooltip(e, explanations.metconText)} className="ml-1 text-slate-600 hover:text-emerald-500">
                             <Info size={12} />
                         </button>
                     </span>
                     <button onClick={handleShare} className="text-xs flex items-center gap-1 text-slate-500 hover:text-emerald-400 transition-colors mr-3">
-                        {copied ? <CheckCircle size={12} /> : <Share2 size={12} />} {copied ? t.copied : t.share}
+                        {copied ? <CheckCircle size={12} /> : <Share2 size={12} />} {copied ? pt.copied : pt.share}
                     </button>
                     <button onClick={onToggleSave} className={`text-xs flex items-center gap-1 transition-colors ${isSaved ? 'text-emerald-400' : 'text-slate-500 hover:text-emerald-400'}`}>
                         <Star size={12} fill={isSaved ? "currentColor" : "none"} /> {isSaved ? "Saved" : "Save"}
@@ -190,13 +169,18 @@ export const PreviewScreen = ({
                             {workout.template}
                         </h2>
                         <div className="flex items-center gap-3 text-slate-400 text-xs font-mono font-bold">
-                            <span className="flex items-center gap-1"><Clock size={12} /> {config.duration} {t.min}</span>
-                            {workout.rounds && <span>• {workout.rounds} {t.rounds}</span>}
+                            <span className="flex items-center gap-1"><Clock size={12} /> {config.duration} {pt.min}</span>
+                            {workout.rounds && <span>• {workout.rounds} {pt.rounds}</span>}
                         </div>
 
                         {workout.buyIn && (
-                            <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest block mb-1">Buy-In</span>
+                            <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl relative">
+                                <div className="flex items-center gap-1 mb-1">
+                                    <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest block">Buy-In</span>
+                                    <button onClick={(e) => onTooltip(e, t.tt.buyIn)} className="text-emerald-500/50 hover:text-emerald-500 transition-colors">
+                                        <HelpCircle size={10} />
+                                    </button>
+                                </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm font-bold text-slate-200">{getExerciseName(workout.buyIn.exercise, lang)}</span>
                                     <span className="text-sm font-mono font-bold text-emerald-400">{workout.buyIn.reps}</span>
@@ -222,10 +206,10 @@ export const PreviewScreen = ({
                 </div>
 
                 <div className="bg-slate-900/50 border border-dashed border-slate-800 rounded-xl p-4 relative">
-                    <button onClick={() => showInfo('warmup')} className="absolute top-2 right-2 text-slate-700 hover:text-slate-400 transition-colors p-2">
+                    <button onClick={(e) => onTooltip(e, explanations.warmupText)} className="absolute top-2 right-2 text-slate-700 hover:text-slate-400 transition-colors p-2">
                         <Info size={14} />
                     </button>
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">{t.warmup}</span>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">{pt.warmup}</span>
                     <ul className="space-y-1">
                         {workout.warmup.map((line, i) => (
                             <li key={i} className="text-xs text-slate-400 flex gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full mt-1.5 shrink-0" /> {line}</li>

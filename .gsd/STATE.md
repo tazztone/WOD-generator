@@ -2,14 +2,14 @@
 
 ## Current Position
 - **Phase**: 1
-- **Task**: Planning complete
-- **Status**: Ready for execution
+- **Task**: Completed
+- **Status**: Phase 1 completed, ready for Phase 2
 
 ## Last Session Summary
-- Finalized v1.10: Architectural refinement, declarative engine, audio polish.
-- Archived v1.10 deliverables and documentation.
-- Reset ROADMAP for v2.0 (later shifted to 1.11 for polish).
-- All tests and linting passed.
+- Transitioned tooltips from fullscreen modals to floating components in PreviewScreen.
+- Added "Buy-In" tooltip and localized text.
+- Ensured unique workout ID generation to reset "Saved" button on reroll.
+- Passed `onTooltip` to `PreviewScreen`.
 
 ## Next Steps
 1. /plan 1 — Create Phase 1 execution plans for UI Polish & Tooltips.

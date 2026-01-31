@@ -12,7 +12,7 @@
 ## Phases
 
 ### Phase 1: UI Polish & Tooltips
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Transition tooltips to floating components and add the "buy-in" tooltip.
 
 ### Phase 2: Logic Refinement

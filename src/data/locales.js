@@ -27,7 +27,8 @@ export const LOCALES = {
             injuries: "Smart-Filter: Excludes aggravating movements.",
             level: "Rx uses 100% standard volume. Scaled reduces reps to 60% and simplifies complex movements.",
             focus: "Biases the random selection generator towards specific movement patterns (e.g., more running/burpees for Cardio).",
-            strength: "Smart Pairing: Selects a lift that complements the Metcon (e.g., if Metcon is leg-heavy, it picks an upper-body or hinge lift)."
+            strength: "Smart Pairing: Selects a lift that complements the Metcon (e.g., if Metcon is leg-heavy, it picks an upper-body or hinge lift).",
+            buyIn: "A single exercise performed once at the beginning of the workout, before the main conditioning rounds."
         },
         calculator: "1 Rep Max",
         weight: "Weight",
@@ -110,7 +111,8 @@ export const LOCALES = {
             injuries: "Smart-Filter: Entfernt belastende Übungen.",
             level: "Rx nutzt 100% Volumen. Skaliert reduziert die Wiederholungen auf 60% und vereinfacht komplexe Übungen.",
             focus: "Beeinflusst den Generator, bestimmte Bewegungsmuster zu bevorzugen (z.B. mehr Laufen/Burpees bei Cardio).",
-            strength: "Smart Pairing: Wählt eine Übung, die das Metcon ergänzt (z.B. wenn das Metcon beinlastig ist, wird Oberkörper oder Hinge gewählt)."
+            strength: "Smart Pairing: Wählt eine Übung, die das Metcon ergänzt (z.B. wenn das Metcon beinlastig ist, wird Oberkörper oder Hinge gewählt).",
+            buyIn: "Eine einzelne Übung, die einmal zu Beginn des Workouts vor den Hauptrunden absolviert wird."
         },
         calculator: "1 Rep Max",
         weight: "Gewicht",

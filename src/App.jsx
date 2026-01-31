@@ -74,6 +74,7 @@ export default function CrossFitGenerator() {
                         setModalOpen={setModalOpen}
                         isSaved={savedWorkouts.some(sw => sw.id === workout.id)}
                         onToggleSave={() => toggleSaveWorkout(workout)}
+                        onTooltip={handleTooltip}
                     />
                 )}
                 {appState === 'active' && workout && (
