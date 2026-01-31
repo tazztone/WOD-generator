@@ -22,11 +22,11 @@
 **Objective**: Implement tests for `ConfigScreen` and `PreviewScreen`.
 
 ### Phase 4: Management Screen Testing
-**Status**: ▶️ In Progress
+**Status**: ✅ Completed
 **Objective**: Implement tests for `HistoryScreen` and `OneRepMaxScreen`.
 
 ### Phase 5: Verification & Audit
-**Status**: ⬜ Not Started
+**Status**: ▶️ In Progress
 **Objective**: Final regression sweep and documentation of the new architecture.
 
 ## Future Milestones

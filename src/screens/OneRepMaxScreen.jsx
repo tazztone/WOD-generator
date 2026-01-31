@@ -40,6 +40,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
                             onChange={(e) => setWeight(e.target.value)}
                             className="bg-transparent text-2xl font-black text-emerald-400 focus:outline-none w-full placeholder-slate-700"
                             placeholder="0"
+                            aria-label={t.weight}
                          />
                     </Card>
                     <Card className="flex flex-col gap-2">
@@ -50,6 +51,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
                             onChange={(e) => setReps(e.target.value)}
                             className="bg-transparent text-2xl font-black text-emerald-400 focus:outline-none w-full placeholder-slate-700"
                             placeholder="0"
+                            aria-label={t.reps}
                          />
                     </Card>
                 </div>
