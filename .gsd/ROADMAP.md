@@ -5,7 +5,7 @@
 
 ## Must-Haves
 - [x] Fix Android navigation and layout issues (Back button, Timer button position)
-- [ ] Enhance Timer logic (Pause/Resume, Persistence, Beeps, Volume control)
+- [x] Enhance Timer logic (Pause/Resume, Persistence, Beeps, Volume control)
 - [ ] Expand Workout Generator (New templates, double limits, workout focus selection)
 - [x] Improve Data Safety (Schema migration, JSON parsing error handling, form validation)
 - [ ] UX/UI Polish (Icon visibility, Swipe-to-delete, Button loading states)
@@ -24,7 +24,7 @@
 - [x] Add schema version migration logic
 
 ### Phase 2: Timer & UI Refinement
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Complete the timer feature set and polish visual elements.
 - Add pause/resume functionality to timer
 - Persist timer state to localStorage
