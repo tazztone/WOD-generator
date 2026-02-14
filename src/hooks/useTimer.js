@@ -145,7 +145,7 @@ export const useTimer = (workout, lang, audioSettings) => {
                         setTimeLeft(20);
                         setCurrentRound(r => r + 1);
                         if (beeps) SOUNDS.start();
-                        if (currentRound >= 8) {
+                        if (currentRound >= workout.rounds) {
                             setStatus('finished');
                             SOUNDS.end();
                         }
