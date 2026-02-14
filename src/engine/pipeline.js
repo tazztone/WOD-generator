@@ -26,6 +26,26 @@ export const skillFilter = (pool, director) => {
 };
 
 /**
+ * Focus Relevance Filter: Ensure exercises match the intended focus style
+ */
+export const focusRelevanceFilter = (pool, director) => {
+    if (director.config.focus === 'Gymnastics') {
+        // Gymnastics implies bodyweight mastery. Exclude heavy implements.
+        return pool.filter(ex =>
+            !['Barbell', 'Dumbbell', 'Kettlebell', 'Machine'].includes(ex.equipment)
+        );
+    }
+    // Cardio focus usually means lighter loads or monostructural
+    if (director.config.focus === 'Cardio') {
+        // Allow everything, but maybe de-prioritize heavy lifts in weight step
+        // For now, let's just avoid Heavy Barbell work in Cardio focus to prevent "Heavy 1RM" feel
+        // But "Grace" (30 C&J) is cardio... so maybe leave it.
+    }
+    return pool;
+};
+
+
+/**
  * Overlap Filter: Prevent muscle group overlap and strict pattern repetition
  */
 export const overlapFilter = (pool, director) => {
@@ -35,10 +55,15 @@ export const overlapFilter = (pool, director) => {
     
     return pool.filter(ex => {
         // STRICT Pattern Filter: Prevent consecutive same patterns
+        // e.g. Pull -> Pull
         if (ex.pattern === lastEx.pattern) return false;
+
+        // Prevent same exercise ID (should be handled by alreadySelected, but good safety)
+        if (ex.id === lastEx.id) return false;
 
         // Muscle Overlap via Tags
         if (lastEx.tags && ex.tags) {
+            // If they share a clash tag, avoid.
             const shared = lastEx.tags.filter(t => ex.tags.includes(t) && CLASH_TAGS.includes(t));
             if (shared.length > 0) return false;
         }
@@ -50,13 +75,20 @@ export const overlapFilter = (pool, director) => {
  * Dynamic Balancing: Weight patterns to maintain Push/Pull balance
  */
 export const balanceWeight = (pool, director) => {
+    // If we have more Push than Pull, add more Pull candidates
     if (director.balance.Push > director.balance.Pull) {
         const pullCandidates = pool.filter(ex => ex.pattern === 'Pull');
         if (pullCandidates.length > 0) {
+            // Duplicate them to increase probability
             return [...pool, ...pullCandidates, ...pullCandidates];
         }
     }
-    // TODO: Add more balancing rules (Squat vs Hinge etc)
+    if (director.balance.Pull > director.balance.Push) {
+        const pushCandidates = pool.filter(ex => ex.pattern === 'Push');
+        if (pushCandidates.length > 0) {
+            return [...pool, ...pushCandidates, ...pushCandidates];
+        }
+    }
     return pool;
 };
 
@@ -67,10 +99,12 @@ export const focusWeight = (pool, director) => {
     if (director.config.focus === 'Balanced') return pool;
 
     const targetPatterns = FOCUS_PATTERNS[director.config.focus] || [];
+    // Note: This matches based on "pattern" string (e.g. "Cardio", "Push")
     const priorityMoves = pool.filter(ex => targetPatterns.includes(ex.pattern));
     
     if (priorityMoves.length > 0) {
-        return [...pool, ...priorityMoves, ...priorityMoves];
+        // Significantly boost priority
+        return [...pool, ...priorityMoves, ...priorityMoves, ...priorityMoves];
     }
     return pool;
 };
@@ -81,6 +115,7 @@ export const focusWeight = (pool, director) => {
 export const DEFAULT_PIPELINE = [
     alreadySelectedFilter,
     skillFilter,
+    focusRelevanceFilter, // Added this
     overlapFilter,
     balanceWeight,
     focusWeight

@@ -31,11 +31,21 @@ export const ChipperStrategy = {
              return '40/30 cal';
         }
 
-        // Chippers are high volume
-        let reps = baseReps * 4;
+        let multiplier = 4;
 
-        // Cap reps reasonably (e.g., 60 reps max per set usually)
-        if (reps > 60) reps = 60;
+        // Scale down high skill/intensity movements
+        if (exercise.intensity === 'VeryHigh' || exercise.name.includes('Muscle-Up')) {
+            multiplier = 2;
+        } else if (exercise.intensity === 'High' || exercise.name.includes('Pull-Up') || exercise.name.includes('HSPU')) {
+            multiplier = 3;
+        }
+
+        let reps = Math.floor(baseReps * multiplier);
+
+        // Cap reps reasonably (e.g., 60 reps max per set usually, 100 for DU)
+        if (reps > 60 && !exercise.name.includes('Double') && !exercise.name.includes('Single')) {
+            reps = 60;
+        }
 
         if (exercise.name.includes('Double')) reps = 100;
         if (exercise.name.includes('Single')) reps = 150;

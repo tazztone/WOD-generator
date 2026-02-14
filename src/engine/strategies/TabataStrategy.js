@@ -1,9 +1,11 @@
 export const TabataStrategy = {
-    calculateParams(_config) {
+    calculateParams(config) {
+        // Tabata is 20s work / 10s rest = 30s per round
+        // Rounds = (duration * 60) / 30 = duration * 2
         return {
             template: 'Tabata',
-            rounds: 8,
-            timeCap: 4 // Standard Tabata is 4 mins
+            rounds: config.duration * 2,
+            timeCap: config.duration
         };
     },
 
