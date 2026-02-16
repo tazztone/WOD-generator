@@ -1,0 +1,109 @@
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { exportData, importData, CONFIG_STORAGE_KEY, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './storage';
+
+describe('Storage Engine - Export/Import', () => {
+    beforeEach(() => {
+        // Mock localStorage
+        // In jsdom environment, localStorage is available.
+        localStorage.clear();
+        vi.restoreAllMocks();
+    });
+
+    afterEach(() => {
+        localStorage.clear();
+    });
+
+    it('should export all data correctly', () => {
+        const mockConfig = { version: 1, duration: 45, difficulty: 'Rx' };
+        const mockHistory = [{ id: 1, date: '2023-01-01', type: 'AMRAP' }];
+        const mockSaved = [{ id: 101, name: 'Murph' }];
+
+        localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(mockConfig));
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(mockHistory));
+        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(mockSaved));
+
+        const resultJson = exportData();
+        const result = JSON.parse(resultJson);
+
+        expect(result).toBeDefined();
+        expect(result.version).toBe(1);
+        expect(result.timestamp).toBeDefined();
+        // Since loadConfig merges with default, we check for properties
+        expect(result.config).toMatchObject(mockConfig);
+        expect(result.history).toEqual(mockHistory);
+        expect(result.savedWorkouts).toEqual(mockSaved);
+    });
+
+    it('should handle missing data gracefully during export', () => {
+        // Only config exists (and it might be partial/default)
+        // loadConfig returns merged default config if missing
+
+        const resultJson = exportData();
+        const result = JSON.parse(resultJson);
+
+        expect(result.config).toBeDefined();
+        expect(result.history).toEqual([]);
+        expect(result.savedWorkouts).toEqual([]);
+    });
+
+    it('should import valid data correctly', () => {
+        const importPayload = {
+            version: 1,
+            timestamp: new Date().toISOString(),
+            config: { version: 1, duration: 60, difficulty: 'Scaled' },
+            history: [{ id: 2, date: '2023-02-01', type: 'EMOM' }],
+            savedWorkouts: [{ id: 102, name: 'Fran' }]
+        };
+
+        const success = importData(JSON.stringify(importPayload));
+
+        expect(success).toBe(true);
+
+        const storedConfig = JSON.parse(localStorage.getItem(CONFIG_STORAGE_KEY));
+        const storedHistory = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
+        const storedSaved = JSON.parse(localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY));
+
+        expect(storedConfig).toMatchObject(importPayload.config);
+        expect(storedHistory).toEqual(importPayload.history);
+        expect(storedSaved).toEqual(importPayload.savedWorkouts);
+    });
+
+    it('should handle object input for import', () => {
+        const importPayload = {
+            version: 1,
+            config: { version: 1, duration: 30 }
+        };
+
+        const success = importData(importPayload);
+        expect(success).toBe(true);
+
+        const storedConfig = JSON.parse(localStorage.getItem(CONFIG_STORAGE_KEY));
+        expect(storedConfig).toMatchObject(importPayload.config);
+    });
+
+    it('should validate import data structure', () => {
+        expect(() => importData(null)).toThrow();
+        expect(() => importData(undefined)).toThrow();
+        expect(() => importData("invalid json")).toThrow();
+        // Missing version or bad structure - currently simple implementation might just ignore
+        // extra fields, but let's see if we want strict validation.
+        // For now, basic JSON parsing check is enough.
+    });
+
+    it('should handle partial import (only history)', () => {
+        const importPayload = {
+            history: [{ id: 3, date: '2023-03-01' }]
+        };
+
+        const success = importData(importPayload);
+        expect(success).toBe(true);
+
+        const storedHistory = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
+        expect(storedHistory).toEqual(importPayload.history);
+
+        // Config should remain untouched (or default if not set)
+        // Since we didn't set config, it remains null in localStorage in this test env
+        // unless importData sets defaults. It shouldn't touch keys not present.
+        expect(localStorage.getItem(CONFIG_STORAGE_KEY)).toBeNull();
+    });
+});

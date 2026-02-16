@@ -1,4 +1,4 @@
-// TODO: Add export/import functionality for users to backup their data
+// Storage management for WOD Generator
 export const CONFIG_STORAGE_KEY = 'wod_config_v1';
 export const HISTORY_STORAGE_KEY = 'wod_history_v7';
 export const SAVED_WORKOUTS_STORAGE_KEY = 'wod_saved_v1';
@@ -55,5 +55,78 @@ export function saveConfig(config) {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
     } catch (e) {
         console.error('Failed to save config', e);
+    }
+}
+
+/**
+ * Exports all user data (config, history, saved workouts) as a JSON string.
+ * @returns {string} JSON string of the backup data
+ */
+export function exportData() {
+    try {
+        const config = loadConfig();
+
+        let history = [];
+        const historyJson = localStorage.getItem(HISTORY_STORAGE_KEY);
+        if (historyJson) {
+            history = JSON.parse(historyJson);
+        }
+
+        let savedWorkouts = [];
+        const savedJson = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
+        if (savedJson) {
+            savedWorkouts = JSON.parse(savedJson);
+        }
+
+        const exportPayload = {
+            version: 1,
+            timestamp: new Date().toISOString(),
+            config,
+            history,
+            savedWorkouts
+        };
+
+        return JSON.stringify(exportPayload, null, 2);
+    } catch (e) {
+        console.error('Failed to export data', e);
+        throw e;
+    }
+}
+
+/**
+ * Imports user data from a JSON string or object.
+ * @param {string|Object} data
+ * @returns {boolean} True if successful
+ */
+export function importData(data) {
+    try {
+        let parsed = data;
+        if (typeof data === 'string') {
+            parsed = JSON.parse(data);
+        }
+
+        if (!parsed || typeof parsed !== 'object') {
+            throw new Error('Invalid data format');
+        }
+
+        // Import Config
+        if (parsed.config) {
+            saveConfig(parsed.config);
+        }
+
+        // Import History
+        if (parsed.history && Array.isArray(parsed.history)) {
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(parsed.history));
+        }
+
+        // Import Saved Workouts
+        if (parsed.savedWorkouts && Array.isArray(parsed.savedWorkouts)) {
+            localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(parsed.savedWorkouts));
+        }
+
+        return true;
+    } catch (e) {
+        console.error('Failed to import data', e);
+        throw e;
     }
 }
