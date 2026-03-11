@@ -35,12 +35,6 @@ export const focusRelevanceFilter = (pool, director) => {
             !['Barbell', 'Dumbbell', 'Kettlebell', 'Machine'].includes(ex.equipment)
         );
     }
-    // Cardio focus usually means lighter loads or monostructural
-    if (director.config.focus === 'Cardio') {
-        // Allow everything, but maybe de-prioritize heavy lifts in weight step
-        // For now, let's just avoid Heavy Barbell work in Cardio focus to prevent "Heavy 1RM" feel
-        // But "Grace" (30 C&J) is cardio... so maybe leave it.
-    }
     return pool;
 };
 
