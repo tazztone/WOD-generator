@@ -1,7 +1,7 @@
 /**
  * Workout Generation Pipeline Rules
  */
-import { CLASH_TAGS, FOCUS_PATTERNS } from '../config/workoutConfig.js';
+import { FOCUS_PATTERNS } from '../config/workoutConfig.js';
 import { getSubstitution } from './scaling.js';
 
 /**
@@ -26,15 +26,16 @@ export const skillFilter = (pool, director) => {
     });
 };
 
+const CLASH_TAGS_SET = new Set(['shoulders', 'legs', 'grip', 'core', 'overhead']);
+const GYMNASTICS_EQUIPMENT_EXCLUDES = new Set(['Barbell', 'Dumbbell', 'Kettlebell', 'Machine']);
+
 /**
  * Focus Relevance Filter: Ensure exercises match the intended focus style
  */
 export const focusRelevanceFilter = (pool, director) => {
     if (director.config.focus === 'Gymnastics') {
         // Gymnastics implies bodyweight mastery. Exclude heavy implements.
-        return pool.filter(ex =>
-            !['Barbell', 'Dumbbell', 'Kettlebell', 'Machine'].includes(ex.equipment)
-        );
+        return pool.filter(ex => !GYMNASTICS_EQUIPMENT_EXCLUDES.has(ex.equipment));
     }
     return pool;
 };
@@ -65,7 +66,7 @@ export const overlapFilter = (pool, director) => {
         // Muscle Overlap via Tags
         if (lastEx.tags && ex.tags) {
             // If they share a clash tag, avoid.
-            const shared = lastEx.tags.filter(t => ex.tags.includes(t) && CLASH_TAGS.includes(t));
+            const shared = lastEx.tags.filter(t => ex.tags.includes(t) && CLASH_TAGS_SET.has(t));
             if (shared.length > 0) return false;
         }
         return true;

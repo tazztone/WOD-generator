@@ -98,7 +98,7 @@
     { "id": "ab_rollout", "name": "Ab Rollout", "name_de": "Ab Rollout", "pattern": "Core", "equipment": "Dumbbell", "intensity": "High", "tags": ["core", "shoulders"] },
     { "id": "medball_slam", "name": "Medicine Ball Slam", "name_de": "Medizinball Slam", "pattern": "Core", "equipment": "Dumbbell", "intensity": "High", "tags": ["core", "cardio"] },
     { "id": "side_bend_db", "name": "Dumbbell Side Bend", "name_de": "KH Seitbeugen", "pattern": "Core", "equipment": "Dumbbell", "intensity": "Low", "tags": ["core", "oblique"] },
-    { "id_g": "plank_reach", "name": "Plank with Reach", "name_de": "Plank mit ausgestrecktem Arm", "pattern": "Core", "equipment": "Bodyweight", "intensity": "Medium", "tags": ["core", "shoulders", "balance"] },
+    { "id": "plank_reach", "name": "Plank with Reach", "name_de": "Plank mit ausgestrecktem Arm", "pattern": "Core", "equipment": "Bodyweight", "intensity": "Medium", "tags": ["core", "shoulders", "balance"] },
     { "id": "reverse_crunch", "name": "Reverse Crunch", "name_de": "Umgekehrter Crunch", "pattern": "Core", "equipment": "Bodyweight", "intensity": "Medium", "tags": ["core"] },
     { "id": "copenhagen_plank", "name": "Copenhagen Plank", "name_de": "Kopenhagen Plank", "pattern": "Core", "equipment": "Bodyweight", "intensity": "High", "tags": ["core", "adductor"] },
     { "id": "back_extension", "name": "Back Extension", "name_de": "Rückenstrecker", "pattern": "Core", "equipment": "Bodyweight", "intensity": "Low", "tags": ["back"] },

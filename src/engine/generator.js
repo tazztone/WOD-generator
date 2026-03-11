@@ -8,6 +8,9 @@ import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
 
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic };
 
+// Fast lookup index
+const EXERCISE_MAP = new Map(EXERCISE_DB.map(e => [e.id, e]));
+
 // --- The "Director" (Internal Logic) ---
 
 class WorkoutDirector {
@@ -48,7 +51,7 @@ class WorkoutDirector {
         
         const subId = getSubstitution(picked.id, this.config.difficulty);
         if (subId) {
-            const subEx = EXERCISE_DB.find(e => e.id === subId);
+            const subEx = EXERCISE_MAP.get(subId);
             if (subEx) picked = subEx;
         }
 
@@ -124,12 +127,12 @@ export const generateWorkout = (config, lang = 'en') => {
 };
 
 export const swapExercise = (workout, index, newExerciseId, config, lang = 'en') => {
-    let newEx = EXERCISE_DB.find(e => e.id === newExerciseId);
+    let newEx = EXERCISE_MAP.get(newExerciseId);
     if (!newEx) return workout;
 
     const subId = getSubstitution(newEx.id, config.difficulty);
     if (subId) {
-        const subEx = EXERCISE_DB.find(e => e.id === subId);
+        const subEx = EXERCISE_MAP.get(subId);
         if (subEx) newEx = subEx;
     }
 

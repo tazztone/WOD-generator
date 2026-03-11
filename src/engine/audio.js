@@ -71,13 +71,45 @@ export const SOUNDS = {
     }
 };
 
-// TODO: Queue speech synthesis to prevent overlapping announcements
-export const speak = (text, lang = 'en') => {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel(); // Stop previous
+// --- SPEECH ENGINE (Queue to prevent overlapping) ---
+let speechQueue = [];
+let isSpeaking = false;
+
+const processQueue = () => {
+    if (isSpeaking || speechQueue.length === 0) return;
+
+    isSpeaking = true;
+    const { text, lang, volume } = speechQueue.shift();
     const utterance = new SpeechSynthesisUtterance(text);
+    
     utterance.lang = lang === 'de' ? 'de-DE' : 'en-US';
     utterance.rate = 1.1;
-    utterance.volume = globalVolume;
+    utterance.volume = volume;
+
+    utterance.onend = () => {
+        isSpeaking = false;
+        processQueue();
+    };
+
+    utterance.onerror = () => {
+        isSpeaking = false;
+        processQueue();
+    };
+
     window.speechSynthesis.speak(utterance);
+};
+
+export const speak = (text, lang = 'en') => {
+    if (!window.speechSynthesis) return;
+    
+    speechQueue.push({ text, lang, volume: globalVolume });
+    processQueue();
+};
+
+export const cancelSpeech = () => {
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        speechQueue = [];
+        isSpeaking = false;
+    }
 };

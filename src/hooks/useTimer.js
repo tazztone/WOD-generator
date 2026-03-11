@@ -136,6 +136,13 @@ export const useTimer = (workout, lang, audioSettings) => {
         return () => clearInterval(interval);
     }, [status, isPaused]); // Only restart interval when play state changes
 
+    // Haptic Helper
+    const haptic = useCallback((pattern) => {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            navigator.vibrate(pattern);
+        }
+    }, []);
+
     // Speak helper
     const speakMovements = useCallback(() => {
         if (!announcements || timerStateRef.current.status === 'finished') return;
@@ -169,9 +176,15 @@ export const useTimer = (workout, lang, audioSettings) => {
                     const isCatchup = passed > 1; // True if fast-forwarding
 
                     if (state.status === 'pre') {
-                        if (state.timeLeft <= 3 && state.timeLeft > 0 && countdowns && !isCatchup) SOUNDS.countdown();
+                        if (state.timeLeft <= 3 && state.timeLeft > 0 && countdowns && !isCatchup) {
+                            SOUNDS.countdown();
+                            haptic(50);
+                        }
                         if (state.timeLeft <= 0) {
-                            if (beeps && !isCatchup) SOUNDS.start();
+                            if (beeps && !isCatchup) {
+                                SOUNDS.start();
+                                haptic([200, 100, 200]);
+                            }
                             state.status = 'work';
                             state.timeLeft = workout.template === 'Tabata' ? 20 : (workout.template === 'EMOM' ? 60 : workout.timeCap * 60);
                             if (!isCatchup) speakMovements();
@@ -189,12 +202,21 @@ export const useTimer = (workout, lang, audioSettings) => {
                         if (isEMOM) {
                             if (state.timeLeft === 31 && beeps && !isCatchup) SOUNDS.halfway();
                             if (state.timeLeft === 11 && announcements && !isCatchup) speak("10 seconds", lang);
-                            if (state.timeLeft <= 4 && state.timeLeft > 1 && countdowns && !isCatchup) SOUNDS.countdown();
+                            if (state.timeLeft <= 4 && state.timeLeft > 1 && countdowns && !isCatchup) {
+                                SOUNDS.countdown();
+                                haptic(50);
+                            }
                             if (state.timeLeft <= 1) {
-                                if (beeps && !isCatchup) SOUNDS.round();
+                                if (beeps && !isCatchup) {
+                                    SOUNDS.round();
+                                    haptic(200);
+                                }
                                 if (state.currentRound >= workout.rounds) {
                                     state.status = 'finished';
-                                    if (!isCatchup) SOUNDS.end();
+                                    if (!isCatchup) {
+                                        SOUNDS.end();
+                                        haptic([500, 200, 500]);
+                                    }
                                 } else {
                                     state.currentRound += 1;
                                     state.timeLeft = 60;
@@ -204,21 +226,33 @@ export const useTimer = (workout, lang, audioSettings) => {
                                 state.timeLeft -= 1;
                             }
                         } else if (isTabata) {
-                            if (state.timeLeft <= 4 && state.timeLeft > 1 && countdowns && !isCatchup) SOUNDS.countdown();
+                            if (state.timeLeft <= 4 && state.timeLeft > 1 && countdowns && !isCatchup) {
+                                SOUNDS.countdown();
+                                haptic(50);
+                            }
                             if (state.timeLeft <= 1) {
                                 if (state.status === 'work') {
                                     state.status = 'rest';
                                     state.timeLeft = 10;
-                                    if (beeps && !isCatchup) SOUNDS.round();
+                                    if (beeps && !isCatchup) {
+                                        SOUNDS.round();
+                                        haptic(200);
+                                    }
                                 } else {
                                     if (state.currentRound >= workout.rounds) {
                                         state.status = 'finished';
-                                        if (!isCatchup) SOUNDS.end();
+                                        if (!isCatchup) {
+                                            SOUNDS.end();
+                                            haptic([500, 200, 500]);
+                                        }
                                     } else {
                                         state.status = 'work';
                                         state.timeLeft = 20;
                                         state.currentRound += 1;
-                                        if (beeps && !isCatchup) SOUNDS.start();
+                                        if (beeps && !isCatchup) {
+                                            SOUNDS.start();
+                                            haptic([200, 100, 200]);
+                                        }
                                     }
                                 }
                             } else {
@@ -230,10 +264,16 @@ export const useTimer = (workout, lang, audioSettings) => {
                             if (state.timeLeft === Math.floor(totalDuration / 2) + 1 && beeps && !isCatchup) SOUNDS.halfway();
                             if (state.timeLeft === 61 && announcements && !isCatchup) speak(lang === 'de' ? "Noch eine Minute" : "One minute remaining", lang);
 
-                            if (state.timeLeft <= 4 && state.timeLeft > 1 && countdowns && !isCatchup) SOUNDS.countdown();
+                            if (state.timeLeft <= 4 && state.timeLeft > 1 && countdowns && !isCatchup) {
+                                SOUNDS.countdown();
+                                haptic(50);
+                            }
                             if (state.timeLeft <= 1) {
                                 state.status = 'finished';
-                                if (!isCatchup) SOUNDS.end();
+                                if (!isCatchup) {
+                                    SOUNDS.end();
+                                    haptic([500, 200, 500]);
+                                }
                             } else {
                                 state.timeLeft -= 1;
                             }
@@ -253,7 +293,7 @@ export const useTimer = (workout, lang, audioSettings) => {
                 }
             }
         };
-    }, [workout, countdowns, announcements, beeps, speakMovements, lang]);
+    }, [workout, countdowns, announcements, beeps, speakMovements, lang, haptic]);
 
     useEffect(() => {
         timerStateRef.current.lastTickTime = Date.now();
