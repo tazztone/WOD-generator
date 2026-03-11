@@ -25,8 +25,10 @@ class WorkoutDirector {
         return this.pipeline.reduce((currentPool, rule) => rule(currentPool, this), this.pool);
     }
 
-    pickNext() {
+    pickNext(buyInContext = null) {
+        this.buyInForContext = buyInContext;
         const candidates = this.getWeightedPool();
+        this.buyInForContext = null;
         if (candidates.length === 0) return null;
         
         let picked = candidates[Math.floor(Math.random() * candidates.length)];
@@ -78,15 +80,7 @@ export const generateWorkout = (config, lang = 'en') => {
     const targetCount = config.numExercises;
 
     for (let i = 0; i < targetCount; i++) {
-        if (buyIn) {
-             director.selectedExercises.push({ exercise: buyIn.exercise, reps: 0 }); 
-        }
-
-        const picked = director.pickNext();
-        
-        if (buyIn) {
-             director.selectedExercises.pop();
-        }
+        const picked = director.pickNext(i === 0 && buyIn ? buyIn.exercise : null);
 
         if (!picked) break;
 

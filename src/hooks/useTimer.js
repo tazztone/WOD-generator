@@ -97,8 +97,7 @@ export const useTimer = (workout, lang, audioSettings) => {
         const shouldSave =
             isPaused ||
             status !== lastSavedStateRef.current.status ||
-            currentRound !== lastSavedStateRef.current.currentRound ||
-            (timeLeft % 5 === 0);
+            currentRound !== lastSavedStateRef.current.currentRound;
 
         if (shouldSave) {
             const state = {
@@ -112,7 +111,30 @@ export const useTimer = (workout, lang, audioSettings) => {
             localStorage.setItem('wod_timer_v1', JSON.stringify(state));
             lastSavedStateRef.current = { status, currentRound };
         }
-    }, [status, timeLeft, totalTime, currentRound, roundTime, workout.id, isPaused]);
+    }, [status, currentRound, workout.id, isPaused, timeLeft, totalTime, roundTime]);
+
+    // Throttle pure time updates
+    const currentStateRef = useRef({});
+    useEffect(() => {
+        currentStateRef.current = {
+            workoutId: workout.id,
+            status,
+            timeLeft,
+            totalTime,
+            currentRound,
+            roundTime
+        };
+    }, [workout.id, status, timeLeft, totalTime, currentRound, roundTime]);
+
+    useEffect(() => {
+        if (status === 'pre' || status === 'finished' || isPaused) return;
+
+        const interval = setInterval(() => {
+            localStorage.setItem('wod_timer_v1', JSON.stringify(currentStateRef.current));
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [status, isPaused]); // Only restart interval when play state changes
 
     // Speak helper
     const speakMovements = useCallback(() => {
@@ -137,8 +159,9 @@ export const useTimer = (workout, lang, audioSettings) => {
             }
 
             if (deltaMs >= 1000) {
-                let passed = Math.floor(deltaMs / 1000);
-                state.lastTickTime += passed * 1000;
+                const maxPassed = workout.timeCap ? workout.timeCap * 60 : 3600;
+                let passed = Math.min(Math.floor(deltaMs / 1000), maxPassed);
+                state.lastTickTime += Math.floor(deltaMs / 1000) * 1000;
 
                 let needsUpdate = false;
 

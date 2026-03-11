@@ -75,6 +75,10 @@ export const WorkoutProvider = ({ children }) => {
         if (isSaved) {
             updated = savedWorkouts.filter(sw => sw.id !== w.id);
         } else {
+            if (savedWorkouts.length >= 50) {
+                alert(lang === 'de' ? 'Maximal 50 Workouts können gespeichert werden.' : 'Maximum of 50 saved workouts reached.');
+                return;
+            }
             updated = [w, ...savedWorkouts];
         }
         setSavedWorkouts(updated);

@@ -6,6 +6,13 @@ import { Card } from '../components/ui/Card';
 import { LOCALES } from '../data/locales';
 import { DEFAULT_CONFIG } from '../engine/storage';
 
+const EQUIPMENT_KEY_MAP = {
+    pullup: 'pullupBar',
+    barbell: 'barbell',
+    dumbbell: 'dumbbell',
+    machine: 'machine'
+};
+
 export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip }) => {
     const t = LOCALES[lang];
 
@@ -17,9 +24,10 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
     };
 
     const toggleEquipment = (key) => {
+        const mappedKey = EQUIPMENT_KEY_MAP[key] || key;
         setConfig(prev => ({
             ...prev,
-            equipment: { ...prev.equipment, [key]: !prev.equipment[key] }
+            equipment: { ...prev.equipment, [mappedKey]: !prev.equipment[mappedKey] }
         }));
     };
     const isEquipmentValid = Object.values(config.equipment).some(v => v);
@@ -90,7 +98,8 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                     </div>
                     <select value={config.difficulty} onChange={(e) => setConfig({ ...config, difficulty: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white focus:ring-1 focus:ring-emerald-500">
                         <option value="Rx">{t.rx}</option>
-                        <option value="Beginner">{t.scaled}</option>
+                        <option value="Scaled">{t.scaled}</option>
+                        <option value="Beginner">{t.beginner}</option>
                     </select>
                 </div>
                 <div>
@@ -166,13 +175,17 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
             <div>
                 <span className="text-xs font-bold text-slate-400 uppercase mb-2 block">{t.gear}</span>
                 <div className="grid grid-cols-2 gap-2">
-                    {Object.keys(t.equip).map(key => (
-                        <button key={key} onClick={() => toggleEquipment(key)}
-                            aria-pressed={!!config.equipment[key === 'pullup' ? 'pullupBar' : key]}
-                            className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${config.equipment[key === 'pullup' ? 'pullupBar' : key] ? 'bg-slate-800 border-emerald-500/30 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}>
-                            {t.equip[key]}
-                        </button>
-                    ))}
+                    {Object.keys(t.equip).map(key => {
+                        const mappedKey = EQUIPMENT_KEY_MAP[key] || key;
+                        const isActive = !!config.equipment[mappedKey];
+                        return (
+                            <button key={key} onClick={() => toggleEquipment(key)}
+                                aria-pressed={isActive}
+                                className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${isActive ? 'bg-slate-800 border-emerald-500/30 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}>
+                                {t.equip[key]}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 

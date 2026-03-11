@@ -116,7 +116,10 @@ export function importData(data) {
 
         // Import History
         if (parsed.history && Array.isArray(parsed.history)) {
-            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(parsed.history));
+            const validHistory = parsed.history.filter(item =>
+                item && typeof item === 'object' && item.id && item.timestamp
+            ).slice(0, 200);
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(validHistory));
         }
 
         // Import Saved Workouts
