@@ -57,12 +57,25 @@ export const SCALING_CONSTANTS = {
 };
 
 export const SUBSTITUTIONS = {
-    'hspu': 'push_press_db',      // Handstand Push-up -> DB Push Press
-    'bmu': 'pullup',              // Bar Muscle-up -> Pull-up
-    'rmu': 'c2b',                 // Ring Muscle-up -> Chest-to-Bar
-    'pistol': 'lunge_weighted',    // Pistol -> Weighted Lunge
-    'du': 'su',                    // Double Unders -> Single Unders
-    'ttb': 'v_up',                 // Toes-to-Bar -> V-Up
-    'hswalk': 'bear_crawl',        // Handstand Walk -> Bear Crawl
-    'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
+    Beginner: {
+        'hspu': 'push_press_db',      // Handstand Push-up -> DB Push Press
+        'bmu': 'pullup',              // Bar Muscle-up -> Pull-up
+        'rmu': 'pullup',              // Ring Muscle-up -> Pull-up
+        'c2b': 'pullup',              // Chest-to-Bar -> Pull-up
+        'pistol': 'goblet_squat',     // Pistol -> Goblet Squat
+        'du': 'su',                    // Double Unders -> Single Unders
+        'ttb': 'situp',                // Toes-to-Bar -> Sit-Up
+        'hswalk': 'bear_crawl',        // Handstand Walk -> Bear Crawl
+        'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
+    },
+    Scaled: {
+        'hspu': 'push_press_db',      // Handstand Push-up -> DB Push Press
+        'bmu': 'pullup',              // Bar Muscle-up -> Pull-up
+        'rmu': 'c2b',                 // Ring Muscle-up -> Chest-to-Bar
+        'pistol': 'lunge_weighted',    // Pistol -> Weighted Lunge
+        'du': 'su',                    // Double Unders -> Single Unders
+        'ttb': 'v_up',                 // Toes-to-Bar -> V-Up
+        'hswalk': 'bear_crawl',        // Handstand Walk -> Bear Crawl
+        'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
+    }
 };

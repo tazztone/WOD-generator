@@ -26,10 +26,11 @@ const AppInnerProvider = ({ children }) => {
         modalOpenRef.current = modalOpen;
     }, [modalOpen]);
 
+    const backButtonLastPressRef = useRef(0);
+
     // Capacitor Back Button Logic
     useEffect(() => {
         let backButtonListener = null;
-        let lastBackPress = 0;
 
         const setupBackButton = async () => {
             try {
@@ -51,10 +52,10 @@ const AppInnerProvider = ({ children }) => {
                             case 'config':
                             default: {
                                 const now = Date.now();
-                                if (now - lastBackPress < 2000) {
+                                if (now - backButtonLastPressRef.current < 2000) {
                                     App.exitApp();
                                 } else {
-                                    lastBackPress = now;
+                                    backButtonLastPressRef.current = now;
                                     Toast.show({ text: 'Tap back again to exit', duration: 'short' });
                                 }
                                 return current;

@@ -9,12 +9,15 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     const isExtreme = duration > EXTREME;
     const isShort = duration < SHORT;
 
-    if (exercise.name.includes('Run')) {
+    const runIds = ['run', 'shuttle_run'];
+    if (runIds.includes(exercise.id)) {
         if (isExtreme) return SCALING_CONSTANTS.RUN_DISTANCES.EXTREME;
         if (isExtraLong) return SCALING_CONSTANTS.RUN_DISTANCES.EXTRA_LONG;
         return isShort ? SCALING_CONSTANTS.RUN_DISTANCES.SHORT : SCALING_CONSTANTS.RUN_DISTANCES.DEFAULT;
     }
-    if (exercise.name.includes('Plank') || exercise.name.includes('Wall Sit')) return '45s';
+
+    const timeBasedIds = ['plank', 'side_plank', 'plank_shoulder_tap', 'plank_reach', 'copenhagen_plank', 'wall_sit'];
+    if (timeBasedIds.includes(exercise.id) || timeBasedIds.includes(exercise.id_g)) return '45s';
     
     // Machine is tricky because Chipper logic was embedded here.
     // We return a standard number for now, Strategy can override if needed.
@@ -27,13 +30,13 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     let baseReps = SCALING_CONSTANTS.DEFAULT_REPS;
     if (exercise.intensity === 'High') baseReps = SCALING_CONSTANTS.INTENSITY_REPS.High;
     if (exercise.intensity === 'VeryHigh') baseReps = SCALING_CONSTANTS.INTENSITY_REPS.VeryHigh;
-    if (exercise.name.includes('Double')) baseReps = SCALING_CONSTANTS.SPECIAL_REPS.Double;
-    if (exercise.name.includes('Single Unders')) baseReps = SCALING_CONSTANTS.SPECIAL_REPS['Single Unders'];
+    if (exercise.id === 'du') baseReps = SCALING_CONSTANTS.SPECIAL_REPS.Double;
+    if (exercise.id === 'su') baseReps = SCALING_CONSTANTS.SPECIAL_REPS['Single Unders'];
 
     // Scale down for beginners
     if (difficulty === 'Beginner') {
         baseReps = Math.ceil(baseReps * SCALING_CONSTANTS.BEGINNER_MULTIPLIER);
-        if (exercise.name.includes('Double') || exercise.name.includes('Single')) {
+        if (exercise.id === 'du' || exercise.id === 'su') {
             baseReps = SCALING_CONSTANTS.SPECIAL_REPS.Beginner_Jump;
         }
     }
@@ -50,15 +53,19 @@ export const getReps = (exercise, difficulty, format, duration) => {
     return strategy.scaleReps(baseReps, exercise, difficulty, duration);
 };
 
-// Keep old export for backward compatibility during refactor, but it throws now?
-// No, let's just export the new one and update imports.
-// But wait, the Strategy files I just wrote rely on `baseReps` being passed in. 
-// They don't import `getReps`.
-
 /**
  * Returns a substituted exercise ID if applicable for the difficulty
  */
 export const getSubstitution = (exerciseId, difficulty) => {
-    if (difficulty !== 'Beginner') return null;
-    return SUBSTITUTIONS[exerciseId] || null;
+    if (difficulty === 'Rx') return null;
+
+    if (difficulty === 'Beginner' && SUBSTITUTIONS.Beginner && SUBSTITUTIONS.Beginner[exerciseId]) {
+        return SUBSTITUTIONS.Beginner[exerciseId];
+    }
+
+    if (difficulty === 'Scaled' && SUBSTITUTIONS.Scaled && SUBSTITUTIONS.Scaled[exerciseId]) {
+        return SUBSTITUTIONS.Scaled[exerciseId];
+    }
+
+    return null;
 };

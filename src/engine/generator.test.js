@@ -74,9 +74,9 @@ describe('Generator Engine', () => {
     });
 
     it('should handle specialized exercise logic (SU, Wall Sit)', () => {
-        const su = { name: 'Single Unders', intensity: 'Low', equipment: 'Bodyweight' };
-        const du = { name: 'Double Unders', intensity: 'High', equipment: 'Bodyweight' };
-        const wallSit = { name: 'Wall Sit', intensity: 'Low', equipment: 'Bodyweight' };
+        const su = { id: 'su', name: 'Single Unders', intensity: 'Low', equipment: 'Bodyweight' };
+        const du = { id: 'du', name: 'Double Unders', intensity: 'High', equipment: 'Bodyweight' };
+        const wallSit = { id: 'wall_sit', name: 'Wall Sit', intensity: 'Low', equipment: 'Bodyweight' };
 
         expect(getReps(su, 'Rx', 'AMRAP', 15)).toBe(60);
         expect(getReps(du, 'Rx', 'AMRAP', 15)).toBe(40);
