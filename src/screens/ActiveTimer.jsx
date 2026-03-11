@@ -5,8 +5,10 @@ import { useWakeLock } from '../hooks/useWakeLock';
 import { Button } from '../components/ui/Button';
 
 import { LOCALES } from '../data/locales';
+import { useSettings } from '../context/SettingsContext';
 
-export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen, config, setConfig }) => {
+export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => {
+    const { config, setConfig } = useSettings();
     const t = LOCALES[lang];
     const st = t.screens.activeTimer;
     const [showAudioSettings, setShowAudioSettings] = useState(false);

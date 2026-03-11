@@ -145,3 +145,4 @@ vite.config.ts.timestamp-*
 my-release-key.keystore
 keystore-base64.txt
 android/app/release-key.keystore
+.idea/

@@ -38,7 +38,6 @@ class WorkoutDirector {
         }
 
         this.usedPatterns.push(picked.pattern);
-        this.balance[picked.pattern]++;
         
         return picked;
     }
