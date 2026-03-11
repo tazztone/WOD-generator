@@ -43,9 +43,15 @@ export const focusRelevanceFilter = (pool, director) => {
  * Overlap Filter: Prevent muscle group overlap and strict pattern repetition
  */
 export const overlapFilter = (pool, director) => {
-    if (director.selectedExercises.length === 0) return pool;
+    let lastEx = null;
 
-    const lastEx = director.selectedExercises[director.selectedExercises.length - 1].exercise;
+    if (director.selectedExercises.length > 0) {
+        lastEx = director.selectedExercises[director.selectedExercises.length - 1].exercise;
+    } else if (director.buyInForContext) {
+        lastEx = director.buyInForContext;
+    }
+
+    if (!lastEx) return pool;
     
     return pool.filter(ex => {
         // STRICT Pattern Filter: Prevent consecutive same patterns

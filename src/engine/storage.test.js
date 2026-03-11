@@ -51,7 +51,7 @@ describe('Storage Engine - Export/Import', () => {
             version: 1,
             timestamp: new Date().toISOString(),
             config: { version: 1, duration: 60, difficulty: 'Scaled' },
-            history: [{ id: 2, date: '2023-02-01', type: 'EMOM' }],
+            history: [{ id: 2, timestamp: '2023-02-01', type: 'EMOM' }],
             savedWorkouts: [{ id: 102, name: 'Fran' }]
         };
 
@@ -92,7 +92,7 @@ describe('Storage Engine - Export/Import', () => {
 
     it('should handle partial import (only history)', () => {
         const importPayload = {
-            history: [{ id: 3, date: '2023-03-01' }]
+            history: [{ id: 3, timestamp: '2023-03-01' }]
         };
 
         const success = importData(importPayload);
