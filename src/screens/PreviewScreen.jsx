@@ -85,9 +85,10 @@ export const PreviewScreen = ({
 
     const getSwapCandidates = (index) => {
         const current = workout.exercises[index];
+        const existingIds = new Set(workout.exercises.map(item => item.exercise.id));
         return validExercises.filter(ex =>
             ex.pattern === current.exercise.pattern &&
-            !workout.exercises.find(existing => existing.exercise.id === ex.id)
+            !existingIds.has(ex.id)
         );
     };
 

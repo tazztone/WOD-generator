@@ -1,28 +1,41 @@
 // src/engine/generator.js
-import { EXERCISE_DB } from '../data/exercises.js';
+import { EXERCISE_DB, INJURY_MAP } from '../data/exercises.js';
 import { calculateBaseReps, getSubstitution } from './scaling.js';
 import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic } from './utils.js';
 import { getStrategy, getRandomTemplate } from './strategies/StrategyFactory.js';
 import { BUY_IN_CONFIG } from '../config/workoutConfig.js';
-import { DEFAULT_PIPELINE } from './pipeline.js';
+import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
 
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic };
 
 // --- The "Director" (Internal Logic) ---
 
 class WorkoutDirector {
-    constructor(config, pipeline = DEFAULT_PIPELINE) {
+    constructor(config) {
         this.config = config;
-        this.pipeline = pipeline;
-        this.pool = EXERCISE_DB.filter(ex => isExerciseValid(ex, config));
+        
+        // Pre-compute forbidden tags Set for isExerciseValid (O(1) lookup inside loop)
+        this.config.forbiddenTagsSet = new Set();
+        if (config.avoid && config.avoid.length > 0) {
+            config.avoid.forEach(area => {
+                const tags = INJURY_MAP[area];
+                if (tags) tags.forEach(t => this.config.forbiddenTagsSet.add(t));
+            });
+        }
+
+        // Apply Static Pipeline ONCE to create the filtered base pool
+        const basePool = EXERCISE_DB.filter(ex => isExerciseValid(ex, this.config));
+        this.pool = STATIC_PIPELINE.reduce((currentPool, rule) => rule(currentPool, this), basePool);
+        
         this.selectedExercises = [];
+        this.selectedExerciseIds = new Set();
         this.usedPatterns = [];
         this.balance = { Push: 0, Pull: 0, Squat: 0, Hinge: 0, Core: 0, Cardio: 0 };
     }
 
-    // Weight the pool based on Pipeline Rules
+    // Weight the pool based on Dynamic Pipeline Rules (O(N) instead of O(N*Pipeline_Count))
     getWeightedPool() {
-        return this.pipeline.reduce((currentPool, rule) => rule(currentPool, this), this.pool);
+        return DYNAMIC_PIPELINE.reduce((currentPool, rule) => rule(currentPool, this), this.pool);
     }
 
     pickNext(buyInContext = null) {
@@ -46,6 +59,7 @@ class WorkoutDirector {
 
     addSelection(exercise, reps) {
         this.selectedExercises.push({ exercise, reps });
+        this.selectedExerciseIds.add(exercise.id);
         this.balance[exercise.pattern]++;
     }
 }

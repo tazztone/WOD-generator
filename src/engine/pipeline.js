@@ -8,7 +8,8 @@ import { getSubstitution } from './scaling.js';
  * Basic Filter: Remove already selected exercises
  */
 export const alreadySelectedFilter = (pool, director) => {
-    return pool.filter(ex => !director.selectedExercises.some(s => s.exercise.id === ex.id));
+    if (!director.selectedExerciseIds) return pool;
+    return pool.filter(ex => !director.selectedExerciseIds.has(ex.id));
 };
 
 /**
@@ -110,13 +111,27 @@ export const focusWeight = (pool, director) => {
 };
 
 /**
- * Default Pipeline
+ * Static rules: Applied once per generation
+ */
+export const STATIC_PIPELINE = [
+    skillFilter,
+    focusRelevanceFilter,
+    focusWeight
+];
+
+/**
+ * Dynamic rules: Applied on every pickNext
+ */
+export const DYNAMIC_PIPELINE = [
+    alreadySelectedFilter,
+    overlapFilter,
+    balanceWeight
+];
+
+/**
+ * Default Pipeline (Legacy compatibility if needed)
  */
 export const DEFAULT_PIPELINE = [
-    alreadySelectedFilter,
-    skillFilter,
-    focusRelevanceFilter, // Added this
-    overlapFilter,
-    balanceWeight,
-    focusWeight
+    ...STATIC_PIPELINE,
+    ...DYNAMIC_PIPELINE
 ];

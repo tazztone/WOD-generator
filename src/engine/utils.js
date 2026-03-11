@@ -13,7 +13,10 @@ export const isExerciseValid = (ex, currentConfig) => {
         if (ex.intensity === 'VeryHigh') return false;
     }
 
-    if (currentConfig.avoid.length > 0) {
+    if (currentConfig.forbiddenTagsSet && ex.tags) {
+        if (ex.tags.some(tag => currentConfig.forbiddenTagsSet.has(tag))) return false;
+    } else if (currentConfig.avoid && currentConfig.avoid.length > 0) {
+        // Fallback if forbiddenTagsSet isn't precomputed (e.g. in tests or old calls)
         for (const area of currentConfig.avoid) {
             const forbiddenTags = INJURY_MAP[area];
             if (ex.tags && ex.tags.some(tag => forbiddenTags.includes(tag))) return false;
