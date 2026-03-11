@@ -43,10 +43,6 @@ const mockWorkout = {
     ]
 };
 
-const mockConfig = {
-    volume: 0.7,
-    audioSettings: { countdowns: true, announcements: true, beeps: true }
-};
 
 describe('ActiveTimer', () => {
     let container = null;
