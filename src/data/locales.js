@@ -47,12 +47,14 @@ export const LOCALES = {
                 greatJob: "Great Job",
                 completeMsg: "Workout Complete. Log it.",
                 score: "Score / Notes",
-                save: "Save to Logbook",
                 cancel: "Cancel",
                 rest: "REST",
                 workMode: "WORK",
                 rounds: "Rounds",
-                next: "Up Next:"
+                next: "Up Next:",
+                confirmExit: "Quit workout?",
+                yesExit: "Yes, Quit",
+                noStay: "No, Stay"
             },
             preview: {
                 back: "Back",
@@ -66,6 +68,8 @@ export const LOCALES = {
                 rounds: "Rounds",
                 warmup: "Warmup Protocol",
                 start: "Start Timer",
+                save: "Save",
+                saved: "Saved",
                 selectSwap: "Select Replacement",
                 whySwap: "Matches movement pattern & equipment",
                 explanations: {
@@ -137,12 +141,14 @@ export const LOCALES = {
                 greatJob: "Gut Gemacht",
                 completeMsg: "Workout beendet. Ergebnis eintragen.",
                 score: "Ergebnis / Notizen",
-                save: "Speichern",
                 cancel: "Abbrechen",
                 rest: "PAUSE",
                 workMode: "ARBEIT",
                 rounds: "Runden",
-                next: "Als nächstes:"
+                next: "Als nächstes:",
+                confirmExit: "Workout abbrechen?",
+                yesExit: "Ja, Abbrechen",
+                noStay: "Nein, Weiter"
             },
             preview: {
                 back: "Zurück",
@@ -156,6 +162,8 @@ export const LOCALES = {
                 rounds: "Runden",
                 warmup: "Aufwärm-Protokoll",
                 start: "Timer Starten",
+                save: "Speichern",
+                saved: "Gespeichert",
                 selectSwap: "Ersatz wählen",
                 whySwap: "Passt zu Bewegungsmuster & Ausrüstung",
                 explanations: {
@@ -179,5 +187,31 @@ export const LOCALES = {
                 start: "Workout Starten"
             }
         }
+    },
+    strength: {
+        names: {
+            deadlift: { en: "Deadlift", de: "Kreuzheben" },
+            backSquat: { en: "Back Squat", de: "Kniebeuge (hinten)" },
+            frontSquat: { en: "Front Squat", de: "Frontkniebeuge" },
+            pushPress: { en: "Push Press", de: "Push Press" },
+            romanianDeadlift: { en: "Romanian Deadlift", de: "Rumänisches Kreuzheben" },
+            strictPress: { en: "Strict Press", de: "Schulterdrücken" }
+        },
+        notes: {
+            heavyForm: { en: "Heavy, Perfect Form", de: "Schwer, Fokus Technik" },
+            building: { en: "Building weight", de: "Aufbauend" },
+            uprightTorso: { en: "Focus on upright torso", de: "Fokus auf aufrechte Haltung" },
+            explosiveHips: { en: "Explosive from the hips", de: "Explosiv aus der Hüfte" },
+            controlledDescent: { en: "Controlled descent", de: "Kontrolliert abwärts" },
+            tightCore: { en: "Tight core, no legs", de: "Rumpf fest, kein Beineinsatz" }
+        }
+    },
+    warmup: {
+        cardioEasy: { en: "3 min Cardio (Easy)", de: "3 min Cardio (Easy)" },
+        airSquats: { en: "10 Air Squats", de: "10 Kniebeugen" },
+        hingeWarmup: { en: "10 Glute Bridges + 10 Good Mornings", de: "10 Glute Bridges + 10 Good Mornings" },
+        pushWarmup: { en: "10 Scap Push-ups + 5 Inchworms", de: "10 Scap Push-ups + 5 Inchworms" },
+        pullWarmup: { en: "10 Ring Rows / Scap Pulls", de: "10 Ring Rows / Scap Pulls" },
+        calfRaises: { en: "20 Calf Raises", de: "20 Wadenheben" }
     }
 };

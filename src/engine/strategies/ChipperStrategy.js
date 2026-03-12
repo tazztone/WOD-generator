@@ -34,21 +34,21 @@ export const ChipperStrategy = {
         let multiplier = 4;
 
         // Scale down high skill/intensity movements
-        if (exercise.intensity === 'VeryHigh' || exercise.name.includes('Muscle-Up')) {
+        if (exercise.intensity === 'VeryHigh' || exercise.id.includes('muscle_up')) {
             multiplier = 2;
-        } else if (exercise.intensity === 'High' || exercise.name.includes('Pull-Up') || exercise.name.includes('HSPU')) {
+        } else if (exercise.intensity === 'High' || exercise.id.includes('pullup') || exercise.id.includes('hspu')) {
             multiplier = 3;
         }
 
         let reps = Math.floor(baseReps * multiplier);
 
         // Cap reps reasonably (e.g., 60 reps max per set usually, 100 for DU)
-        if (reps > 60 && !exercise.name.includes('Double') && !exercise.name.includes('Single')) {
+        if (reps > 60 && exercise.id !== 'du' && exercise.id !== 'su') {
             reps = 60;
         }
 
-        if (exercise.name.includes('Double')) reps = 100;
-        if (exercise.name.includes('Single')) reps = 150;
+        if (exercise.id === 'du') reps = 100;
+        if (exercise.id === 'su') reps = 150;
 
         return reps;
     }

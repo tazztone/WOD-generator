@@ -15,7 +15,7 @@ export const EmomStrategy = {
         // 1. Handle Light/High Rep movements (Double Unders, Single Unders, Running)
         // If baseReps is already high (> 15), it usually implies a light movement or distance
         // We generally want to keep these high to fill the minute
-        if (baseReps >= 15 || exercise.name.includes('Double') || exercise.name.includes('Single') || exercise.name.includes('Run')) {
+        if (baseReps >= 15 || exercise.id === 'du' || exercise.id === 'su' || exercise.pattern === 'Cardio') {
              return baseReps; // Keep the high rep count (e.g. 50 DU, 200m Run)
         }
 

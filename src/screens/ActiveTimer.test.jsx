@@ -113,4 +113,26 @@ describe('ActiveTimer', () => {
 
         expect(container.textContent).toContain('Audio Settings');
     });
+
+    it('should show confirmation dialog when clicking the cancel button', () => {
+        act(() => {
+            root.render(
+                <SettingsProvider>
+                    <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => { }} />
+                </SettingsProvider>
+            );
+        });
+
+        // The cancel (X) button is the first button in the header
+        const buttons = container.querySelectorAll('button');
+        const cancelBtn = buttons[0];
+
+        act(() => {
+            cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        });
+
+        expect(container.textContent).toContain('Quit workout?');
+        expect(container.textContent).toContain('Yes, Quit');
+        expect(container.textContent).toContain('No, Stay');
+    });
 });

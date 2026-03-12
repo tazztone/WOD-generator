@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { SOUNDS, speak } from '../engine/audio';
+import { getExerciseName } from '../engine/utils';
 
 // TODO: Add haptic feedback support for mobile devices
 export const useTimer = (workout, lang, audioSettings) => {
@@ -146,8 +147,8 @@ export const useTimer = (workout, lang, audioSettings) => {
     // Speak helper
     const speakMovements = useCallback(() => {
         if (!announcements || timerStateRef.current.status === 'finished') return;
-        const nextText = lang === 'de' ? "Als nächstes:" : "Up Next:";
-        const moveList = workout.exercises.map(e => e.exercise.name).join(', ');
+        const nextText = lang === 'de' ? "Als nächstes:" : "Next up:";
+        const moveList = workout.exercises.map(e => getExerciseName(e.exercise, lang)).join(', ');
         speak(`${nextText} ${moveList}`, lang);
     }, [workout, announcements, lang]);
 

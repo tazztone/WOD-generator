@@ -26,50 +26,52 @@ export const isExerciseValid = (ex, currentConfig) => {
 };
 
 // TODO: Make warmup duration/intensity configurable via user settings
-export const generateWarmupLogic = (exercises, lang) => {
-    const isDe = lang === 'de';
-    let moves = new Set([isDe ? '3 min Cardio (Easy)' : '3 min Cardio (Easy)']);
+export const generateWarmupLogic = (exercises) => {
+    let moves = new Set(['cardioEasy']);
 
     exercises.forEach(slot => {
         const { pattern, id } = slot.exercise;
-        if (pattern === 'Squat') moves.add(isDe ? '10 Air Squats' : '10 Air Squats');
-        if (pattern === 'Hinge') moves.add(isDe ? '10 Glute Bridges + 10 Good Mornings' : '10 Glute Bridges + 10 Good Mornings');
-        if (pattern === 'Push') moves.add(isDe ? '10 Scap Push-ups + 5 Inchworms' : '10 Scap Push-ups + 5 Inchworms');
-        if (pattern === 'Pull') moves.add(isDe ? '10 Ring Rows / Scap Pulls' : '10 Ring Rows / Scap Pulls');
-        if (id.includes('run') || id.includes('jump') || id === 'du') moves.add(isDe ? '20 Wadenheben' : '20 Calf Raises');
+        if (pattern === 'Squat') moves.add('airSquats');
+        if (pattern === 'Hinge') moves.add('hingeWarmup');
+        if (pattern === 'Push') moves.add('pushWarmup');
+        if (pattern === 'Pull') moves.add('pullWarmup');
+        if (id.includes('run') || id.includes('jump') || id === 'du') moves.add('calfRaises');
     });
     return Array.from(moves);
 };
 
 // TODO: Expand strength pairing options - currently limited to 3 exercises
-export const generateStrengthLogic = (exercises, config, lang) => {
+export const generateStrengthLogic = (exercises, config) => {
     if (!config.includeStrength) return null;
     const patterns = exercises.map(e => e.exercise.pattern);
-    const isDe = lang === 'de';
 
     // Smart Pairing: Avoid pre-fatiguing the primary mover of the Metcon too much
-    // If Metcon is Squat heavy -> Do Hinge or Push Strength
-
     if (patterns.includes('Squat') && !patterns.includes('Hinge')) {
-        return { name: isDe ? 'Deadlift' : 'Deadlift', sets: '5 x 3', notes: isDe ? 'Schwer, Fokus Technik' : 'Heavy, Perfect Form' };
+        return { nameKey: 'deadlift', sets: '5 x 3', noteKey: 'heavyForm' };
     }
     if (patterns.includes('Push')) {
-        return { name: isDe ? 'Back Squat' : 'Back Squat', sets: '5 x 5', notes: isDe ? 'Aufbauend' : 'Building weight' };
+        return { nameKey: 'backSquat', sets: '5 x 5', noteKey: 'building' };
     }
     if (patterns.includes('Pull')) {
-        return { name: isDe ? 'Front Squat' : 'Front Squat', sets: '5 x 3', notes: isDe ? 'Fokus auf aufrechte Haltung' : 'Focus on upright torso' };
+        return { nameKey: 'frontSquat', sets: '5 x 3', noteKey: 'uprightTorso' };
     }
     if (patterns.includes('Hinge')) {
-        return { name: isDe ? 'Push Press' : 'Push Press', sets: '4 x 6', notes: isDe ? 'Explosiv aus der Hüfte' : 'Explosive from the hips' };
+        return { nameKey: 'pushPress', sets: '4 x 6', noteKey: 'explosiveHips' };
     }
     if (patterns.includes('Core')) {
-        return { name: isDe ? 'Romanian Deadlift' : 'Romanian Deadlift', sets: '4 x 8', notes: isDe ? 'Kontrolliert abwärts' : 'Controlled descent' };
+        return { nameKey: 'romanianDeadlift', sets: '4 x 8', noteKey: 'controlledDescent' };
     }
 
-    // Default fallback
     return {
-        name: isDe ? 'Strict Press' : 'Strict Press',
+        nameKey: 'strictPress',
         sets: '4 x 8',
-        notes: isDe ? 'Rumpf fest, kein Beineinsatz' : 'Tight core, no legs'
+        noteKey: 'tightCore'
     };
+};
+
+export const formatReps = (reps, exercise) => {
+    if (typeof reps === 'string') return reps; // Already formatted: "400m", "45s", "40/30 cal"
+    if (!exercise) return reps;
+    if (exercise.equipment === 'Machine' && exercise.pattern === 'Cardio') return `${reps} Cal`;
+    return reps; // Plain number = reps (standard CrossFit convention)
 };

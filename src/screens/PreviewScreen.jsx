@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame, Star, HelpCircle } from 'lucide-react';
-import { getExerciseName, isExerciseValid } from '../engine/generator';
+import { getExerciseName, isExerciseValid, formatReps } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
 import { Button } from '../components/ui/Button';
 
@@ -49,10 +49,12 @@ export const PreviewScreen = ({
         let text = `*** WOD GENERATOR ***\n\n`;
 
         if (workout.strength) {
+            const strengthName = workout.strength.nameKey ? (LOCALES.strength.names[workout.strength.nameKey][lang] || workout.strength.nameKey) : workout.strength.name;
+            const strengthNote = workout.strength.noteKey ? (LOCALES.strength.notes[workout.strength.noteKey][lang] || workout.strength.noteKey) : workout.strength.notes;
             text += `PART A: STRENGTH\n`;
-            text += `${workout.strength.name}\n`;
+            text += `${strengthName}\n`;
             text += `${workout.strength.sets}\n`;
-            text += `* ${workout.strength.notes}\n\n`;
+            text += `* ${strengthNote}\n\n`;
         }
 
         text += `PART B: METCON (${workout.template})\n`;
@@ -63,10 +65,11 @@ export const PreviewScreen = ({
 
         if (workout.buyIn) {
             const buyInName = getExerciseName(workout.buyIn.exercise, lang);
-            text += `Buy-In: ${workout.buyIn.reps} ${buyInName}\n\n`;
+            const buyInReps = formatReps(workout.buyIn.reps, workout.buyIn.exercise);
+            text += `Buy-In: ${buyInReps} ${buyInName}\n\n`;
         }
 
-        text += workout.exercises.map(e => `${e.reps} ${getExerciseName(e.exercise, lang)}`).join('\n');
+        text += workout.exercises.map(e => `${formatReps(e.reps, e.exercise)} ${getExerciseName(e.exercise, lang)}`).join('\n');
 
         if (navigator.share) {
             navigator.share({
@@ -142,8 +145,12 @@ export const PreviewScreen = ({
                                 <Dumbbell size={10} /> {pt.partA} • {pt.strength}
                             </span>
                         </div>
-                        <h3 className="text-xl font-black text-white">{workout.strength.name}</h3>
-                        <p className="text-sm text-slate-400 mt-1">{workout.strength.sets} — {workout.strength.notes}</p>
+                        <h3 className="text-xl font-black text-white">
+                            {workout.strength.nameKey ? (LOCALES.strength.names[workout.strength.nameKey][lang] || workout.strength.nameKey) : workout.strength.name}
+                        </h3>
+                        <p className="text-sm text-slate-400 mt-1">
+                            {workout.strength.sets} — {workout.strength.noteKey ? (LOCALES.strength.notes[workout.strength.noteKey][lang] || workout.strength.noteKey) : workout.strength.notes}
+                        </p>
                     </div>
                 )}
 
@@ -158,7 +165,7 @@ export const PreviewScreen = ({
                         {copied ? <CheckCircle size={12} /> : <Share2 size={12} />} {copied ? pt.copied : pt.share}
                     </button>
                     <button onClick={onToggleSave} className={`text-xs flex items-center gap-1 transition-colors ${isSaved ? 'text-emerald-400' : 'text-slate-500 hover:text-emerald-400'}`}>
-                        <Star size={12} fill={isSaved ? "currentColor" : "none"} /> {isSaved ? "Saved" : "Save"}
+                        <Star size={12} fill={isSaved ? "currentColor" : "none"} /> {isSaved ? pt.saved : pt.save}
                     </button>
                 </div>
 
@@ -184,7 +191,9 @@ export const PreviewScreen = ({
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm font-bold text-slate-200">{getExerciseName(workout.buyIn.exercise, lang)}</span>
-                                    <span className="text-sm font-mono font-bold text-emerald-400">{workout.buyIn.reps}</span>
+                                    <span className="text-sm font-mono font-bold text-emerald-400">
+                                        {formatReps(workout.buyIn.reps, workout.buyIn.exercise)}
+                                    </span>
                                 </div>
                             </div>
                         )}
@@ -193,7 +202,9 @@ export const PreviewScreen = ({
                             {workout.exercises.map((item, idx) => (
                                 <div key={idx} onClick={() => setSwapModal({ show: true, index: idx })} className="flex items-center justify-between group cursor-pointer bg-slate-800/30 p-2 -mx-2 rounded-lg hover:bg-slate-800 transition-colors">
                                     <div className="flex items-baseline gap-3">
-                                        <span className="text-emerald-400 font-mono font-bold text-lg min-w-[40px] text-right">{item.reps}</span>
+                                        <span className="text-emerald-400 font-mono font-bold text-lg min-w-[40px] text-right">
+                                            {formatReps(item.reps, item.exercise)}
+                                        </span>
                                         <span className="text-slate-200 font-bold group-hover:text-emerald-300 transition-colors">{getExerciseName(item.exercise, lang)}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -212,8 +223,11 @@ export const PreviewScreen = ({
                     </button>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">{pt.warmup}</span>
                     <ul className="space-y-1">
-                        {workout.warmup.map((line, i) => (
-                            <li key={i} className="text-xs text-slate-400 flex gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full mt-1.5 shrink-0" /> {line}</li>
+                        {workout.warmup.map((key, i) => (
+                            <li key={i} className="text-xs text-slate-400 flex gap-2">
+                                <div className="w-1 h-1 bg-slate-600 rounded-full mt-1.5 shrink-0" />
+                                {LOCALES.warmup[key] ? (LOCALES.warmup[key][lang] || key) : key}
+                            </li>
                         ))}
                     </ul>
                 </div>

@@ -27,7 +27,7 @@ export const WorkoutProvider = ({ children }) => {
     }, []);
 
     const generateWorkout = () => {
-        const newWorkout = engineGenerate(config, lang);
+        const newWorkout = engineGenerate(config);
         setWorkout(newWorkout);
         setAppState('preview');
     };
@@ -39,7 +39,7 @@ export const WorkoutProvider = ({ children }) => {
 
     const swapExercise = (index, newExId) => {
         if (!workout) return;
-        const updatedWorkout = engineSwap(workout, index, newExId, config, lang);
+        const updatedWorkout = engineSwap(workout, index, newExId, config);
         setWorkout(updatedWorkout);
     };
 

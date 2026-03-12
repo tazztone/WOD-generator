@@ -5,10 +5,15 @@ import { setGlobalVolume } from '../engine/audio';
 const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
-    const [lang, setLang] = useState('en');
+    const [lang, setLang] = useState(() => localStorage.getItem('wod_lang') || 'en');
     const [config, setConfig] = useState(loadConfig());
     const [tooltip, setTooltip] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+
+    // Persist Language Changes
+    useEffect(() => {
+        localStorage.setItem('wod_lang', lang);
+    }, [lang]);
 
     // Save Config Changes & Update Audio
     useEffect(() => {

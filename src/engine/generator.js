@@ -1,12 +1,12 @@
 // src/engine/generator.js
 import { EXERCISE_DB, INJURY_MAP } from '../data/exercises.js';
 import { calculateBaseReps, getSubstitution } from './scaling.js';
-import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic } from './utils.js';
+import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic, formatReps } from './utils.js';
 import { getStrategy, getRandomTemplate } from './strategies/StrategyFactory.js';
 import { BUY_IN_CONFIG } from '../config/workoutConfig.js';
 import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
 
-export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic };
+export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic, formatReps };
 
 // Fast lookup index
 const EXERCISE_MAP = new Map(EXERCISE_DB.map(e => [e.id, e]));
@@ -68,7 +68,7 @@ class WorkoutDirector {
 }
 
 
-export const generateWorkout = (config, lang = 'en') => {
+export const generateWorkout = (config) => {
     const director = new WorkoutDirector(config);
     
     let template = config.templateType;
@@ -121,12 +121,12 @@ export const generateWorkout = (config, lang = 'en') => {
         buyIn,
         isPartner: config.isPartner || false,
         generatedAt: new Date(),
-        warmup: generateWarmupLogic(director.selectedExercises, lang),
-        strength: generateStrengthLogic(director.selectedExercises, config, lang)
+        warmup: generateWarmupLogic(director.selectedExercises),
+        strength: generateStrengthLogic(director.selectedExercises, config)
     };
 };
 
-export const swapExercise = (workout, index, newExerciseId, config, lang = 'en') => {
+export const swapExercise = (workout, index, newExerciseId, config) => {
     let newEx = EXERCISE_MAP.get(newExerciseId);
     if (!newEx) return workout;
 
@@ -153,7 +153,7 @@ export const swapExercise = (workout, index, newExerciseId, config, lang = 'en')
     return {
         ...workout,
         exercises: newExercises,
-        warmup: generateWarmupLogic(newExercises, lang),
-        strength: generateStrengthLogic(newExercises, config, lang)
+        warmup: generateWarmupLogic(newExercises),
+        strength: generateStrengthLogic(newExercises, config)
     };
 };

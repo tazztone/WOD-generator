@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import { ArrowLeft, Trash2, Star, History as HistoryIcon } from 'lucide-react';
 import { LOCALES } from '../data/locales';
+import { getExerciseName, formatReps } from '../engine/generator';
 
 export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteSaved, onStartWorkout, clearHistory, onBack, lang }) => {
     const t = LOCALES[lang].screens.history;
@@ -102,8 +103,8 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
                                     <span className="text-xs text-slate-500">{entry.formattedDate}</span>
                                 </div>
                                 <div className="text-white font-bold text-lg mb-2">{entry.score}</div>
-                                <p className="text-xs text-slate-400 line-clamp-2">
-                                    {entry.exercises.map(e => e.exercise.name).join(', ')}
+                                 <p className="text-xs text-slate-400 line-clamp-2">
+                                    {entry.exercises.map(e => `${formatReps(e.reps, e.exercise)} ${getExerciseName(e.exercise, lang)}`).join(', ')}
                                 </p>
                             </div>
                         </div>
@@ -133,7 +134,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
                                     <span className="text-xs text-slate-500">{workout.timeCap} min</span>
                                 </div>
                                 <p className="text-xs text-slate-400 mb-4">
-                                    {workout.exercises.map(e => e.exercise.name).join(', ')}
+                                    {workout.exercises.map(e => `${formatReps(e.reps, e.exercise)} ${getExerciseName(e.exercise, lang)}`).join(', ')}
                                 </p>
                                 <button
                                     onClick={() => onStartWorkout(workout)}

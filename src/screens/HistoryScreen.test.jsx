@@ -9,7 +9,7 @@ describe('HistoryScreen', () => {
             template: 'AMRAP',
             score: '10 Rounds',
             date: new Date().toISOString(),
-            exercises: [{ exercise: { name: 'Push-Up' } }]
+            exercises: [{ reps: 10, exercise: { name: 'Push-Up' } }]
         }
     ];
 
@@ -18,7 +18,7 @@ describe('HistoryScreen', () => {
             id: 101,
             template: 'RFT',
             timeCap: 20,
-            exercises: [{ exercise: { name: 'Air Squat' } }]
+            exercises: [{ reps: 10, exercise: { name: 'Air Squat' } }]
         }
     ];
 
@@ -37,7 +37,7 @@ describe('HistoryScreen', () => {
         render(<HistoryScreen {...mockProps} />);
         expect(screen.getByText('AMRAP')).toBeInTheDocument();
         expect(screen.getByText('10 Rounds')).toBeInTheDocument();
-        expect(screen.getByText('Push-Up')).toBeInTheDocument();
+        expect(screen.getByText(/Push-Up/)).toBeInTheDocument();
     });
 
     it('switches to saved workouts tab', () => {
@@ -45,7 +45,7 @@ describe('HistoryScreen', () => {
         const savedTab = screen.getByText(/saved/i);
         fireEvent.click(savedTab);
         expect(screen.getByText('RFT')).toBeInTheDocument();
-        expect(screen.getByText('Air Squat')).toBeInTheDocument();
+        expect(screen.getByText(/Air Squat/)).toBeInTheDocument();
     });
 
     it('calls onStartWorkout when start button is clicked in saved tab', () => {
