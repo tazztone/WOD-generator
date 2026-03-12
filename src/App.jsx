@@ -44,14 +44,16 @@ export default function CrossFitGenerator() {
             <UpdatePrompt />
             {tooltip && <Tooltip x={tooltip.x} y={tooltip.y} text={tooltip.text} />}
 
-            <Header
-                onBack={clearWorkout}
-                onLangToggle={toggleLang}
-                onHistory={() => setAppState('history')}
-                onCalculator={() => setAppState('calculator')}
-                lang={lang}
-                appState={appState}
-            />
+            {appState !== 'active' && (
+                <Header
+                    onBack={clearWorkout}
+                    onLangToggle={toggleLang}
+                    onHistory={() => setAppState('history')}
+                    onCalculator={() => setAppState('calculator')}
+                    lang={lang}
+                    appState={appState}
+                />
+            )}
 
             <main className="flex-1 flex flex-col relative overflow-hidden" onClick={clearTooltip} role="presentation">
                 {appState === 'config' && (

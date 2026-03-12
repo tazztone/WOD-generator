@@ -8,12 +8,11 @@ import { LOCALES } from '../data/locales';
 import { getExerciseName, formatReps } from '../engine/generator';
 import { useSettings } from '../context/SettingsContext';
 
-export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => {
-    const { config, setConfig } = useSettings();
+export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
+    const { config, setConfig, modalOpen, setModalOpen } = useSettings();
     const t = LOCALES[lang];
     const st = t.screens.activeTimer;
     const [showAudioSettings, setShowAudioSettings] = useState(false);
-    const [showExitConfirm, setShowExitConfirm] = useState(false);
 
     const audioSettings = config?.audioSettings || { countdowns: true, announcements: true, beeps: true };
 
@@ -135,7 +134,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
                 className="flex justify-between items-center px-5 pb-5 z-10"
                 style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
             >
-                <button onClick={() => setShowExitConfirm(true)} className="p-2 bg-slate-800/50 rounded-full text-slate-400" aria-label={st.cancel}><XCircle size={20} /></button>
+                <button onClick={() => setModalOpen(true)} className="p-2 bg-slate-800/50 rounded-full text-slate-400" aria-label={st.cancel}><XCircle size={20} /></button>
                 <div className="flex gap-2">
                     <button 
                         onClick={() => setShowAudioSettings(!showAudioSettings)} 
@@ -194,16 +193,19 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
             </div>
 
             {/* Exit Confirmation Overlay */}
-            {showExitConfirm && (
+            {modalOpen && (
                 <div className="absolute inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-6 animate-fade-in">
                     <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 w-full max-w-sm shadow-2xl animate-zoom-in">
                         <XCircle size={48} className="text-red-500 mb-4 mx-auto" />
                         <h2 className="text-2xl font-black text-white italic text-center mb-2">{st.confirmExit}</h2>
                         <div className="flex flex-col gap-3 mt-8">
-                            <Button onClick={() => setStatus('finished')} variant="primary" className="bg-red-600 hover:bg-red-700 border-red-500">
+                            <Button onClick={() => {
+                                setModalOpen(false);
+                                setStatus('finished');
+                            }} variant="primary" className="bg-red-600 hover:bg-red-700 border-red-500">
                                 {st.yesExit}
                             </Button>
-                            <Button onClick={() => setShowExitConfirm(false)} variant="ghost">
+                            <Button onClick={() => setModalOpen(false)} variant="ghost">
                                 {st.noStay}
                             </Button>
                         </div>

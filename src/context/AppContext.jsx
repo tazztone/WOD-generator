@@ -46,7 +46,10 @@ const AppInnerProvider = ({ children }) => {
                     setAppState(current => {
                         switch (current) {
                             case 'preview': return 'config';
-                            case 'active': return 'preview';
+                            case 'active': {
+                                setModalOpen(true);
+                                return current;
+                            }
                             case 'history': return 'config';
                             case 'calculator': return 'config';
                             case 'config':

@@ -113,12 +113,11 @@ describe('ActiveTimer', () => {
 
         expect(container.textContent).toContain('Audio Settings');
     });
-
     it('should show confirmation dialog when clicking the cancel button', () => {
         act(() => {
             root.render(
                 <SettingsProvider>
-                    <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => { }} />
+                    <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />
                 </SettingsProvider>
             );
         });
