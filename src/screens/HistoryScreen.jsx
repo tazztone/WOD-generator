@@ -46,7 +46,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
     }, [history]);
 
     return (
-        <div className="flex flex-col h-full bg-slate-900 p-5 overflow-hidden">
+        <div className="flex flex-col h-full bg-slate-900 px-5 pt-3 pb-5 overflow-hidden">
             <div className="flex justify-between items-center mb-6">
                 <button onClick={onBack} className="text-slate-400 hover:text-white"><ArrowLeft size={24} /></button>
                 <h2 className="text-xl font-black text-white italic">{t.logbook}</h2>

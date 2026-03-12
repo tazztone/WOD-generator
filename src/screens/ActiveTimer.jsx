@@ -131,7 +131,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
             {/* Header */}
             <div 
                 className="flex justify-between items-center px-5 pb-5 z-10"
-                style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 1.25rem)' }}
+                style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
             >
                 <button onClick={() => setStatus('finished')} className="p-2 bg-slate-800/50 rounded-full text-slate-400" aria-label={st.cancel}><XCircle size={20} /></button>
                 <div className="flex gap-2">

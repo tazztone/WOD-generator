@@ -1,5 +1,15 @@
 {
   "appId": "com.wodgen.ultimate",
   "appName": "WodGen Ultimate",
-  "webDir": "dist"
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#0f172a"
+  },
+  "plugins": {
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0f172a",
+      "overlaysWebView": true
+    }
+  }
 }

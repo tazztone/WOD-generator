@@ -7,6 +7,9 @@ MAIN_ACTIVITY=".MainActivity"
 # Use system ADB or fall back
 ADB=$(command -v adb || echo "/home/tazztone/Android/Sdk/platform-tools/adb")
 
+echo "📦 Building web assets and syncing to Capacitor..."
+npm run build && npx cap sync
+
 echo "🚀 Building and installing debug APK..."
 cd android && ./gradlew installDebug
 

@@ -16,7 +16,7 @@ export const Header = ({ onBack, onLangToggle, onHistory, onCalculator, lang, ap
     return (
         <header 
             className="px-5 pb-4 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 flex justify-between items-center sticky top-0 z-30"
-            style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 1rem)' }}
+            style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
         >
             <div onClick={onBack} className="cursor-pointer group">
                 <h1 className="text-xl font-black italic tracking-tighter text-emerald-400">WOD GEN</h1>

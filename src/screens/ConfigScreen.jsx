@@ -34,7 +34,7 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
 
     return (
         <div 
-            className="p-5 space-y-6 animate-fade-in duration-500 overflow-y-auto"
+            className="px-5 pt-3 pb-5 space-y-6 animate-fade-in duration-500 overflow-y-auto"
             style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.5rem)' }}
         >
             {/* Time & Movements */}

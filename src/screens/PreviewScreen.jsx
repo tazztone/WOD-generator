@@ -127,7 +127,7 @@ export const PreviewScreen = ({
                 </div>
             )}
 
-            <div className="flex-1 p-5 overflow-y-auto pb-32">
+            <div className="flex-1 px-5 pt-3 overflow-y-auto pb-32">
                 <button onClick={onBack} className="mb-4 flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest transition-colors">
                     <ChevronLeft size={14} /> {pt.back}
                 </button>

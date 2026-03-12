@@ -12,7 +12,8 @@
     "test": "vitest run",
     "analyze": "node scripts/analyze-distribution.js",
     "analyze:logic": "node scripts/analyze-workouts.js",
-    "resources": "capacitor-assets generate"
+    "resources": "capacitor-assets generate",
+    "cap:sync": "npm run build && npx cap sync"
   },
   "dependencies": {
     "@capacitor-community/keep-awake": "^6.0.0",

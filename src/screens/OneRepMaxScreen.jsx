@@ -19,7 +19,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
     const percentages = useMemo(() => calculatePercentages(oneRepMax), [oneRepMax]);
 
     return (
-        <div className="flex flex-col h-full bg-slate-900 p-5 overflow-y-auto animate-fade-in duration-500">
+        <div className="flex flex-col h-full bg-slate-900 px-5 pt-3 pb-5 overflow-y-auto animate-fade-in duration-500">
              <div className="flex items-center gap-4 mb-6">
                 <button onClick={onBack} className="text-slate-400 hover:text-white">
                     <ArrowLeft size={24} />
