@@ -19,7 +19,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
     const percentages = useMemo(() => calculatePercentages(oneRepMax), [oneRepMax]);
 
     return (
-        <div className="flex flex-col h-full bg-slate-900 p-5 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="flex flex-col h-full bg-slate-900 p-5 overflow-y-auto animate-fade-in duration-500">
              <div className="flex items-center gap-4 mb-6">
                 <button onClick={onBack} className="text-slate-400 hover:text-white">
                     <ArrowLeft size={24} />
@@ -57,7 +57,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
                 </div>
 
                 {oneRepMax > 0 && (
-                    <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 pb-10">
+                    <div className="space-y-6 animate-zoom-in duration-300 pb-10">
                         <Card className="bg-emerald-500/10 border-emerald-500/30 text-center py-6">
                             <span className="text-sm font-bold text-emerald-400 uppercase tracking-widest block mb-1">{t.estimated1RM}</span>
                             <span className="text-5xl font-black text-white">{oneRepMax}</span>

@@ -93,10 +93,10 @@ export const PreviewScreen = ({
     };
 
     return (
-        <div className="flex flex-col h-full animate-in fade-in zoom-in-95 duration-300 relative">
+        <div className="flex flex-col h-full animate-zoom-in duration-300 relative">
             {/* Swap Modal */}
             {swapModal.show && (
-                <div className="absolute inset-0 z-50 bg-slate-900/95 backdrop-blur flex flex-col p-4 animate-in fade-in duration-200">
+                <div className="absolute inset-0 z-50 bg-slate-900/95 backdrop-blur flex flex-col p-4 animate-fade-in duration-200">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="text-lg font-black text-white italic">{pt.selectSwap}</h3>
                         <button onClick={() => setSwapModal({ show: false, index: -1 })} className="p-2 bg-slate-800 rounded-full"><XCircle size={20} /></button>

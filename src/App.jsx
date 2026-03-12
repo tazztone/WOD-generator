@@ -53,7 +53,7 @@ export default function CrossFitGenerator() {
                 appState={appState}
             />
 
-            <main className="flex-1 flex flex-col relative overflow-hidden" onClick={clearTooltip}>
+            <main className="flex-1 flex flex-col relative overflow-hidden" onClick={clearTooltip} role="presentation">
                 {appState === 'config' && (
                     <ConfigScreen
                         config={config}

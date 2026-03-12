@@ -42,7 +42,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
     // FINISHED SCREEN
     if (status === 'finished') {
         return (
-            <div className="flex flex-col h-full items-center justify-center p-6 bg-slate-900 animate-in zoom-in-95">
+            <div className="flex flex-col h-full items-center justify-center p-6 bg-slate-900 animate-zoom-in">
                 <Trophy size={64} className="text-yellow-400 mb-4 animate-bounce" />
                 <h1 className="text-4xl font-black text-white italic mb-2">{st.greatJob}</h1>
                 <p className="text-slate-400 mb-8">{st.completeMsg}</p>
@@ -86,7 +86,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
         <div className={`flex flex-col h-full relative overflow-hidden transition-colors duration-500 ${status === 'rest' ? 'bg-blue-900' : 'bg-slate-900'}`}>
             {/* Audio Settings Popover */}
             {showAudioSettings && (
-                <div className="absolute inset-x-0 top-0 z-50 p-4 animate-in slide-in-from-top-4 duration-300">
+                <div className="absolute inset-x-0 top-0 z-50 p-4 animate-fade-in duration-300">
                     <div className="bg-slate-800/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-4 overflow-hidden">
                         <div className="flex justify-between items-center mb-4">
                             <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Audio Settings</span>
@@ -129,7 +129,10 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang, setModalOpen }) => 
             {status === 'work' && <div className="absolute inset-0 bg-emerald-500/5 animate-pulse pointer-events-none" />}
 
             {/* Header */}
-            <div className="flex justify-between items-center p-5 z-10">
+            <div 
+                className="flex justify-between items-center px-5 pb-5 z-10"
+                style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 1.25rem)' }}
+            >
                 <button onClick={() => setStatus('finished')} className="p-2 bg-slate-800/50 rounded-full text-slate-400" aria-label={st.cancel}><XCircle size={20} /></button>
                 <div className="flex gap-2">
                     <button 

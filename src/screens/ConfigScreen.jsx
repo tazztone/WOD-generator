@@ -33,7 +33,10 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
     const isEquipmentValid = Object.values(config.equipment).some(v => v);
 
     return (
-        <div className="p-5 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-y-auto pb-24">
+        <div 
+            className="p-5 space-y-6 animate-fade-in duration-500 overflow-y-auto"
+            style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.5rem)' }}
+        >
             {/* Time & Movements */}
             <div className="grid grid-cols-2 gap-4">
                 <Card className="flex flex-col gap-2">
