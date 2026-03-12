@@ -20,3 +20,9 @@
   user-select: none;
   -webkit-user-select: none;
 }
+
+@layer utilities {
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
