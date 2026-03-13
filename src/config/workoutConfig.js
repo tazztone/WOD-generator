@@ -82,7 +82,6 @@ export const SUBSTITUTIONS = {
         'wall_walk': 'plank_shoulder_tap', // Wall Walk -> Shoulder Taps
         'strict_pullup': 'pullup',
         'rope_climb': 'pullup',
-        'ring_dip': 'dip_bar',
-        'pistol': 'lunge_weighted'
+        'ring_dip': 'dip_bar'
     }
 };

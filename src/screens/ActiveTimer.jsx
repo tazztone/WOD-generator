@@ -17,7 +17,7 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
     const audioSettings = config?.audioSettings || { countdowns: true, announcements: true, beeps: true };
 
     useWakeLock();
-    const { status, setStatus, timeLeft, totalTime, currentRound, setCurrentRound, isPaused, setIsPaused } = useTimer(workout, lang, audioSettings);
+    const { status, timeLeft, totalTime, currentRound, setCurrentRound, isPaused, setIsPaused } = useTimer(workout, lang, audioSettings);
 
     const exerciseList = useMemo(() => {
         return workout.exercises.map(e => `${formatReps(e.reps, e.exercise)} ${getExerciseName(e.exercise, lang)}`).join(' + ');
