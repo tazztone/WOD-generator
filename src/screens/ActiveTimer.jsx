@@ -201,7 +201,8 @@ export const ActiveTimer = ({ workout, onExit, onSave, lang }) => {
                         <div className="flex flex-col gap-3 mt-8">
                             <Button onClick={() => {
                                 setModalOpen(false);
-                                setStatus('finished');
+                                localStorage.removeItem('wod_timer_v1');
+                                onExit();
                             }} variant="primary" className="bg-red-600 hover:bg-red-700 border-red-500">
                                 {st.yesExit}
                             </Button>
