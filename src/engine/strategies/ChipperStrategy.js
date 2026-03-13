@@ -16,12 +16,14 @@ export const ChipperStrategy = {
     },
 
     scaleReps(baseReps, exercise, _difficulty, _duration) {
-        // Handle non-numeric base reps (e.g. "400m", "45s")
+        // Handle non-numeric base reps (e.g. "400m", "45s", "50ft")
         if (typeof baseReps !== 'number') {
-            // Special case for Run: Increase distance for Chipper
-            if (typeof baseReps === 'string' && baseReps.endsWith('m')) {
-                const dist = parseInt(baseReps);
-                if (!isNaN(dist)) return `${dist * 2}m`;
+            // Special case for Run/Distance: Increase distance for Chipper
+            if (typeof baseReps === 'string' && (baseReps.endsWith('m') || baseReps.endsWith('ft'))) {
+                const match = baseReps.match(/^(\d+)/);
+                const dist = match ? parseInt(match[1]) : null;
+                const unit = baseReps.endsWith('m') ? 'm' : 'ft';
+                if (dist !== null) return `${dist * 2}${unit}`;
             }
             return baseReps; 
         }
@@ -42,8 +44,10 @@ export const ChipperStrategy = {
 
         let reps = Math.floor(baseReps * multiplier);
 
-        // Cap reps reasonably (e.g., 60 reps max per set usually, 100 for DU)
-        if (reps > 60 && exercise.id !== 'du' && exercise.id !== 'su') {
+        // --- Refined Caps ---
+        if (exercise.intensity === 'VeryHigh' && reps > 8) {
+            reps = 8;
+        } else if (reps > 60 && exercise.id !== 'du' && exercise.id !== 'su') {
             reps = 60;
         }
 

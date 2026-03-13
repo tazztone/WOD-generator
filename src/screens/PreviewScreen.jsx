@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame, Star, HelpCircle } from 'lucide-react';
+import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame, Star, HelpCircle, Dice5 } from 'lucide-react';
 import { getExerciseName, isExerciseValid, formatReps } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
 import { Button } from '../components/ui/Button';
@@ -17,7 +17,8 @@ export const PreviewScreen = ({
     onToggleSave,
     modalOpen,
     setModalOpen,
-    onTooltip
+    onTooltip,
+    onReroll
 }) => {
     const [copied, setCopied] = useState(false);
     const [swapModal, setSwapModal] = useState({ show: false, index: -1 });
@@ -166,6 +167,9 @@ export const PreviewScreen = ({
                     </button>
                     <button onClick={onToggleSave} className={`text-xs flex items-center gap-1 transition-colors ${isSaved ? 'text-emerald-400' : 'text-slate-500 hover:text-emerald-400'}`}>
                         <Star size={12} fill={isSaved ? "currentColor" : "none"} /> {isSaved ? pt.saved : pt.save}
+                    </button>
+                    <button onClick={onReroll} className="text-xs flex items-center gap-1 text-slate-500 hover:text-emerald-400 transition-colors">
+                        <Dice5 size={12} /> {pt.reroll}
                     </button>
                 </div>
 

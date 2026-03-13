@@ -70,6 +70,7 @@ export const LOCALES = {
                 start: "Start Timer",
                 save: "Save",
                 saved: "Saved",
+                reroll: "Reroll",
                 selectSwap: "Select Replacement",
                 whySwap: "Matches movement pattern & equipment",
                 explanations: {
@@ -164,6 +165,7 @@ export const LOCALES = {
                 start: "Timer Starten",
                 save: "Speichern",
                 saved: "Gespeichert",
+                reroll: "Neu auswürfeln",
                 selectSwap: "Ersatz wählen",
                 whySwap: "Passt zu Bewegungsmuster & Ausrüstung",
                 explanations: {

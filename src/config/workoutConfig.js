@@ -66,7 +66,10 @@ export const SUBSTITUTIONS = {
         'du': 'su',                    // Double Unders -> Single Unders
         'ttb': 'situp',                // Toes-to-Bar -> Sit-Up
         'hswalk': 'bear_crawl',        // Handstand Walk -> Bear Crawl
-        'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
+        'wall_walk': 'plank_shoulder_tap', // Wall Walk -> Shoulder Taps
+        'strict_pullup': 'ring_row',
+        'rope_climb': 'ring_row',
+        'ring_dip': 'pushup'
     },
     Scaled: {
         'hspu': 'push_press_db',      // Handstand Push-up -> DB Push Press
@@ -76,6 +79,10 @@ export const SUBSTITUTIONS = {
         'du': 'su',                    // Double Unders -> Single Unders
         'ttb': 'v_up',                 // Toes-to-Bar -> V-Up
         'hswalk': 'bear_crawl',        // Handstand Walk -> Bear Crawl
-        'wall_walk': 'plank_shoulder_tap' // Wall Walk -> Shoulder Taps
+        'wall_walk': 'plank_shoulder_tap', // Wall Walk -> Shoulder Taps
+        'strict_pullup': 'pullup',
+        'rope_climb': 'pullup',
+        'ring_dip': 'dip_bar',
+        'pistol': 'lunge_weighted'
     }
 };

@@ -30,6 +30,12 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     let baseReps = SCALING_CONSTANTS.DEFAULT_REPS;
     if (exercise.intensity === 'High') baseReps = SCALING_CONSTANTS.INTENSITY_REPS.High;
     if (exercise.intensity === 'VeryHigh') baseReps = SCALING_CONSTANTS.INTENSITY_REPS.VeryHigh;
+
+    // V7.1 Special Overrides for very slow/hard movements
+    if (exercise.id === 'rope_climb' || exercise.id === 'wall_walk') return 3;
+    if (exercise.id === 'hswalk') return '50ft';
+    if (exercise.id === 'l_sit') return '30s';
+
     if (exercise.id === 'du') baseReps = SCALING_CONSTANTS.SPECIAL_REPS.Double;
     if (exercise.id === 'su') baseReps = SCALING_CONSTANTS.SPECIAL_REPS['Single Unders'];
 

@@ -28,7 +28,8 @@ describe('PreviewScreen', () => {
         onToggleSave: vi.fn(),
         modalOpen: false,
         setModalOpen: vi.fn(),
-        onTooltip: vi.fn()
+        onTooltip: vi.fn(),
+        onReroll: vi.fn()
     };
 
     it('renders workout details correctly', () => {
@@ -37,6 +38,13 @@ describe('PreviewScreen', () => {
         expect(screen.getByText(/20/)).toBeInTheDocument(); // Match 20 (as in 20m)
         expect(screen.getByText('Push-Up')).toBeInTheDocument();
         expect(screen.getByText('Air Squat')).toBeInTheDocument();
+    });
+
+    it('calls onReroll when reroll button is clicked', () => {
+        render(<PreviewScreen {...mockProps} />);
+        const rerollBtn = screen.getByText(/Reroll/i);
+        fireEvent.click(rerollBtn);
+        expect(mockProps.onReroll).toHaveBeenCalledTimes(1);
     });
 
     it('calls onStart when start button is clicked', () => {
