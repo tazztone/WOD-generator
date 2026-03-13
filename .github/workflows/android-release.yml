@@ -37,7 +37,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       # 0. Determine Versioning
       - name: Set Version Variables
@@ -69,19 +69,19 @@ jobs:
       
       # 1. Setup Environment
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: 'npm'
           
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '21'
       
       - name: Setup Gradle Cache
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v5
         with:
           cache-disabled: true
           
@@ -130,7 +130,7 @@ jobs:
           
       # 6. Create GitHub Release & Upload Artifacts
       - name: Create GitHub Release & Upload Artifacts
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.vars.outputs.tag }}
           name: ${{ steps.vars.outputs.title }}
@@ -147,7 +147,7 @@ jobs:
       # 7. Publish to Google Play Store (Production Track)
       - name: Publish to Google Play Store
         if: ${{ github.event.inputs.publish_to_play_store != 'false' }}
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@v1 # Still on v1 as per search
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.wodgen.ultimate
