@@ -71,6 +71,7 @@ export const LOCALES = {
                 save: "Save",
                 saved: "Saved",
                 reroll: "Reroll",
+                rerollConfirm: "Tap again!",
                 selectSwap: "Select Replacement",
                 whySwap: "Matches movement pattern & equipment",
                 explanations: {
@@ -166,6 +167,7 @@ export const LOCALES = {
                 save: "Speichern",
                 saved: "Gespeichert",
                 reroll: "Neu auswürfeln",
+                rerollConfirm: "Nochmal tippen!",
                 selectSwap: "Ersatz wählen",
                 whySwap: "Passt zu Bewegungsmuster & Ausrüstung",
                 explanations: {

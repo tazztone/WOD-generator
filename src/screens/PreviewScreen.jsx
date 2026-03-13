@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame, Star, HelpCircle, Dice5 } from 'lucide-react';
 import { getExerciseName, isExerciseValid, formatReps } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
@@ -22,6 +22,8 @@ export const PreviewScreen = ({
 }) => {
     const [copied, setCopied] = useState(false);
     const [swapModal, setSwapModal] = useState({ show: false, index: -1 });
+    const [isRerollConfirmed, setIsRerollConfirmed] = useState(false);
+    const rerollTimerRef = useRef(null);
     const t = LOCALES[lang];
     const pt = t.screens.preview;
     const explanations = pt.explanations;
@@ -45,6 +47,26 @@ export const PreviewScreen = ({
             setSwapModal({ show: false, index: -1 });
         }
     }, [modalOpen]);
+
+    const handleReroll = () => {
+        if (isRerollConfirmed) {
+            onReroll();
+            setIsRerollConfirmed(false);
+            if (rerollTimerRef.current) clearTimeout(rerollTimerRef.current);
+        } else {
+            setIsRerollConfirmed(true);
+            if (rerollTimerRef.current) clearTimeout(rerollTimerRef.current);
+            rerollTimerRef.current = setTimeout(() => {
+                setIsRerollConfirmed(false);
+            }, 2000);
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (rerollTimerRef.current) clearTimeout(rerollTimerRef.current);
+        };
+    }, []);
 
     const handleShare = () => {
         let text = `*** WOD GENERATOR ***\n\n`;
@@ -168,8 +190,8 @@ export const PreviewScreen = ({
                     <button onClick={onToggleSave} className={`text-xs flex items-center gap-1 transition-colors ${isSaved ? 'text-emerald-400' : 'text-slate-500 hover:text-emerald-400'}`}>
                         <Star size={12} fill={isSaved ? "currentColor" : "none"} /> {isSaved ? pt.saved : pt.save}
                     </button>
-                    <button onClick={onReroll} className="text-xs flex items-center gap-1 text-slate-500 hover:text-emerald-400 transition-colors">
-                        <Dice5 size={12} /> {pt.reroll}
+                    <button onClick={handleReroll} className={`text-xs flex items-center gap-1 transition-all duration-300 ${isRerollConfirmed ? 'text-rose-500 font-black animate-pulse' : 'text-slate-500 hover:text-emerald-400'}`}>
+                        <Dice5 size={12} className={isRerollConfirmed ? 'rotate-180 transition-transform duration-500' : ''} /> {isRerollConfirmed ? pt.rerollConfirm : pt.reroll}
                     </button>
                 </div>
 

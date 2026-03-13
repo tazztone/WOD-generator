@@ -40,9 +40,16 @@ describe('PreviewScreen', () => {
         expect(screen.getByText('Air Squat')).toBeInTheDocument();
     });
 
-    it('calls onReroll when reroll button is clicked', () => {
+    it('requires double tap for reroll', () => {
         render(<PreviewScreen {...mockProps} />);
         const rerollBtn = screen.getByText(/Reroll/i);
+
+        // First tap
+        fireEvent.click(rerollBtn);
+        expect(mockProps.onReroll).not.toHaveBeenCalled();
+        expect(screen.getByText(/Tap again/i)).toBeInTheDocument();
+
+        // Second tap
         fireEvent.click(rerollBtn);
         expect(mockProps.onReroll).toHaveBeenCalledTimes(1);
     });
