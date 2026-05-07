@@ -22,7 +22,7 @@ export const WorkoutProvider = ({ children }) => {
             const savedWorkoutsData = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
             if (savedWorkoutsData) setSavedWorkouts(JSON.parse(savedWorkoutsData));
         } catch (e) {
-            console.error('Failed to parse storage data', e);
+            // Ignore parse errors, fallback to default empty arrays
         }
     }, []);
 
