@@ -17,10 +17,18 @@ export const isExerciseValid = (ex, currentConfig) => {
         if (ex.tags.some(tag => currentConfig.forbiddenTagsSet.has(tag))) return false;
     } else if (currentConfig.avoid && currentConfig.avoid.length > 0) {
         // Fallback if forbiddenTagsSet isn't precomputed (e.g. in tests or old calls)
-        for (const area of currentConfig.avoid) {
-            const forbiddenTags = INJURY_MAP[area];
-            if (ex.tags && ex.tags.some(tag => forbiddenTags.includes(tag))) return false;
+        if (!currentConfig._forbiddenTagsSet) {
+            currentConfig._forbiddenTagsSet = new Set();
+            for (const area of currentConfig.avoid) {
+                const forbiddenTags = INJURY_MAP[area];
+                if (forbiddenTags) {
+                    for (let i = 0; i < forbiddenTags.length; i++) {
+                        currentConfig._forbiddenTagsSet.add(forbiddenTags[i]);
+                    }
+                }
+            }
         }
+        if (ex.tags && ex.tags.some(tag => currentConfig._forbiddenTagsSet.has(tag))) return false;
     }
     return true;
 };
