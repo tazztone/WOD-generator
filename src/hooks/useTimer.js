@@ -12,6 +12,7 @@ export const useTimer = (workout, lang, voiceEnabled) => {
     const [roundTime, setRoundTime] = useState(0);
 
     const timerRef = useRef(null);
+    const savedCallback = useRef();
 
     // Speak helper
     const speakMovements = useCallback(() => {
@@ -52,8 +53,9 @@ export const useTimer = (workout, lang, voiceEnabled) => {
         return () => { if (appListener) appListener.remove(); };
     }, []);
 
+    // This effect updates the callback ref whenever state changes
     useEffect(() => {
-        timerRef.current = setInterval(() => {
+        savedCallback.current = () => {
             if (status === 'finished') return;
 
             if (status === 'pre') {
@@ -77,10 +79,8 @@ export const useTimer = (workout, lang, voiceEnabled) => {
 
             if (workout.template === 'EMOM') {
                 if (timeLeft === 10) speak("10 seconds", lang);
-                // TODO: Add half-time audio cue (e.g., "30 seconds" for EMOM)
                 if (timeLeft <= 3 && timeLeft > 0) SOUNDS.countdown();
                 if (timeLeft <= 0) {
-                    // New Minute
                     SOUNDS.round();
                     setCurrentRound(r => r + 1);
                     setTimeLeft(60);
@@ -113,9 +113,6 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                     setTimeLeft(t => t - 1);
                 }
             } else {
-                // AMRAP, RFT, Chipper (Count DOWN or UP)
-                // TODO: Add "halfway there" audio cue for AMRAP/RFT
-                // TODO: Add countdown beeps at 3-2-1 for AMRAP/RFT final seconds
                 if (workout.template === 'AMRAP' || workout.template === 'RFT') {
                     if (timeLeft <= 0) {
                         setStatus('finished');
@@ -125,10 +122,18 @@ export const useTimer = (workout, lang, voiceEnabled) => {
                     }
                 }
             }
-        }, 1000);
+        };
+    });
+
+    // This effect sets up and tears down the interval
+    useEffect(() => {
+        const tick = () => {
+            savedCallback.current();
+        };
+        timerRef.current = setInterval(tick, 1000);
 
         return () => clearInterval(timerRef.current);
-    }, [status, timeLeft, workout, currentRound, voiceEnabled, speakMovements, lang]);
+    }, []);
 
     return {
         status,
