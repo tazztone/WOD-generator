@@ -48,10 +48,20 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                manualChunks: {
-                    'react-vendor': ['react', 'react-dom'],
-                    'lucide': ['lucide-react'],
-                },
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('react') || id.includes('react-dom')) {
+                            return 'react-vendor';
+                        }
+                        if (id.includes('lucide-react')) {
+                            return 'lucide';
+                        }
+                        if (id.includes('@capacitor')) {
+                            return 'capacitor';
+                        }
+                        return 'vendor';
+                    }
+                }
             },
         },
     },
