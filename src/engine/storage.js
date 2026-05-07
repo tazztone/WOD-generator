@@ -54,7 +54,7 @@ export function saveConfig(config) {
     try {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
     } catch (e) {
-        console.error('Failed to save config', e);
+        // Ignore save errors (e.g., quota exceeded or private mode)
     }
 }
 
