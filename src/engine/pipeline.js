@@ -109,9 +109,10 @@ export const balanceWeight = (pool, director) => {
 export const focusWeight = (pool, director) => {
     if (director.config.focus === 'Balanced') return pool;
 
-    const targetPatterns = FOCUS_PATTERNS[director.config.focus] || [];
+    const targetPatternsArray = FOCUS_PATTERNS[director.config.focus] || [];
+    const targetPatterns = new Set(targetPatternsArray);
     // Note: This matches based on "pattern" string (e.g. "Cardio", "Push")
-    const priorityMoves = pool.filter(ex => targetPatterns.includes(ex.pattern));
+    const priorityMoves = pool.filter(ex => targetPatterns.has(ex.pattern));
     
     if (priorityMoves.length > 0) {
         // Significantly boost priority
