@@ -94,7 +94,15 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold text-slate-400 uppercase">{t.level}</span>
-                        <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.level)} />
+                        <button
+                            type="button"
+                            onClick={(e) => onTooltip(e, t.tt.level)}
+                            className="text-slate-600 hover:text-emerald-500 focus:text-emerald-500 focus:outline-none transition-colors"
+                            aria-label={t.help}
+                            aria-describedby="tooltip-content"
+                        >
+                            <HelpCircle size={14} />
+                        </button>
                     </div>
                     <select value={config.difficulty} onChange={(e) => setConfig({ ...config, difficulty: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white focus:ring-1 focus:ring-emerald-500">
                         <option value="Rx">{t.rx}</option>
@@ -105,7 +113,15 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold text-slate-400 uppercase">{t.focus}</span>
-                        <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.focus)} />
+                        <button
+                            type="button"
+                            onClick={(e) => onTooltip(e, t.tt.focus)}
+                            className="text-slate-600 hover:text-emerald-500 focus:text-emerald-500 focus:outline-none transition-colors"
+                            aria-label={t.help}
+                            aria-describedby="tooltip-content"
+                        >
+                            <HelpCircle size={14} />
+                        </button>
                     </div>
                     <select
                         value={config.focus.toLowerCase()}
@@ -141,7 +157,15 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <span className="text-sm font-bold text-white uppercase">{t.includeStrength}</span>
-                        <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.strength)} />
+                        <button
+                            type="button"
+                            onClick={(e) => onTooltip(e, t.tt.strength)}
+                            className="text-slate-600 hover:text-emerald-500 focus:text-emerald-500 focus:outline-none transition-colors"
+                            aria-label={t.help}
+                            aria-describedby="tooltip-content"
+                        >
+                            <HelpCircle size={14} />
+                        </button>
                     </div>
                     <span className="text-xs text-slate-500">{t.strengthSub}</span>
                 </div>
@@ -160,7 +184,15 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
             <div>
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs font-bold text-slate-400 uppercase">{t.injuries}</span>
-                    <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.injuries)} />
+                    <button
+                        type="button"
+                        onClick={(e) => onTooltip(e, t.tt.injuries)}
+                        className="text-slate-600 hover:text-emerald-500 focus:text-emerald-500 focus:outline-none transition-colors"
+                        aria-label={t.help}
+                        aria-describedby="tooltip-content"
+                    >
+                        <HelpCircle size={14} />
+                    </button>
                 </div>
                 <div className="flex gap-2">
                     {['Shoulders', 'Knees', 'Back'].map(part => (

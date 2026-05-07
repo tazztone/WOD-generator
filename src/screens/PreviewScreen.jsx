@@ -134,7 +134,12 @@ export const PreviewScreen = ({
 
                 {workout.strength && (
                     <div className="mb-6 bg-slate-800/40 border-l-4 border-purple-500 p-4 rounded-r-xl relative">
-                        <button onClick={(e) => onTooltip(e, explanations.strengthText)} className="absolute top-2 right-2 text-slate-600 hover:text-purple-400 transition-colors p-2">
+                        <button
+                            onClick={(e) => onTooltip(e, explanations.strengthText)}
+                            className="absolute top-2 right-2 text-slate-600 hover:text-purple-400 transition-colors p-2 focus:outline-none focus:text-purple-400"
+                            aria-label={t.help}
+                            aria-describedby="tooltip-content"
+                        >
                             <Info size={16} />
                         </button>
                         <div className="flex justify-between items-start mb-1">
@@ -150,7 +155,12 @@ export const PreviewScreen = ({
                 <div className="flex justify-between items-end mb-2">
                     <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-1">
                         <Activity size={10} /> {pt.partB} • {pt.conditioning}
-                        <button onClick={(e) => onTooltip(e, explanations.metconText)} className="ml-1 text-slate-600 hover:text-emerald-500">
+                        <button
+                            onClick={(e) => onTooltip(e, explanations.metconText)}
+                            className="ml-1 text-slate-600 hover:text-emerald-500 focus:outline-none focus:text-emerald-500 transition-colors"
+                            aria-label={t.help}
+                            aria-describedby="tooltip-content"
+                        >
                             <Info size={12} />
                         </button>
                     </span>
@@ -178,7 +188,12 @@ export const PreviewScreen = ({
                             <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl relative">
                                 <div className="flex items-center gap-1 mb-1">
                                     <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest block">Buy-In</span>
-                                    <button onClick={(e) => onTooltip(e, t.tt.buyIn)} className="text-emerald-500/50 hover:text-emerald-500 transition-colors">
+                                    <button
+                                        onClick={(e) => onTooltip(e, t.tt.buyIn)}
+                                        className="text-emerald-500/50 hover:text-emerald-500 transition-colors focus:outline-none focus:text-emerald-500"
+                                        aria-label={t.help}
+                                        aria-describedby="tooltip-content"
+                                    >
                                         <HelpCircle size={10} />
                                     </button>
                                 </div>
@@ -207,7 +222,12 @@ export const PreviewScreen = ({
                 </div>
 
                 <div className="bg-slate-900/50 border border-dashed border-slate-800 rounded-xl p-4 relative">
-                    <button onClick={(e) => onTooltip(e, explanations.warmupText)} className="absolute top-2 right-2 text-slate-700 hover:text-slate-400 transition-colors p-2">
+                    <button
+                        onClick={(e) => onTooltip(e, explanations.warmupText)}
+                        className="absolute top-2 right-2 text-slate-700 hover:text-slate-400 transition-colors p-2 focus:outline-none focus:text-slate-400"
+                        aria-label={t.help}
+                        aria-describedby="tooltip-content"
+                    >
                         <Info size={14} />
                     </button>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">{pt.warmup}</span>
