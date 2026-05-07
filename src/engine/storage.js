@@ -129,7 +129,6 @@ export function importData(data) {
 
         return true;
     } catch (e) {
-        console.error('Failed to import data', e);
         throw e;
     }
 }
