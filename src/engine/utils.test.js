@@ -81,19 +81,16 @@ describe('Utils Engine', () => {
                 { exercise: { id: 'pushup', pattern: 'Push' } },
                 { exercise: { id: 'squat', pattern: 'Squat' } }
             ];
-            const warmup = generateWarmupLogic(exercises, 'en');
-            expect(warmup).toContain('3 min Cardio (Easy)');
-            expect(warmup).toContain('10 Scap Push-ups + 5 Inchworms');
-            expect(warmup).toContain('10 Air Squats');
+            const warmup = generateWarmupLogic(exercises);
+            expect(warmup).toContain('cardioEasy');
+            expect(warmup).toContain('pushWarmup');
+            expect(warmup).toContain('airSquats');
         });
 
         it('should add calf raises for specific IDs', () => {
             const exercises = [{ exercise: { id: 'run_400', pattern: 'Cardio' } }];
-            const warmup = generateWarmupLogic(exercises, 'en');
-            expect(warmup).toContain('20 Calf Raises');
-
-            const warmupDe = generateWarmupLogic(exercises, 'de');
-            expect(warmupDe).toContain('20 Wadenheben');
+            const warmup = generateWarmupLogic(exercises);
+            expect(warmup).toContain('calfRaises');
         });
 
         it('should handle all patterns', () => {
@@ -101,58 +98,51 @@ describe('Utils Engine', () => {
                 { exercise: { id: 'dl', pattern: 'Hinge' } },
                 { exercise: { id: 'pullup', pattern: 'Pull' } }
             ];
-            const warmup = generateWarmupLogic(exercises, 'en');
-            expect(warmup).toContain('10 Glute Bridges + 10 Good Mornings');
-            expect(warmup).toContain('10 Ring Rows / Scap Pulls');
+            const warmup = generateWarmupLogic(exercises);
+            expect(warmup).toContain('hingeWarmup');
+            expect(warmup).toContain('pullWarmup');
         });
     });
 
     describe('generateStrengthLogic', () => {
         it('should return null if includeStrength is false', () => {
-            expect(generateStrengthLogic([], { includeStrength: false }, 'en')).toBeNull();
+            expect(generateStrengthLogic([], { includeStrength: false })).toBeNull();
         });
 
         it('should pair Deadlift for Squat heavy metcons without Hinge', () => {
             const exercises = [{ exercise: { pattern: 'Squat' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'en');
-            expect(strength.name).toBe('Deadlift');
+            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            expect(strength.nameKey).toBe('deadlift');
         });
 
         it('should pair Back Squat for Push heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Push' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'en');
-            expect(strength.name).toBe('Back Squat');
+            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            expect(strength.nameKey).toBe('backSquat');
         });
 
         it('should pair Front Squat for Pull heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Pull' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'en');
-            expect(strength.name).toBe('Front Squat');
+            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            expect(strength.nameKey).toBe('frontSquat');
         });
 
         it('should pair Push Press for Hinge heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Hinge' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'en');
-            expect(strength.name).toBe('Push Press');
+            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            expect(strength.nameKey).toBe('pushPress');
         });
 
         it('should pair Romanian Deadlift for Core heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Core' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'en');
-            expect(strength.name).toBe('Romanian Deadlift');
+            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            expect(strength.nameKey).toBe('romanianDeadlift');
         });
 
         it('should fallback to Strict Press', () => {
             const exercises = [{ exercise: { pattern: 'Unknown' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'en');
-            expect(strength.name).toBe('Strict Press');
-        });
-
-        it('should support German translations', () => {
-            const exercises = [{ exercise: { pattern: 'Push' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true }, 'de');
-            expect(strength.name).toBe('Back Squat');
-            expect(strength.notes).toBe('Aufbauend');
+            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            expect(strength.nameKey).toBe('strictPress');
         });
     });
 });
