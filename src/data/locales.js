@@ -20,6 +20,29 @@ export const LOCALES = {
         equip: { barbell: "Barbell", dumbbell: "Dumbbells / KBs", pullup: "Pull-Up Bar", machine: "Cardio Machine" },
         tt: {
             injuries: "Smart-Filter: Excludes aggravating movements."
+        },
+        previewScreen: {
+            back: "Back",
+            partA: "Part A",
+            partB: "Part B",
+            strength: "Strength",
+            conditioning: "Conditioning",
+            share: "Share",
+            copied: "Copied",
+            min: "Mins",
+            rounds: "Rounds",
+            warmup: "Warmup Protocol",
+            start: "Start Timer",
+            selectSwap: "Select Replacement",
+            whySwap: "Matches movement pattern & equipment",
+            strengthTitle: "Smart Strength Pairing",
+            strengthText: "We analyze the movement patterns in your conditioning workout and pair a complementary strength exercise. For example, if your Metcon is leg-heavy (Squats), we might prescribe a Push or Hinge movement to keep you balanced and avoid over-fatigue.",
+            metconTitle: "Dynamic Conditioning",
+            metconText: "This workout is scaled to your selected duration and difficulty. Rep schemes are adjusted based on the total volume to maintain the intended stimulus (e.g., sprinting vs. pacing).",
+            warmupTitle: "Targeted Warmup",
+            warmupText: "This warmup protocol is not random. It is specifically generated to prepare the muscle groups and movement patterns required for today's specific workout.",
+            swapTitle: "Valid Swaps",
+            swapText: "These exercises match the movement pattern (e.g., Push, Pull, Squat) and equipment requirements of the original exercise, ensuring the stimulus remains the same."
         }
     },
     de: {
@@ -42,6 +65,29 @@ export const LOCALES = {
         equip: { barbell: "Langhantel", dumbbell: "Kurzhantel / KB", pullup: "Klimmzugstange", machine: "Cardio Gerät" },
         tt: {
             injuries: "Smart-Filter: Entfernt belastende Übungen."
+        },
+        previewScreen: {
+            back: "Zurück",
+            partA: "Teil A",
+            partB: "Teil B",
+            strength: "Kraft",
+            conditioning: "Ausdauer",
+            share: "Teilen",
+            copied: "Kopiert",
+            min: "Min",
+            rounds: "Runden",
+            warmup: "Aufwärm-Protokoll",
+            start: "Timer Starten",
+            selectSwap: "Ersatz wählen",
+            whySwap: "Passt zu Bewegungsmuster & Ausrüstung",
+            strengthTitle: "Smarte Kraft-Paarung",
+            strengthText: "Wir analysieren die Bewegungsmuster in deinem Workout und wählen eine ergänzende Kraftübung. Wenn dein Metcon beinelastig ist (Kniebeugen), verschreiben wir vielleicht eine Druck- oder Zugübung, um die Balance zu halten.",
+            metconTitle: "Dynamisches Conditioning",
+            metconText: "Dieses Workout ist auf deine gewählte Dauer und Schwierigkeit skaliert. Wiederholungszahlen werden basierend auf dem Gesamtvolumen angepasst, um den beabsichtigten Reiz beizubehalten.",
+            warmupTitle: "Gezieltes Aufwärmen",
+            warmupText: "Dieses Aufwärmprogramm ist nicht zufällig. Es wurde speziell generiert, um die Muskelgruppen und Bewegungsmuster vorzubereiten, die für das heutige Workout benötigt werden.",
+            swapTitle: "Gültige Alternativen",
+            swapText: "Diese Übungen entsprechen dem Bewegungsmuster (z.B. Drücken, Ziehen, Beugen) und den Ausrüstungsanforderungen der ursprünglichen Übung, um den Trainingsreiz beizubehalten."
         }
     }
 };

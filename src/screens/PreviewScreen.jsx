@@ -2,72 +2,14 @@ import { useState, useMemo } from 'react';
 import { ChevronLeft, Share2, CheckCircle, Clock, RefreshCw, Play, XCircle, Info, Dumbbell, Activity, Flame } from 'lucide-react';
 import { getExerciseName, isExerciseValid } from '../engine/generator';
 import { EXERCISE_DB } from '../data/exercises';
+import { LOCALES } from '../data/locales';
 import { Button } from '../components/ui/Button';
-
-// TODO: Merge these translations with the main locales.js file to avoid duplication
-// Temporary T
-const T = {
-    en: {
-        back: "Back",
-        partA: "Part A",
-        partB: "Part B",
-        strength: "Strength",
-        conditioning: "Conditioning",
-        share: "Share",
-        copied: "Copied",
-        min: "Mins",
-        rounds: "Rounds",
-        warmup: "Warmup Protocol",
-        start: "Start Timer",
-        selectSwap: "Select Replacement",
-        whySwap: "Matches movement pattern & equipment"
-    },
-    de: {
-        back: "Zurück",
-        partA: "Teil A",
-        partB: "Teil B",
-        strength: "Kraft",
-        conditioning: "Ausdauer",
-        share: "Teilen",
-        copied: "Kopiert",
-        min: "Min",
-        rounds: "Runden",
-        warmup: "Aufwärm-Protokoll",
-        start: "Timer Starten",
-        selectSwap: "Ersatz wählen",
-        whySwap: "Passt zu Bewegungsmuster & Ausrüstung"
-    }
-};
-
-const EXPLANATIONS = {
-    en: {
-        strengthTitle: "Smart Strength Pairing",
-        strengthText: "We analyze the movement patterns in your conditioning workout and pair a complementary strength exercise. For example, if your Metcon is leg-heavy (Squats), we might prescribe a Push or Hinge movement to keep you balanced and avoid over-fatigue.",
-        metconTitle: "Dynamic Conditioning",
-        metconText: "This workout is scaled to your selected duration and difficulty. Rep schemes are adjusted based on the total volume to maintain the intended stimulus (e.g., sprinting vs. pacing).",
-        warmupTitle: "Targeted Warmup",
-        warmupText: "This warmup protocol is not random. It is specifically generated to prepare the muscle groups and movement patterns required for today's specific workout.",
-        swapTitle: "Valid Swaps",
-        swapText: "These exercises match the movement pattern (e.g., Push, Pull, Squat) and equipment requirements of the original exercise, ensuring the stimulus remains the same."
-    },
-    de: {
-        strengthTitle: "Smarte Kraft-Paarung",
-        strengthText: "Wir analysieren die Bewegungsmuster in deinem Workout und wählen eine ergänzende Kraftübung. Wenn dein Metcon beinelastig ist (Kniebeugen), verschreiben wir vielleicht eine Druck- oder Zugübung, um die Balance zu halten.",
-        metconTitle: "Dynamisches Conditioning",
-        metconText: "Dieses Workout ist auf deine gewählte Dauer und Schwierigkeit skaliert. Wiederholungszahlen werden basierend auf dem Gesamtvolumen angepasst, um den beabsichtigten Reiz beizubehalten.",
-        warmupTitle: "Gezieltes Aufwärmen",
-        warmupText: "Dieses Aufwärmprogramm ist nicht zufällig. Es wurde speziell generiert, um die Muskelgruppen und Bewegungsmuster vorzubereiten, die für das heutige Workout benötigt werden.",
-        swapTitle: "Gültige Alternativen",
-        swapText: "Diese Übungen entsprechen dem Bewegungsmuster (z.B. Drücken, Ziehen, Beugen) und den Ausrüstungsanforderungen der ursprünglichen Übung, um den Trainingsreiz beizubehalten."
-    }
-};
 
 export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, onBack }) => {
     const [copied, setCopied] = useState(false);
     const [swapModal, setSwapModal] = useState({ show: false, index: -1 });
     const [infoModal, setInfoModal] = useState({ show: false, title: '', text: '' });
-    const t = T[lang];
-    const explanations = EXPLANATIONS[lang];
+    const t = LOCALES[lang].previewScreen;
 
     const validExercises = useMemo(() => {
         return EXERCISE_DB.filter(ex => isExerciseValid(ex, config));
@@ -94,10 +36,10 @@ export const PreviewScreen = ({ workout, config, onManualSwap, onStart, lang, on
     const showInfo = (type) => {
         let title = "";
         let text = "";
-        if (type === 'strength') { title = explanations.strengthTitle; text = explanations.strengthText; }
-        if (type === 'metcon') { title = explanations.metconTitle; text = explanations.metconText; }
-        if (type === 'warmup') { title = explanations.warmupTitle; text = explanations.warmupText; }
-        if (type === 'swap') { title = explanations.swapTitle; text = explanations.swapText; }
+        if (type === 'strength') { title = t.strengthTitle; text = t.strengthText; }
+        if (type === 'metcon') { title = t.metconTitle; text = t.metconText; }
+        if (type === 'warmup') { title = t.warmupTitle; text = t.warmupText; }
+        if (type === 'swap') { title = t.swapTitle; text = t.swapText; }
         setInfoModal({ show: true, title, text });
     };
 
