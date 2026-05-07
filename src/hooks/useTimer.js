@@ -10,6 +10,9 @@ export const useTimer = (workout, lang, audioSettings) => {
     const [roundTime, setRoundTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
+    const lastSavedStatus = useRef(status);
+    const lastSavedRound = useRef(currentRound);
+
     const { countdowns, announcements, beeps } = audioSettings || { countdowns: true, announcements: true, beeps: true };
 
     // Initial Load from Persistence
@@ -47,8 +50,18 @@ export const useTimer = (workout, lang, audioSettings) => {
             currentRound,
             roundTime
         };
+
+        const statusChanged = lastSavedStatus.current !== status;
+        const roundChanged = lastSavedRound.current !== currentRound;
+
+        // Optimization: Avoid synchronous LocalStorage writes on every tick (1s).
+        // Save immediately if paused, status changed, round changed, or every 5 seconds while running.
+        if (!isPaused && !statusChanged && !roundChanged && timeLeft % 5 !== 0) return;
+
         localStorage.setItem('wod_timer_v1', JSON.stringify(state));
-    }, [status, timeLeft, totalTime, currentRound, roundTime, workout.id]);
+        lastSavedStatus.current = status;
+        lastSavedRound.current = currentRound;
+    }, [status, timeLeft, totalTime, currentRound, roundTime, workout.id, isPaused]);
 
     const timerRef = useRef(null);
 
