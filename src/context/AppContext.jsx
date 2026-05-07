@@ -92,6 +92,7 @@ export const useAppContext = () => {
             workout: workout.workout,
             history: workout.history,
             savedWorkouts: workout.savedWorkouts,
+            savedWorkoutsMap: workout.savedWorkoutsMap,
             tooltip: settings.tooltip,
             modalOpen: settings.modalOpen
         },

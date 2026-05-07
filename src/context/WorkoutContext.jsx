@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from '../engine/storage';
 import { generateWorkout as engineGenerate, swapExercise as engineSwap } from '../engine/generator';
 import { useSettings } from './SettingsContext';
@@ -11,7 +11,7 @@ export const WorkoutProvider = ({ children }) => {
     const [appState, setAppState] = useState('config'); // config, preview, active, history, calculator
     const [workout, setWorkout] = useState(null);
     const [history, setHistory] = useState([]);
-    const [savedWorkouts, setSavedWorkouts] = useState([]);
+    const [savedWorkoutsMap, setSavedWorkoutsMap] = useState({});
 
     // Load History & Saved Workouts on Mount
     useEffect(() => {
@@ -20,11 +20,20 @@ export const WorkoutProvider = ({ children }) => {
             if (savedHistory) setHistory(JSON.parse(savedHistory));
 
             const savedWorkoutsData = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
-            if (savedWorkoutsData) setSavedWorkouts(JSON.parse(savedWorkoutsData));
+            if (savedWorkoutsData) {
+                const arr = JSON.parse(savedWorkoutsData);
+                const map = {};
+                arr.forEach(w => { map[w.id] = w; });
+                setSavedWorkoutsMap(map);
+            }
         } catch (e) {
             console.error('Failed to parse storage data', e);
         }
     }, []);
+
+    const savedWorkouts = useMemo(() => {
+        return Object.values(savedWorkoutsMap).sort((a, b) => (b.id > a.id ? 1 : -1));
+    }, [savedWorkoutsMap]);
 
     const generateWorkout = () => {
         const newWorkout = engineGenerate(config, lang);
@@ -66,15 +75,20 @@ export const WorkoutProvider = ({ children }) => {
     };
 
     const toggleSaveWorkout = (w) => {
-        const isSaved = savedWorkouts.some(sw => sw.id === w.id);
-        let updated;
+        const isSaved = !!savedWorkoutsMap[w.id];
+        let updatedMap;
         if (isSaved) {
-            updated = savedWorkouts.filter(sw => sw.id !== w.id);
+            // eslint-disable-next-line no-unused-vars
+            const { [w.id]: removed, ...rest } = savedWorkoutsMap;
+            updatedMap = rest;
         } else {
-            updated = [w, ...savedWorkouts];
+            updatedMap = { ...savedWorkoutsMap, [w.id]: w };
         }
-        setSavedWorkouts(updated);
-        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(updated));
+        setSavedWorkoutsMap(updatedMap);
+
+        // Persist as array for backward compatibility with storage/exports
+        const updatedArray = Object.values(updatedMap).sort((a, b) => (b.id > a.id ? 1 : -1));
+        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(updatedArray));
     };
 
     const value = {
@@ -84,6 +98,7 @@ export const WorkoutProvider = ({ children }) => {
         setWorkout,
         history,
         savedWorkouts,
+        savedWorkoutsMap,
         generateWorkout,
         clearWorkout,
         swapExercise,
