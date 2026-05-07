@@ -6,7 +6,11 @@ export const getExerciseName = (ex, lang) => (lang === 'de' && ex.name_de) ? ex.
 export const isExerciseValid = (ex, currentConfig) => {
     if (ex.equipment === 'Barbell' && !currentConfig.equipment.barbell) return false;
     if (ex.equipment === 'Dumbbell' && !currentConfig.equipment.dumbbell) return false;
+    if (ex.equipment === 'Kettlebell' && !currentConfig.equipment.kettlebell) return false;
     if (ex.equipment === 'PullupBar' && !currentConfig.equipment.pullupBar) return false;
+    if (ex.equipment === 'Rings' && !currentConfig.equipment.rings) return false;
+    if (ex.equipment === 'Box' && !currentConfig.equipment.box) return false;
+    if (ex.equipment === 'JumpRope' && !currentConfig.equipment.jumpRope) return false;
     if (ex.equipment === 'Machine' && !currentConfig.equipment.machine) return false;
 
     if (currentConfig.difficulty === 'Beginner') {

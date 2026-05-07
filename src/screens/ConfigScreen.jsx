@@ -168,8 +168,8 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 <div className="grid grid-cols-2 gap-2">
                     {Object.keys(t.equip).map(key => (
                         <button key={key} onClick={() => toggleEquipment(key)}
-                            aria-pressed={!!config.equipment[key === 'pullup' ? 'pullupBar' : key]}
-                            className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${config.equipment[key === 'pullup' ? 'pullupBar' : key] ? 'bg-slate-800 border-emerald-500/30 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}>
+                            aria-pressed={!!config.equipment[key]}
+                            className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${config.equipment[key] ? 'bg-slate-800 border-emerald-500/30 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}>
                             {t.equip[key]}
                         </button>
                     ))}

@@ -39,6 +39,35 @@ describe('Generator Engine', () => {
         expect(isExerciseValid(bodyweightEx, config)).toBe(true);
     });
 
+    it('should respect new equipment filters', () => {
+        const config = {
+            difficulty: 'Rx',
+            avoid: [],
+            equipment: {
+                barbell: true,
+                dumbbell: true,
+                kettlebell: false,
+                pullupBar: true,
+                rings: false,
+                box: false,
+                jumpRope: false,
+                machine: true
+            }
+        };
+
+        const kbEx = EXERCISE_DB.find(e => e.equipment === 'Kettlebell');
+        const ringsEx = EXERCISE_DB.find(e => e.equipment === 'Rings');
+        const boxEx = EXERCISE_DB.find(e => e.equipment === 'Box');
+        const ropeEx = EXERCISE_DB.find(e => e.equipment === 'JumpRope');
+        const barbellEx = EXERCISE_DB.find(e => e.equipment === 'Barbell');
+
+        expect(isExerciseValid(kbEx, config)).toBe(false);
+        expect(isExerciseValid(ringsEx, config)).toBe(false);
+        expect(isExerciseValid(boxEx, config)).toBe(false);
+        expect(isExerciseValid(ropeEx, config)).toBe(false);
+        expect(isExerciseValid(barbellEx, config)).toBe(true);
+    });
+
     it('should respect injury avoidance (Shoulders)', () => {
         const config = {
             difficulty: 'Rx',
