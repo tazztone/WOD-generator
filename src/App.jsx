@@ -1,4 +1,3 @@
-// TODO: Add React Error Boundary wrapper to gracefully handle runtime errors (Done in main.jsx)
 import { Shell, Header } from './components/layout/Layout';
 import { Tooltip } from './components/ui/Tooltip';
 import { ConfigScreen } from './screens/ConfigScreen';
