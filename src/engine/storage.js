@@ -88,7 +88,6 @@ export function exportData() {
 
         return JSON.stringify(exportPayload, null, 2);
     } catch (e) {
-        console.error('Failed to export data', e);
         throw e;
     }
 }
