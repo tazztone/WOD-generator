@@ -24,6 +24,23 @@ describe('Generator Engine', () => {
         expect(workout.exercises).toHaveLength(3);
     });
 
+    it('should generate a cryptographically secure UUID as id', () => {
+        const config = {
+            duration: 15,
+            difficulty: 'Rx',
+            focus: 'Balanced',
+            templateType: 'Random',
+            includeStrength: false,
+            numExercises: 3,
+            avoid: [],
+            equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true }
+        };
+
+        const workout = generateWorkout(config);
+        const uuidRegex = /^wod-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        expect(workout.id).toMatch(uuidRegex);
+    });
+
     it('should respect equipment filters', () => {
         const config = {
             difficulty: 'Rx',
