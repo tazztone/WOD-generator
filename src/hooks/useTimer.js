@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { SOUNDS, speak } from '../engine/audio';
 import { getExerciseName } from '../engine/utils';
 
-// TODO: Add haptic feedback support for mobile devices
 export const useTimer = (workout, lang, audioSettings) => {
     // React State for UI
     const [status, setStatusState] = useState('pre'); // pre, work, rest, finished
@@ -138,9 +138,28 @@ export const useTimer = (workout, lang, audioSettings) => {
     }, [status, isPaused]); // Only restart interval when play state changes
 
     // Haptic Helper
-    const haptic = useCallback((pattern) => {
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            navigator.vibrate(pattern);
+    const haptic = useCallback(async (pattern) => {
+        try {
+            // For Capacitor native environments, prefer the Haptics plugin
+            if (pattern === 50) {
+                await Haptics.impact({ style: ImpactStyle.Light });
+            } else if (pattern === 200) {
+                await Haptics.impact({ style: ImpactStyle.Heavy });
+            } else if (Array.isArray(pattern)) {
+                // Approximate complex patterns (like [500, 200, 500]) with native feedback types
+                if (pattern.length > 2) {
+                    await Haptics.vibrate({ duration: 500 });
+                } else {
+                    await Haptics.impact({ style: ImpactStyle.Medium });
+                }
+            } else {
+                await Haptics.vibrate({ duration: pattern });
+            }
+        } catch (e) {
+            // Fallback to Web API for browser / non-capacitor environments
+            if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                navigator.vibrate(pattern);
+            }
         }
     }, []);
 
