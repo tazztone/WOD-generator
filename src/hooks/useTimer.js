@@ -81,7 +81,7 @@ export const useTimer = (workout, lang, audioSettings) => {
                 }
             }
         } catch (e) {
-            console.error('Failed to restore timer state', e);
+            // Silence error and fallback to default state
         }
     }, [workout.id, setStatus, setTimeLeft, setTotalTime, setCurrentRound, setRoundTime]);
 
