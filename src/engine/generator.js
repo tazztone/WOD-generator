@@ -9,6 +9,7 @@ import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic, formatReps };
 
 // Fast lookup index
+// Resolves O(N) lookup issues during substitution fetching by pre-indexing by ID.
 const EXERCISE_MAP = new Map(EXERCISE_DB.map(e => [e.id, e]));
 
 // --- The "Director" (Internal Logic) ---
