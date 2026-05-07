@@ -8,7 +8,8 @@ import { getSubstitution } from './scaling.js';
  * Basic Filter: Remove already selected exercises
  */
 export const alreadySelectedFilter = (pool, director) => {
-    return pool.filter(ex => !director.selectedExercises.some(s => s.exercise.id === ex.id));
+    const selectedIds = new Set(director.selectedExercises.map(s => s.exercise.id));
+    return pool.filter(ex => !selectedIds.has(ex.id));
 };
 
 /**
