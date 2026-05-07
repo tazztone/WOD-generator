@@ -81,10 +81,11 @@ describe('Storage Engine - Export/Import', () => {
         expect(storedConfig).toMatchObject(importPayload.config);
     });
 
-    it('should validate import data structure', () => {
-        expect(() => importData(null)).toThrow();
-        expect(() => importData(undefined)).toThrow();
-        expect(() => importData("invalid json")).toThrow();
+    it('should validate import data structure and return false on errors', () => {
+        expect(importData(null)).toBe(false);
+        expect(importData(undefined)).toBe(false);
+        expect(importData("invalid json")).toBe(false);
+        expect(importData({})).toBe(false);
         // Missing version or bad structure - currently simple implementation might just ignore
         // extra fields, but let's see if we want strict validation.
         // For now, basic JSON parsing check is enough.
