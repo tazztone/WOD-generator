@@ -4,6 +4,8 @@
 import { CLASH_TAGS, FOCUS_PATTERNS } from '../config/workoutConfig.js';
 import { getSubstitution } from './scaling.js';
 
+const CLASH_SET = new Set(CLASH_TAGS);
+
 /**
  * Basic Filter: Remove already selected exercises
  */
@@ -52,7 +54,14 @@ export const overlapFilter = (pool, director) => {
     if (director.selectedExercises.length === 0) return pool;
 
     const lastEx = director.selectedExercises[director.selectedExercises.length - 1].exercise;
-    
+
+    // Pre-calculate relevant clash tags for the last exercise to avoid redundant work in filter
+    const lastTags = lastEx.tags || [];
+    const relevantLastTags = new Set();
+    for (const t of lastTags) {
+        if (CLASH_SET.has(t)) relevantLastTags.add(t);
+    }
+
     return pool.filter(ex => {
         // STRICT Pattern Filter: Prevent consecutive same patterns
         // e.g. Pull -> Pull
@@ -62,10 +71,11 @@ export const overlapFilter = (pool, director) => {
         if (ex.id === lastEx.id) return false;
 
         // Muscle Overlap via Tags
-        if (lastEx.tags && ex.tags) {
+        if (relevantLastTags.size > 0 && ex.tags) {
             // If they share a clash tag, avoid.
-            const shared = lastEx.tags.filter(t => ex.tags.includes(t) && CLASH_TAGS.includes(t));
-            if (shared.length > 0) return false;
+            for (const t of ex.tags) {
+                if (relevantLastTags.has(t)) return false;
+            }
         }
         return true;
     });
