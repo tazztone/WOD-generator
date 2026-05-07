@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { SOUNDS, speak } from '../engine/audio';
 import { getExerciseName } from '../engine/utils';
 
-// TODO: Add haptic feedback support for mobile devices
 export const useTimer = (workout, lang, audioSettings) => {
     // React State for UI
     const [status, setStatusState] = useState('pre'); // pre, work, rest, finished
@@ -138,9 +137,21 @@ export const useTimer = (workout, lang, audioSettings) => {
     }, [status, isPaused]); // Only restart interval when play state changes
 
     // Haptic Helper
-    const haptic = useCallback((pattern) => {
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            navigator.vibrate(pattern);
+    const haptic = useCallback(async (pattern) => {
+        try {
+            const { Haptics, ImpactStyle } = await import('@capacitor/haptics');
+            if (Array.isArray(pattern)) {
+                await Haptics.vibrate();
+            } else if (pattern < 100) {
+                await Haptics.impact({ style: ImpactStyle.Light });
+            } else {
+                await Haptics.impact({ style: ImpactStyle.Heavy });
+            }
+        } catch (e) {
+            // Fallback for web/unsupported
+            if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                navigator.vibrate(pattern);
+            }
         }
     }, []);
 
