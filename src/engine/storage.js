@@ -45,7 +45,7 @@ export function loadConfig() {
             return { ...DEFAULT_CONFIG, ...migrated };
         }
     } catch (e) {
-        console.error('Failed to load config', e);
+        // Silently fall back to default config if loading fails
     }
     return DEFAULT_CONFIG;
 }
