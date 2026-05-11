@@ -3,6 +3,10 @@ import { INJURY_MAP } from '../data/exercises.js';
 
 export const getExerciseName = (ex, lang) => (lang === 'de' && ex.name_de) ? ex.name_de : ex.name;
 
+// Cache for forbidden tags sets based on the "avoid" array content
+// This prevents repeated Set instantiation even if config objects are recreated or frozen
+const forbiddenTagsCache = new Map();
+
 export const isExerciseValid = (ex, currentConfig) => {
     if (ex.equipment === 'Barbell' && !currentConfig.equipment.barbell) return false;
     if (ex.equipment === 'Dumbbell' && !currentConfig.equipment.dumbbell) return false;
@@ -16,19 +20,23 @@ export const isExerciseValid = (ex, currentConfig) => {
     if (currentConfig.forbiddenTagsSet && ex.tags) {
         if (ex.tags.some(tag => currentConfig.forbiddenTagsSet.has(tag))) return false;
     } else if (currentConfig.avoid && currentConfig.avoid.length > 0) {
-        // Fallback if forbiddenTagsSet isn't precomputed (e.g. in tests or old calls)
-        if (!currentConfig._forbiddenTagsSet) {
-            currentConfig._forbiddenTagsSet = new Set();
+        const cacheKey = [...currentConfig.avoid].sort().join(',');
+        let forbiddenTagsSet = forbiddenTagsCache.get(cacheKey);
+
+        if (!forbiddenTagsSet) {
+            forbiddenTagsSet = new Set();
             for (const area of currentConfig.avoid) {
                 const forbiddenTags = INJURY_MAP[area];
                 if (forbiddenTags) {
                     for (let i = 0; i < forbiddenTags.length; i++) {
-                        currentConfig._forbiddenTagsSet.add(forbiddenTags[i]);
+                        forbiddenTagsSet.add(forbiddenTags[i]);
                     }
                 }
             }
+            forbiddenTagsCache.set(cacheKey, forbiddenTagsSet);
         }
-        if (ex.tags && ex.tags.some(tag => currentConfig._forbiddenTagsSet.has(tag))) return false;
+
+        if (ex.tags && ex.tags.some(tag => forbiddenTagsSet.has(tag))) return false;
     }
     return true;
 };
