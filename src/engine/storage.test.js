@@ -107,4 +107,20 @@ describe('Storage Engine - Export/Import', () => {
         // unless importData sets defaults. It shouldn't touch keys not present.
         expect(localStorage.getItem(CONFIG_STORAGE_KEY)).toBeNull();
     });
+
+    it('should throw an error when localStorage fails during export', () => {
+        const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+            throw new Error('localStorage is broken');
+        });
+
+        // Supress console.error output during this test
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+        expect(() => {
+            exportData();
+        }).toThrow('localStorage is broken');
+
+        consoleSpy.mockRestore();
+        getItemSpy.mockRestore();
+    });
 });
