@@ -1,5 +1,40 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { exportData, importData, CONFIG_STORAGE_KEY, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './storage';
+import { exportData, importData, loadConfig, DEFAULT_CONFIG, CONFIG_STORAGE_KEY, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './storage';
+
+describe('Storage Engine - loadConfig', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        vi.restoreAllMocks();
+    });
+
+    afterEach(() => {
+        localStorage.clear();
+    });
+
+    it('should migrate old config lacking a version number to version 1', () => {
+        // Mock an old config in localStorage that doesn't have a version
+        const oldConfig = {
+            duration: 25,
+            difficulty: 'Scaled',
+            focus: 'Cardio'
+        };
+        localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(oldConfig));
+
+        const config = loadConfig();
+
+        // The migrated config should have version 1
+        expect(config.version).toBe(1);
+
+        // It should retain the loaded values
+        expect(config.duration).toBe(25);
+        expect(config.difficulty).toBe('Scaled');
+        expect(config.focus).toBe('Cardio');
+
+        // It should be merged with DEFAULT_CONFIG for other missing values
+        expect(config.templateType).toBe(DEFAULT_CONFIG.templateType);
+        expect(config.equipment).toEqual(DEFAULT_CONFIG.equipment);
+    });
+});
 
 describe('Storage Engine - Export/Import', () => {
     beforeEach(() => {
