@@ -104,8 +104,8 @@ export function importData(data) {
             parsed = JSON.parse(data);
         }
 
-        if (!parsed || typeof parsed !== 'object') {
-            throw new Error('Invalid data format');
+        if (!parsed || typeof parsed !== 'object' || Object.keys(parsed).length === 0) {
+            return false;
         }
 
         // Import Config
@@ -129,6 +129,6 @@ export function importData(data) {
         return true;
     } catch (e) {
         console.error('Failed to import data', e);
-        throw e;
+        return false;
     }
 }

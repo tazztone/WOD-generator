@@ -1,8 +1,7 @@
-/**
- * Workout Generation Pipeline Rules
- */
-import { FOCUS_PATTERNS } from '../config/workoutConfig.js';
+import { FOCUS_PATTERNS, CLASH_TAGS } from '../config/workoutConfig.js';
 import { getSubstitution } from './scaling.js';
+
+const CLASH_SET = new Set(CLASH_TAGS);
 
 /**
  * Basic Filter: Remove already selected exercises
@@ -26,7 +25,6 @@ export const skillFilter = (pool, director) => {
     });
 };
 
-const CLASH_TAGS_SET = new Set(['shoulders', 'legs', 'grip', 'core', 'overhead']);
 const GYMNASTICS_EQUIPMENT_EXCLUDES = new Set(['Barbell', 'Dumbbell', 'Kettlebell', 'Machine']);
 
 /**
@@ -39,7 +37,6 @@ export const focusRelevanceFilter = (pool, director) => {
     }
     return pool;
 };
-
 
 /**
  * Overlap Filter: Prevent muscle group overlap and strict pattern repetition
@@ -54,20 +51,32 @@ export const overlapFilter = (pool, director) => {
     }
 
     if (!lastEx) return pool;
+
+    // Pre-calculate clash tags for the last exercise to avoid repetitive filtering
+    const lastExClashTags = lastEx.tags ? lastEx.tags.filter(t => CLASH_SET.has(t)) : [];
+
+    // If no clash tags, use a simplified filter
+    if (lastExClashTags.length === 0) {
+        return pool.filter(ex => {
+            if (ex.pattern === lastEx.pattern) return false;
+            if (ex.id === lastEx.id) return false;
+            return true;
+        });
+    }
+
+    const lastExClashSet = new Set(lastExClashTags);
     
     return pool.filter(ex => {
         // STRICT Pattern Filter: Prevent consecutive same patterns
-        // e.g. Pull -> Pull
         if (ex.pattern === lastEx.pattern) return false;
 
-        // Prevent same exercise ID (should be handled by alreadySelected, but good safety)
+        // Prevent same exercise ID
         if (ex.id === lastEx.id) return false;
 
         // Muscle Overlap via Tags
-        if (lastEx.tags && ex.tags) {
-            // If they share a clash tag, avoid.
-            const shared = lastEx.tags.filter(t => ex.tags.includes(t) && CLASH_TAGS_SET.has(t));
-            if (shared.length > 0) return false;
+        if (ex.tags) {
+            // If any tag is in the last exercise's clash set, avoid.
+            if (ex.tags.some(t => lastExClashSet.has(t))) return false;
         }
         return true;
     });
@@ -100,9 +109,10 @@ export const balanceWeight = (pool, director) => {
 export const focusWeight = (pool, director) => {
     if (director.config.focus === 'Balanced') return pool;
 
-    const targetPatterns = FOCUS_PATTERNS[director.config.focus] || [];
+    const targetPatternsArray = FOCUS_PATTERNS[director.config.focus] || [];
+    const targetPatterns = new Set(targetPatternsArray);
     // Note: This matches based on "pattern" string (e.g. "Cardio", "Push")
-    const priorityMoves = pool.filter(ex => targetPatterns.includes(ex.pattern));
+    const priorityMoves = pool.filter(ex => targetPatterns.has(ex.pattern));
     
     if (priorityMoves.length > 0) {
         // Significantly boost priority
