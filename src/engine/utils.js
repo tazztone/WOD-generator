@@ -48,12 +48,21 @@ export const generateWarmupLogic = (exercises) => {
     return Array.from(moves);
 };
 
-// TODO: Expand strength pairing options - currently limited to 3 exercises
 export const generateStrengthLogic = (exercises, config) => {
     if (!config.includeStrength) return null;
     const patterns = exercises.map(e => e.exercise.pattern);
 
     // Smart Pairing: Avoid pre-fatiguing the primary mover of the Metcon too much
+    if (patterns.includes('Push') && patterns.includes('Pull')) {
+        return { nameKey: config.equipment?.barbell ? 'benchPress' : 'floorPress', sets: '5 x 5', noteKey: 'building' };
+    }
+    if (patterns.includes('Squat') && patterns.includes('Core')) {
+        return { nameKey: config.equipment?.barbell ? 'overheadSquat' : 'gobletSquat', sets: '5 x 3', noteKey: 'uprightTorso' };
+    }
+    if (patterns.includes('Hinge') && patterns.includes('Pull')) {
+        return { nameKey: config.equipment?.barbell ? 'powerClean' : 'sumoDeadlift', sets: '5 x 3', noteKey: 'explosiveHips' };
+    }
+
     if (patterns.includes('Squat') && !patterns.includes('Hinge')) {
         return { nameKey: 'deadlift', sets: '5 x 3', noteKey: 'heavyForm' };
     }

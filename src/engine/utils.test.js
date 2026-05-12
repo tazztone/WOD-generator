@@ -109,6 +109,36 @@ describe('Utils Engine', () => {
             expect(generateStrengthLogic([], { includeStrength: false })).toBeNull();
         });
 
+        it('should pair Bench/Floor Press for Push+Pull metcons', () => {
+            const exercises = [{ exercise: { pattern: 'Push' } }, { exercise: { pattern: 'Pull' } }];
+
+            const withBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(withBarbell.nameKey).toBe('benchPress');
+
+            const withoutBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(withoutBarbell.nameKey).toBe('floorPress');
+        });
+
+        it('should pair Overhead/Goblet Squat for Squat+Core metcons', () => {
+            const exercises = [{ exercise: { pattern: 'Squat' } }, { exercise: { pattern: 'Core' } }];
+
+            const withBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(withBarbell.nameKey).toBe('overheadSquat');
+
+            const withoutBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(withoutBarbell.nameKey).toBe('gobletSquat');
+        });
+
+        it('should pair Power Clean/Sumo Deadlift for Hinge+Pull metcons', () => {
+            const exercises = [{ exercise: { pattern: 'Hinge' } }, { exercise: { pattern: 'Pull' } }];
+
+            const withBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(withBarbell.nameKey).toBe('powerClean');
+
+            const withoutBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(withoutBarbell.nameKey).toBe('sumoDeadlift');
+        });
+
         it('should pair Deadlift for Squat heavy metcons without Hinge', () => {
             const exercises = [{ exercise: { pattern: 'Squat' } }];
             const strength = generateStrengthLogic(exercises, { includeStrength: true });
