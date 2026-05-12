@@ -219,7 +219,13 @@ export const LOCALES = {
             frontSquat: { en: "Front Squat", de: "Frontkniebeuge" },
             pushPress: { en: "Push Press", de: "Push Press" },
             romanianDeadlift: { en: "Romanian Deadlift", de: "Rumänisches Kreuzheben" },
-            strictPress: { en: "Strict Press", de: "Schulterdrücken" }
+            strictPress: { en: "Strict Press", de: "Schulterdrücken" },
+            benchPress: { en: "Bench Press", de: "Bankdrücken" },
+            floorPress: { en: "Floor Press", de: "Bodendrücken" },
+            overheadSquat: { en: "Overhead Squat", de: "Reißkniebeuge" },
+            gobletSquat: { en: "Goblet Squat", de: "Goblet Kniebeuge" },
+            powerClean: { en: "Power Clean", de: "Power Clean" },
+            sumoDeadlift: { en: "Sumo Deadlift", de: "Sumo-Kreuzheben" }
         },
         notes: {
             heavyForm: { en: "Heavy, Perfect Form", de: "Schwer, Fokus Technik" },
