@@ -113,7 +113,7 @@ export const generateWorkout = (config) => {
     }
 
     return {
-        id: `wod-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: `wod-${crypto.randomUUID()}`,
         template,
         timeCap,
         rounds,

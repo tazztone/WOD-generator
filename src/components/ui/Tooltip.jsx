@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useId } from 'react';
 
 export const Tooltip = ({ x, y, text }) => {
-    const id = useMemo(() => `tt-${Math.random().toString(36).substr(2, 5)}`, []);
+    const reactId = useId();
+    const id = `tt-${reactId}`;
     
     // Viewport edge detection
     const padding = 12;
