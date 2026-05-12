@@ -142,40 +142,34 @@ describe('Utils Engine', () => {
             expect(generateStrengthLogic([], { includeStrength: false })).toBeNull();
         });
 
-        it('should pair benchPress for Push+Pull with barbell', () => {
+        it('should pair Bench/Floor Press for Push+Pull metcons', () => {
             const exercises = [{ exercise: { pattern: 'Push' } }, { exercise: { pattern: 'Pull' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
-            expect(strength.nameKey).toBe('benchPress');
+
+            const withBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(withBarbell.nameKey).toBe('benchPress');
+
+            const withoutBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(withoutBarbell.nameKey).toBe('floorPress');
         });
 
-        it('should pair floorPress for Push+Pull without barbell', () => {
-            const exercises = [{ exercise: { pattern: 'Push' } }, { exercise: { pattern: 'Pull' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
-            expect(strength.nameKey).toBe('floorPress');
-        });
-
-        it('should pair overheadSquat for Squat+Core with barbell', () => {
+        it('should pair Overhead/Goblet Squat for Squat+Core metcons', () => {
             const exercises = [{ exercise: { pattern: 'Squat' } }, { exercise: { pattern: 'Core' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
-            expect(strength.nameKey).toBe('overheadSquat');
+
+            const withBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(withBarbell.nameKey).toBe('overheadSquat');
+
+            const withoutBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(withoutBarbell.nameKey).toBe('gobletSquat');
         });
 
-        it('should pair gobletSquat for Squat+Core without barbell', () => {
-            const exercises = [{ exercise: { pattern: 'Squat' } }, { exercise: { pattern: 'Core' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
-            expect(strength.nameKey).toBe('gobletSquat');
-        });
-
-        it('should pair powerClean for Hinge+Pull with barbell', () => {
+        it('should pair Power Clean/Sumo Deadlift for Hinge+Pull metcons', () => {
             const exercises = [{ exercise: { pattern: 'Hinge' } }, { exercise: { pattern: 'Pull' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
-            expect(strength.nameKey).toBe('powerClean');
-        });
 
-        it('should pair sumoDeadlift for Hinge+Pull without barbell', () => {
-            const exercises = [{ exercise: { pattern: 'Hinge' } }, { exercise: { pattern: 'Pull' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
-            expect(strength.nameKey).toBe('sumoDeadlift');
+            const withBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(withBarbell.nameKey).toBe('powerClean');
+
+            const withoutBarbell = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(withoutBarbell.nameKey).toBe('sumoDeadlift');
         });
 
         it('should pair Deadlift for Squat heavy metcons without Hinge', () => {

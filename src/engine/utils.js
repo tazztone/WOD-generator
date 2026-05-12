@@ -81,8 +81,6 @@ export const generateStrengthLogic = (exercises, config) => {
             ? { nameKey: 'powerClean', sets: '5 x 3', noteKey: 'explosiveHips' }
             : { nameKey: 'sumoDeadlift', sets: '4 x 8', noteKey: 'heavyForm' };
     }
-
-    // Smart Pairing: Avoid pre-fatiguing the primary mover of the Metcon too much
     if (patterns.includes('Squat') && !patterns.includes('Hinge')) {
         return { nameKey: 'deadlift', sets: '5 x 3', noteKey: 'heavyForm' };
     }
