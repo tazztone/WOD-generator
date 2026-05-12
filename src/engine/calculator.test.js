@@ -29,6 +29,26 @@ describe('Calculator Engine', () => {
              // 100 * (1 + 5/30) = 100 * 1.1666 = 116.666 -> 117
              expect(calculateOneRepMax(100, 5)).toBe(117);
         });
+
+        it('should handle decimal inputs correctly', () => {
+             expect(calculateOneRepMax(100.5, 5)).toBe(117);
+        });
+
+        it('should handle string numbers correctly', () => {
+             expect(calculateOneRepMax("100", "5")).toBe(117);
+        });
+
+        it('should return 0 for non-numeric inputs', () => {
+             expect(calculateOneRepMax(100, "abc")).toBe(0);
+             expect(calculateOneRepMax("abc", 5)).toBe(0);
+             expect(calculateOneRepMax({}, [])).toBe(0);
+        });
+
+        it('should return 0 for missing arguments', () => {
+             expect(calculateOneRepMax()).toBe(0);
+             expect(calculateOneRepMax(100)).toBe(0);
+             expect(calculateOneRepMax(undefined, 5)).toBe(0);
+        });
     });
 
     describe('calculatePercentages', () => {

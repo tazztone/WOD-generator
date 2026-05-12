@@ -3,7 +3,8 @@ import {
     getExerciseName,
     isExerciseValid,
     generateWarmupLogic,
-    generateStrengthLogic
+    generateStrengthLogic,
+    formatReps
 } from './utils';
 
 describe('Utils Engine', () => {
@@ -102,6 +103,38 @@ describe('Utils Engine', () => {
             expect(warmup).toContain('hingeWarmup');
             expect(warmup).toContain('pullWarmup');
         });
+
+        it('should handle empty exercises array', () => {
+            const warmup = generateWarmupLogic([]);
+            expect(warmup).toEqual(['cardioEasy']);
+        });
+
+        it('should add calf raises for jump and du IDs', () => {
+            const exercises = [
+                { exercise: { id: 'box_jump', pattern: 'Plyo' } },
+                { exercise: { id: 'du', pattern: 'Cardio' } }
+            ];
+            const warmup = generateWarmupLogic(exercises);
+            expect(warmup).toContain('calfRaises');
+        });
+    });
+
+    describe('formatReps', () => {
+        it('should return string reps as is', () => {
+            expect(formatReps('400m')).toBe('400m');
+        });
+
+        it('should return number reps if no exercise is provided', () => {
+            expect(formatReps(10)).toBe(10);
+        });
+
+        it('should append Cal for Machine Cardio exercises', () => {
+            expect(formatReps(15, { equipment: 'Machine', pattern: 'Cardio' })).toBe('15 Cal');
+        });
+
+        it('should return plain number for other exercises', () => {
+            expect(formatReps(10, { equipment: 'Barbell', pattern: 'Squat' })).toBe(10);
+        });
     });
 
     describe('generateStrengthLogic', () => {
@@ -109,39 +142,75 @@ describe('Utils Engine', () => {
             expect(generateStrengthLogic([], { includeStrength: false })).toBeNull();
         });
 
+        it('should pair benchPress for Push+Pull with barbell', () => {
+            const exercises = [{ exercise: { pattern: 'Push' } }, { exercise: { pattern: 'Pull' } }];
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(strength.nameKey).toBe('benchPress');
+        });
+
+        it('should pair floorPress for Push+Pull without barbell', () => {
+            const exercises = [{ exercise: { pattern: 'Push' } }, { exercise: { pattern: 'Pull' } }];
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(strength.nameKey).toBe('floorPress');
+        });
+
+        it('should pair overheadSquat for Squat+Core with barbell', () => {
+            const exercises = [{ exercise: { pattern: 'Squat' } }, { exercise: { pattern: 'Core' } }];
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(strength.nameKey).toBe('overheadSquat');
+        });
+
+        it('should pair gobletSquat for Squat+Core without barbell', () => {
+            const exercises = [{ exercise: { pattern: 'Squat' } }, { exercise: { pattern: 'Core' } }];
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(strength.nameKey).toBe('gobletSquat');
+        });
+
+        it('should pair powerClean for Hinge+Pull with barbell', () => {
+            const exercises = [{ exercise: { pattern: 'Hinge' } }, { exercise: { pattern: 'Pull' } }];
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
+            expect(strength.nameKey).toBe('powerClean');
+        });
+
+        it('should pair sumoDeadlift for Hinge+Pull without barbell', () => {
+            const exercises = [{ exercise: { pattern: 'Hinge' } }, { exercise: { pattern: 'Pull' } }];
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: false } });
+            expect(strength.nameKey).toBe('sumoDeadlift');
+        });
+
         it('should pair Deadlift for Squat heavy metcons without Hinge', () => {
             const exercises = [{ exercise: { pattern: 'Squat' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
             expect(strength.nameKey).toBe('deadlift');
         });
 
         it('should pair Back Squat for Push heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Push' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
             expect(strength.nameKey).toBe('backSquat');
         });
 
         it('should pair Front Squat for Pull heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Pull' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
             expect(strength.nameKey).toBe('frontSquat');
         });
 
         it('should pair Push Press for Hinge heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Hinge' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
             expect(strength.nameKey).toBe('pushPress');
         });
 
         it('should pair Romanian Deadlift for Core heavy metcons', () => {
             const exercises = [{ exercise: { pattern: 'Core' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
             expect(strength.nameKey).toBe('romanianDeadlift');
         });
 
         it('should fallback to Strict Press', () => {
             const exercises = [{ exercise: { pattern: 'Unknown' } }];
-            const strength = generateStrengthLogic(exercises, { includeStrength: true });
+            const strength = generateStrengthLogic(exercises, { includeStrength: true, equipment: { barbell: true } });
             expect(strength.nameKey).toBe('strictPress');
         });
     });

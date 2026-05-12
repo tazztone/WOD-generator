@@ -100,5 +100,17 @@ describe('Scaling Engine', () => {
             expect(getSubstitution('bmu', 'Scaled')).toBe(SUBSTITUTIONS.Scaled['bmu']);
             expect(getSubstitution('nonexistent_exercise', 'Scaled')).toBeNull();
         });
+
+        it('should return null for missing, unknown, or undefined exercise IDs', () => {
+            expect(getSubstitution(undefined, 'Beginner')).toBeNull();
+            expect(getSubstitution(null, 'Scaled')).toBeNull();
+            expect(getSubstitution('', 'Beginner')).toBeNull();
+        });
+
+        it('should return null for unknown difficulty', () => {
+            expect(getSubstitution('hspu', 'UnknownDifficulty')).toBeNull();
+            expect(getSubstitution('hspu', undefined)).toBeNull();
+            expect(getSubstitution('hspu', null)).toBeNull();
+        });
     });
 });
