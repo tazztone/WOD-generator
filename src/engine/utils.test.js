@@ -214,4 +214,30 @@ describe('Utils Engine', () => {
             expect(strength.nameKey).toBe('strictPress');
         });
     });
+
+    describe('formatReps', () => {
+        it('should return the same string if reps is already a string', () => {
+            expect(formatReps('400m', {})).toBe('400m');
+            expect(formatReps('45s', {})).toBe('45s');
+            expect(formatReps('40/30 cal', {})).toBe('40/30 cal');
+        });
+
+        it('should return reps as is if exercise is missing', () => {
+            expect(formatReps(10, null)).toBe(10);
+            expect(formatReps(10, undefined)).toBe(10);
+        });
+
+        it('should append " Cal" for Machine Cardio exercises', () => {
+            const exercise = { equipment: 'Machine', pattern: 'Cardio' };
+            expect(formatReps(15, exercise)).toBe('15 Cal');
+        });
+
+        it('should return reps as a number for non-Machine Cardio exercises', () => {
+            const barbellEx = { equipment: 'Barbell', pattern: 'Squat' };
+            expect(formatReps(10, barbellEx)).toBe(10);
+
+            const machineNonCardio = { equipment: 'Machine', pattern: 'Push' };
+            expect(formatReps(12, machineNonCardio)).toBe(12);
+        });
+    });
 });
