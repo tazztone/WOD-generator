@@ -158,4 +158,24 @@ describe('Storage Engine - Export/Import', () => {
         consoleSpy.mockRestore();
         getItemSpy.mockRestore();
     });
+
+    it('should catch exceptions and return false during import', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+            throw new Error('Mock quota exceeded');
+        });
+
+        const importPayload = {
+            version: 1,
+            history: [{ id: 4, timestamp: '2023-04-01' }]
+        };
+
+        const success = importData(importPayload);
+
+        expect(success).toBe(false);
+        expect(consoleSpy).toHaveBeenCalledWith('Failed to import data', expect.any(Error));
+
+        consoleSpy.mockRestore();
+        setItemSpy.mockRestore();
+    });
 });
