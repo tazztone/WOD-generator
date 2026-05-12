@@ -3,6 +3,11 @@ import { getSubstitution } from './scaling.js';
 
 const CLASH_SET = new Set(CLASH_TAGS);
 
+const FOCUS_PATTERN_SETS = Object.keys(FOCUS_PATTERNS).reduce((acc, key) => {
+    acc[key] = new Set(FOCUS_PATTERNS[key]);
+    return acc;
+}, {});
+
 /**
  * Basic Filter: Remove already selected exercises
  */
@@ -109,8 +114,9 @@ export const balanceWeight = (pool, director) => {
 export const focusWeight = (pool, director) => {
     if (director.config.focus === 'Balanced') return pool;
 
-    const targetPatternsArray = FOCUS_PATTERNS[director.config.focus] || [];
-    const targetPatterns = new Set(targetPatternsArray);
+    const targetPatterns = FOCUS_PATTERN_SETS[director.config.focus];
+    if (!targetPatterns) return pool;
+
     // Note: This matches based on "pattern" string (e.g. "Cardio", "Push")
     const priorityMoves = pool.filter(ex => targetPatterns.has(ex.pattern));
     
