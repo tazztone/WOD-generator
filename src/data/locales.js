@@ -23,7 +23,16 @@ export const LOCALES = {
         partnerSub: "Double volume, split with a friend",
         focusTypes: { balanced: "Balanced", cardio: "Cardio", strength: "Strength", gymnastics: "Gymnastics", core: "Core" },
         parts: { shoulders: "Shoulders", knees: "Knees", back: "Back" },
-        equip: { barbell: "Barbell", dumbbell: "Dumbbells / KBs", pullup: "Pull-Up Bar", machine: "Cardio Machine" },
+        equip: {
+            barbell: "Barbell",
+            dumbbell: "Dumbbells",
+            kettlebell: "Kettlebells",
+            pullup: "Pull-Up Bar",
+            rings: "Gymnastics Rings",
+            box: "Plyo Box",
+            jumpRope: "Jump Rope",
+            machine: "Cardio Machine"
+        },
         audioSettings: {
             countdowns: "Countdowns (3-2-1)",
             announcements: "Announcements (Next, Rest)",
@@ -120,7 +129,16 @@ export const LOCALES = {
         partnerSub: "Doppeltes Volumen, gemeinsam teilen",
         focusTypes: { balanced: "Ausgeglichen", cardio: "Cardio", strength: "Kraft", gymnastics: "Gymnastik", core: "Core" },
         parts: { shoulders: "Schultern", knees: "Knie", back: "Rücken" },
-        equip: { barbell: "Langhantel", dumbbell: "Kurzhantel / KB", pullup: "Klimmzugstange", machine: "Cardio Gerät" },
+        equip: {
+            barbell: "Langhantel",
+            dumbbell: "Kurzhanteln",
+            kettlebell: "Kettlebells",
+            pullup: "Klimmzugstange",
+            rings: "Turnringe",
+            box: "Plyo Box",
+            jumpRope: "Springseil",
+            machine: "Cardio Gerät"
+        },
         audioSettings: {
             countdowns: "Countdowns (3-2-1)",
             announcements: "Ansagen (Nächste, Pause)",
@@ -203,9 +221,9 @@ export const LOCALES = {
             romanianDeadlift: { en: "Romanian Deadlift", de: "Rumänisches Kreuzheben" },
             strictPress: { en: "Strict Press", de: "Schulterdrücken" },
             benchPress: { en: "Bench Press", de: "Bankdrücken" },
-            floorPress: { en: "Floor Press", de: "Floor Press" },
-            overheadSquat: { en: "Overhead Squat", de: "Überkopf-Kniebeuge" },
-            gobletSquat: { en: "Goblet Squat", de: "Goblet Squat" },
+            floorPress: { en: "Floor Press", de: "Bodendrücken" },
+            overheadSquat: { en: "Overhead Squat", de: "Reißkniebeuge" },
+            gobletSquat: { en: "Goblet Squat", de: "Goblet Kniebeuge" },
             powerClean: { en: "Power Clean", de: "Power Clean" },
             sumoDeadlift: { en: "Sumo Deadlift", de: "Sumo-Kreuzheben" }
         },
