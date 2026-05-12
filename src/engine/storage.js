@@ -12,8 +12,7 @@ export const DEFAULT_CONFIG = {
     includeStrength: false,
     numExercises: 3,
     avoid: [],
-    // TODO: Add more equipment options: kettlebell, jump rope, box, rings
-    equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true },
+    equipment: { barbell: true, dumbbell: true, pullupBar: true, machine: true, kettlebell: true, jumpRope: true, box: true, rings: true },
     volume: 0.7,
     audioSettings: { countdowns: true, announcements: true, beeps: true },
     isPartner: false
