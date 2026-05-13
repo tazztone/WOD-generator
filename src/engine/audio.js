@@ -106,10 +106,3 @@ export const speak = (text, lang = 'en') => {
     processQueue();
 };
 
-export const cancelSpeech = () => {
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        speechQueue = [];
-        isSpeaking = false;
-    }
-};
