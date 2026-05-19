@@ -57,19 +57,20 @@ export const overlapFilter = (pool, director) => {
 
     if (!lastEx) return pool;
 
-    // Pre-calculate clash tags for the last exercise to avoid repetitive filtering
-    const lastExClashTags = lastEx.tags ? lastEx.tags.filter(t => CLASH_SET.has(t)) : [];
+    if (!lastEx._clashSet) {
+        const lastExClashTags = lastEx.tags ? lastEx.tags.filter(t => CLASH_SET.has(t)) : [];
+        lastEx._clashSet = new Set(lastExClashTags);
+    }
+    const lastExClashSet = lastEx._clashSet;
 
     // If no clash tags, use a simplified filter
-    if (lastExClashTags.length === 0) {
+    if (lastExClashSet.size === 0) {
         return pool.filter(ex => {
             if (ex.pattern === lastEx.pattern) return false;
             if (ex.id === lastEx.id) return false;
             return true;
         });
     }
-
-    const lastExClashSet = new Set(lastExClashTags);
     
     return pool.filter(ex => {
         // STRICT Pattern Filter: Prevent consecutive same patterns
