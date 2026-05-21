@@ -13,7 +13,9 @@ export class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
-        console.error("Uncaught error:", error, errorInfo);
+        if (import.meta.env.DEV) {
+            console.error("Uncaught error:", error, errorInfo);
+        }
     }
 
     handleReload = () => {
