@@ -75,6 +75,27 @@ describe('Pipeline Filters and Weights', () => {
                 { id: 'ex6', equipment: 'PullupBar' }
             ]);
         });
+
+        it('should handle an empty pool', () => {
+            const pool = [];
+            const director = { config: { focus: 'Gymnastics' } };
+            const result = pipeline.focusRelevanceFilter(pool, director);
+            expect(result).toEqual([]);
+        });
+
+        it('should not exclude exercises without an equipment property', () => {
+            const pool = [{ id: 'ex1' }];
+            const director = { config: { focus: 'Gymnastics' } };
+            const result = pipeline.focusRelevanceFilter(pool, director);
+            expect(result).toEqual(pool);
+        });
+
+        it('should handle missing focus property in config', () => {
+            const pool = [{ id: 'ex1', equipment: 'Barbell' }];
+            const director = { config: {} };
+            const result = pipeline.focusRelevanceFilter(pool, director);
+            expect(result).toEqual(pool);
+        });
     });
 
     describe('overlapFilter', () => {
