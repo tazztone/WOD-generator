@@ -137,7 +137,11 @@ export function importData(data) {
 
         return true;
     } catch (e) {
-        console.error('Failed to import data', e);
+        console.error('Failed to import data', {
+            name: e.name,
+            message: e.message,
+            stack: e.stack
+        });
         return false;
     }
 }
