@@ -183,4 +183,19 @@ describe('Pipeline Filters and Weights', () => {
             expect(result).toEqual(pool);
         });
     });
+
+    describe('DEFAULT_PIPELINE', () => {
+        it('should be an array combining STATIC_PIPELINE and DYNAMIC_PIPELINE', () => {
+            expect(Array.isArray(pipeline.DEFAULT_PIPELINE)).toBe(true);
+            expect(pipeline.DEFAULT_PIPELINE).toEqual([
+                ...pipeline.STATIC_PIPELINE,
+                ...pipeline.DYNAMIC_PIPELINE
+            ]);
+            expect(pipeline.DEFAULT_PIPELINE.length).toBe(
+                pipeline.STATIC_PIPELINE.length + pipeline.DYNAMIC_PIPELINE.length
+            );
+            expect(pipeline.DEFAULT_PIPELINE).toContain(pipeline.skillFilter);
+            expect(pipeline.DEFAULT_PIPELINE).toContain(pipeline.overlapFilter);
+        });
+    });
 });
