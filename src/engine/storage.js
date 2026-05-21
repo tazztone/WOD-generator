@@ -96,7 +96,7 @@ export function exportData() {
 
         return JSON.stringify(exportPayload, null, 2);
     } catch (e) {
-        console.error('Failed to export data', e);
+        console.error(JSON.stringify({ action: 'exportData', error: e.message }));
         throw e;
     }
 }
