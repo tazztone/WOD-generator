@@ -173,7 +173,7 @@ describe('Storage Engine - Export/Import', () => {
         const success = importData(importPayload);
 
         expect(success).toBe(false);
-        expect(consoleSpy).toHaveBeenCalledWith('Failed to import data', expect.any(Error));
+        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('[Storage] Failed to import data:'), expect.any(Error));
 
         consoleSpy.mockRestore();
         setItemSpy.mockRestore();

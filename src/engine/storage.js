@@ -53,7 +53,7 @@ export function loadConfig() {
             return { ...DEFAULT_CONFIG, ...migrated };
         }
     } catch (e) {
-        console.error('Failed to load config', e);
+        console.error(`[Storage] Failed to load config: ${e.message}`, e);
     }
     return DEFAULT_CONFIG;
 }
@@ -62,7 +62,7 @@ export function saveConfig(config) {
     try {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
     } catch (e) {
-        console.error('Failed to save config', e);
+        console.error(`[Storage] Failed to save config: ${e.message}`, e);
     }
 }
 
@@ -96,7 +96,7 @@ export function exportData() {
 
         return JSON.stringify(exportPayload, null, 2);
     } catch (e) {
-        console.error('Failed to export data', e);
+        console.error(`[Storage] Failed to export data: ${e.message}`, e);
         throw e;
     }
 }
@@ -137,7 +137,7 @@ export function importData(data) {
 
         return true;
     } catch (e) {
-        console.error('Failed to import data', e);
+        console.error(`[Storage] Failed to import data: ${e.message}`, e);
         return false;
     }
 }
