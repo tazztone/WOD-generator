@@ -12,7 +12,6 @@ export const useWakeLock = () => {
                 const { KeepAwake } = await import('@capacitor-community/keep-awake');
                 await KeepAwake.keep();
                 isNative = true;
-                console.log('WakeLock: Acquired via Capacitor KeepAwake');
             } catch (err) {
                 // Not running in Capacitor or plugin not found
             }
@@ -21,9 +20,8 @@ export const useWakeLock = () => {
             if (!isNative && 'wakeLock' in navigator) {
                 try {
                     wakeLockRef.current = await navigator.wakeLock.request('screen');
-                    console.log('WakeLock: Acquired via Web API');
                 } catch (err) {
-                    console.log('WakeLock error:', err);
+                    // error in WakeLock
                 }
             }
         };
