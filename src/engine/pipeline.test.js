@@ -114,6 +114,20 @@ describe('Pipeline Filters and Weights', () => {
             const result = pipeline.overlapFilter(pool, director);
             expect(result).toEqual([{ id: 'ex2', pattern: 'Core' }]);
         });
+
+        it('should filter out exercises with the same pattern even if lastEx has clash tags', () => {
+            const pool = [{ id: 'ex1', pattern: 'Push' }, { id: 'ex2', pattern: 'Squat' }];
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['shoulders'], pattern: 'Push' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', pattern: 'Squat' }]);
+        });
+
+        it('should filter out exercises with the same ID even if lastEx has clash tags', () => {
+            const pool = [{ id: 'lastEx', pattern: 'Core' }, { id: 'ex2', pattern: 'Squat' }];
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['core'], pattern: 'Push' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', pattern: 'Squat' }]);
+        });
     });
 
     describe('balanceWeight', () => {
@@ -179,6 +193,15 @@ describe('Pipeline Filters and Weights', () => {
             ];
             // Using actual constant
             const director = { config: { focus: 'Cardio' } };
+            const result = pipeline.focusWeight(pool, director);
+            expect(result).toEqual(pool);
+        });
+
+        it('should return the pool unmodified if the focus is unknown and has no target patterns', () => {
+            const pool = [
+                { id: 'ex1', pattern: 'Cardio' }
+            ];
+            const director = { config: { focus: 'UnknownFocus' } };
             const result = pipeline.focusWeight(pool, director);
             expect(result).toEqual(pool);
         });
