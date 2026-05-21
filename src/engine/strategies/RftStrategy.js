@@ -1,4 +1,8 @@
 export const RftStrategy = {
+    /**
+     * Calculates dynamic parameters. Note: This implementation calculates rounds
+     * based on time per exercise (1.25) and numExercises, replacing the older hardcoded logic.
+     */
     calculateParams(config) {
         // Estimate time per round based on number of exercises
         // Assume ~45s per exercise + 15s transition = 1 min per station
