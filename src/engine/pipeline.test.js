@@ -136,6 +136,75 @@ describe('Pipeline Filters and Weights', () => {
             expect(result).toEqual([{ id: 'ex2', pattern: 'Core' }]);
         });
 
+        it('should prioritize selectedExercises over buyInForContext when both are present', () => {
+            const pool = [
+                { id: 'ex1', pattern: 'Cardio' }, // Matches buyInForContext
+                { id: 'ex2', pattern: 'Core' },   // Matches selectedExercises
+                { id: 'ex3', pattern: 'Push' }    // Matches neither
+            ];
+            const director = {
+                selectedExercises: [{ exercise: { id: 'lastEx', pattern: 'Core' } }],
+                buyInForContext: { id: 'buyin', pattern: 'Cardio' }
+            };
+            const result = pipeline.overlapFilter(pool, director);
+            // It should filter out 'Core' (ex2) and keep 'Cardio' (ex1) and 'Push' (ex3)
+            expect(result).toEqual([{ id: 'ex1', pattern: 'Cardio' }, { id: 'ex3', pattern: 'Push' }]);
+        });
+
+        it('should handle lastEx having no tags property', () => {
+            const pool = [{ id: 'ex1', pattern: 'Pull' }, { id: 'ex2', pattern: 'Push' }];
+            // lastEx has no tags property
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', pattern: 'Pull' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', pattern: 'Push' }]);
+        });
+
+        it('should handle pool exercises having no tags property when lastEx has clash tags', () => {
+            const pool = [
+                { id: 'ex1', pattern: 'Push' }, // no tags
+                { id: 'ex2', tags: ['shoulders'], pattern: 'Push' }
+            ];
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['shoulders'], pattern: 'Core' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            // ex1 has no tags, so it shouldn't be filtered by clash tag (but might be filtered by pattern if it matched).
+            // ex2 has clash tag 'shoulders', so it gets filtered out.
+            expect(result).toEqual([{ id: 'ex1', pattern: 'Push' }]);
+        });
+
+        it('should reuse a cached _clashSet if present on lastEx', () => {
+            const pool = [{ id: 'ex1', tags: ['legs'], pattern: 'Squat' }];
+            const cachedClashSet = new Set(['legs']);
+            const director = {
+                selectedExercises: [{
+                    exercise: { id: 'lastEx', _clashSet: cachedClashSet, pattern: 'Core' }
+                }]
+            };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([]); // 'legs' is in the cached _clashSet, so ex1 gets filtered out
+        });
+
+        it('should handle lastEx having tags, but none that intersect with CLASH_SET', () => {
+            const pool = [
+                { id: 'ex1', pattern: 'Pull' },
+                { id: 'ex2', pattern: 'Push' }
+            ];
+            // 'non-clashing' is not in CLASH_SET ('shoulders', 'legs', 'grip', 'core', 'overhead')
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['non-clashing'], pattern: 'Pull' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', pattern: 'Push' }]);
+        });
+
+        it('should filter out same id and pattern even when lastEx has clash tags', () => {
+            const pool = [
+                { id: 'lastEx', tags: ['non-clashing'], pattern: 'Squat' }, // Same id
+                { id: 'ex1', tags: ['non-clashing'], pattern: 'Push' }, // Same pattern
+                { id: 'ex2', tags: ['non-clashing'], pattern: 'Pull' } // OK
+            ];
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['shoulders'], pattern: 'Push' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', tags: ['non-clashing'], pattern: 'Pull' }]);
+        });
+
         it('should filter out exercises with the same pattern even if lastEx has clash tags', () => {
             const pool = [{ id: 'ex1', pattern: 'Push' }, { id: 'ex2', pattern: 'Squat' }];
             const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['shoulders'], pattern: 'Push' } }] };
