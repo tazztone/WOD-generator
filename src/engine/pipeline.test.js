@@ -49,6 +49,12 @@ describe('Pipeline Filters and Weights', () => {
             const director = { config: { difficulty: 'Beginner' } };
             expect(pipeline.skillFilter(pool, director)).toEqual(pool);
         });
+
+        it('should return exercises with empty tags array for Beginners', () => {
+            const pool = [{ id: 'ex1', tags: [] }];
+            const director = { config: { difficulty: 'Beginner' } };
+            expect(pipeline.skillFilter(pool, director)).toEqual(pool);
+        });
     });
 
     describe('focusRelevanceFilter', () => {
