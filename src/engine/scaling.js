@@ -2,6 +2,9 @@
 import { getStrategy } from './strategies/StrategyFactory.js';
 import { SCALING_CONSTANTS, SUBSTITUTIONS } from '../config/workoutConfig.js';
 
+const RUN_IDS = new Set(['run', 'shuttle_run']);
+const TIME_BASED_IDS = new Set(['plank', 'side_plank', 'plank_shoulder_tap', 'plank_reach', 'copenhagen_plank', 'wall_sit']);
+
 export const calculateBaseReps = (exercise, difficulty, duration) => {
     // V7: Dynamic Scaling based on duration
     const { SHORT, EXTRA_LONG, EXTREME } = SCALING_CONSTANTS.DURATION_THRESHOLDS;
@@ -9,15 +12,13 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     const isExtreme = duration > EXTREME;
     const isShort = duration < SHORT;
 
-    const runIds = ['run', 'shuttle_run'];
-    if (runIds.includes(exercise.id)) {
+    if (RUN_IDS.has(exercise.id)) {
         if (isExtreme) return SCALING_CONSTANTS.RUN_DISTANCES.EXTREME;
         if (isExtraLong) return SCALING_CONSTANTS.RUN_DISTANCES.EXTRA_LONG;
         return isShort ? SCALING_CONSTANTS.RUN_DISTANCES.SHORT : SCALING_CONSTANTS.RUN_DISTANCES.DEFAULT;
     }
 
-    const timeBasedIds = ['plank', 'side_plank', 'plank_shoulder_tap', 'plank_reach', 'copenhagen_plank', 'wall_sit'];
-    if (timeBasedIds.includes(exercise.id) || timeBasedIds.includes(exercise.id_g)) return '45s';
+    if (TIME_BASED_IDS.has(exercise.id) || TIME_BASED_IDS.has(exercise.id_g)) return '45s';
     
     // Machine is tricky because Chipper logic was embedded here.
     // We return a standard number for now, Strategy can override if needed.
