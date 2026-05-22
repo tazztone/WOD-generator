@@ -1,17 +1,16 @@
 export const RftStrategy = {
-    calculateParams(config) {
-        // Estimate time per round based on number of exercises
-        // Assume ~45s per exercise + 15s transition = 1 min per station
-        // Plus some buffer/rest between rounds
-        const avgTimePerExercise = 1.25;
-        const numExercises = config.numExercises || 5;
-        const estTimePerRound = numExercises * avgTimePerExercise;
+    calculateParams(config, exercises) {
+        let rounds = 5; // Default RFT rounds
 
-        const rounds = Math.floor(config.duration / estTimePerRound);
+        // Adjust based on duration
+        if (config.duration >= 30) rounds = 6;
+        if (config.duration >= 45) rounds = 8;
+
+        // Special handling based on exercise count/type could go here
 
         return {
             template: 'RFT',
-            rounds: Math.max(3, rounds),
+            rounds: rounds,
             timeCap: config.duration
         };
     },
