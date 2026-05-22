@@ -90,7 +90,7 @@ jobs:
         run: npm run lint
         
       - name: Run Web Unit Tests
-        run: npm run test:ci
+        run: npm run test
         
       - name: Build Web Application
         run: npm run build
