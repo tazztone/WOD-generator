@@ -75,6 +75,27 @@ describe('Pipeline Filters and Weights', () => {
                 { id: 'ex6', equipment: 'PullupBar' }
             ]);
         });
+
+        it('should handle an empty pool', () => {
+            const pool = [];
+            const director = { config: { focus: 'Gymnastics' } };
+            const result = pipeline.focusRelevanceFilter(pool, director);
+            expect(result).toEqual([]);
+        });
+
+        it('should not exclude exercises without an equipment property', () => {
+            const pool = [{ id: 'ex1' }];
+            const director = { config: { focus: 'Gymnastics' } };
+            const result = pipeline.focusRelevanceFilter(pool, director);
+            expect(result).toEqual(pool);
+        });
+
+        it('should handle missing focus property in config', () => {
+            const pool = [{ id: 'ex1', equipment: 'Barbell' }];
+            const director = { config: {} };
+            const result = pipeline.focusRelevanceFilter(pool, director);
+            expect(result).toEqual(pool);
+        });
     });
 
     describe('overlapFilter', () => {
@@ -183,6 +204,20 @@ describe('Pipeline Filters and Weights', () => {
             const result = pipeline.overlapFilter(pool, director);
             expect(result).toEqual([{ id: 'ex2', tags: ['non-clashing'], pattern: 'Pull' }]);
         });
+
+        it('should filter out exercises with the same pattern even if lastEx has clash tags', () => {
+            const pool = [{ id: 'ex1', pattern: 'Push' }, { id: 'ex2', pattern: 'Squat' }];
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['shoulders'], pattern: 'Push' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', pattern: 'Squat' }]);
+        });
+
+        it('should filter out exercises with the same ID even if lastEx has clash tags', () => {
+            const pool = [{ id: 'lastEx', pattern: 'Core' }, { id: 'ex2', pattern: 'Squat' }];
+            const director = { selectedExercises: [{ exercise: { id: 'lastEx', tags: ['core'], pattern: 'Push' } }] };
+            const result = pipeline.overlapFilter(pool, director);
+            expect(result).toEqual([{ id: 'ex2', pattern: 'Squat' }]);
+        });
     });
 
     describe('balanceWeight', () => {
@@ -213,6 +248,20 @@ describe('Pipeline Filters and Weights', () => {
         it('should handle no candidates found', () => {
             const pool = [{ id: 'ex2', pattern: 'Push' }];
             const director = { balance: { Push: 2, Pull: 1 } }; // wants pull
+            const result = pipeline.balanceWeight(pool, director);
+            expect(result).toEqual(pool);
+        });
+
+        it('should handle no Push candidates found when Pull > Push', () => {
+            const pool = [{ id: 'ex1', pattern: 'Pull' }];
+            const director = { balance: { Push: 1, Pull: 2 } }; // wants push
+            const result = pipeline.balanceWeight(pool, director);
+            expect(result).toEqual(pool);
+        });
+
+        it('should handle missing properties in director.balance gracefully', () => {
+            const pool = [{ id: 'ex1', pattern: 'Pull' }, { id: 'ex2', pattern: 'Push' }];
+            const director = { balance: {} };
             const result = pipeline.balanceWeight(pool, director);
             expect(result).toEqual(pool);
         });
@@ -250,6 +299,40 @@ describe('Pipeline Filters and Weights', () => {
             const director = { config: { focus: 'Cardio' } };
             const result = pipeline.focusWeight(pool, director);
             expect(result).toEqual(pool);
+        });
+
+        it('should return the pool unmodified if the focus is unknown and has no target patterns', () => {
+            const pool = [
+                { id: 'ex1', pattern: 'Cardio' }
+            ];
+            const director = { config: { focus: 'UnknownFocus' } };
+            const result = pipeline.focusWeight(pool, director);
+            expect(result).toEqual(pool);
+        });
+    });
+
+    describe('Pipelines Composition', () => {
+        it('STATIC_PIPELINE should contain the correct filters in order', () => {
+            expect(pipeline.STATIC_PIPELINE).toEqual([
+                pipeline.skillFilter,
+                pipeline.focusRelevanceFilter,
+                pipeline.focusWeight
+            ]);
+        });
+
+        it('DYNAMIC_PIPELINE should contain the correct filters in order', () => {
+            expect(pipeline.DYNAMIC_PIPELINE).toEqual([
+                pipeline.alreadySelectedFilter,
+                pipeline.overlapFilter,
+                pipeline.balanceWeight
+            ]);
+        });
+
+        it('DEFAULT_PIPELINE should combine STATIC and DYNAMIC pipelines', () => {
+            expect(pipeline.DEFAULT_PIPELINE).toEqual([
+                ...pipeline.STATIC_PIPELINE,
+                ...pipeline.DYNAMIC_PIPELINE
+            ]);
         });
     });
 });

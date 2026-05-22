@@ -117,6 +117,7 @@ describe('Storage Engine - Export/Import', () => {
     });
 
     it('should validate import data structure and return false on errors', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
         expect(importData(null)).toBe(false);
         expect(importData(undefined)).toBe(false);
         expect(importData("invalid json")).toBe(false);
@@ -124,6 +125,7 @@ describe('Storage Engine - Export/Import', () => {
         // Missing version or bad structure - currently simple implementation might just ignore
         // extra fields, but let's see if we want strict validation.
         // For now, basic JSON parsing check is enough.
+        consoleSpy.mockRestore();
     });
 
     it('should handle partial import (only history)', () => {
@@ -173,7 +175,11 @@ describe('Storage Engine - Export/Import', () => {
         const success = importData(importPayload);
 
         expect(success).toBe(false);
-        expect(consoleSpy).toHaveBeenCalledWith('Failed to import data', expect.any(Error));
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
+            action: 'importData',
+            message: 'Failed to import data',
+            error: 'Mock quota exceeded'
+        }));
 
         consoleSpy.mockRestore();
         setItemSpy.mockRestore();
