@@ -6,7 +6,7 @@ export function UpdatePrompt() {
         updateServiceWorker,
     } = useRegisterSW({
         onRegisterError(error) {
-            console.log('SW registration error', error);
+            console.error('SW registration error', error);
         },
     });
 
