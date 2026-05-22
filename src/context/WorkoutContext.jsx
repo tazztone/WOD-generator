@@ -21,7 +21,7 @@ export const WorkoutProvider = ({ children }) => {
 
             const savedWorkoutsData = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
             if (savedWorkoutsData) setSavedWorkouts(JSON.parse(savedWorkoutsData));
-        } catch (e) {
+        } catch {
             // Ignore parse errors, defaulting to empty state
         }
     }, []);

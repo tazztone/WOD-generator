@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { createRoot } from 'react-dom/client';
-import { flushSync } from 'react-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ActiveTimer } from './ActiveTimer';
 import { SettingsProvider } from '../context/SettingsContext';
 
@@ -43,95 +42,68 @@ const mockWorkout = {
     ]
 };
 
-
 describe('ActiveTimer', () => {
-    let container = null;
-    let root = null;
-
     beforeEach(() => {
+        vi.useFakeTimers();
         vi.clearAllMocks();
         localStorage.clear();
-        container = document.createElement('div');
-        document.body.appendChild(container);
-        root = createRoot(container);
     });
 
     afterEach(() => {
-        act(() => {
-            root.unmount();
-        });
-        container.remove();
-        container = null;
+        vi.useRealTimers();
     });
 
-    // Helper to wrap state updates
-    function act(callback) {
-        flushSync(callback);
-    }
-
     it('should open audio settings popover when clicking settings button', () => {
-        act(() => {
-            root.render(
-                <SettingsProvider>
-                    <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => { }} />
-                </SettingsProvider>
-            );
-        });
+        const { container } = render(
+            <SettingsProvider>
+                <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />
+            </SettingsProvider>
+        );
 
         // The settings button is the second button in the header
         const buttons = container.querySelectorAll('button');
         const settingsBtn = buttons[1];
 
-        act(() => {
-            settingsBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        });
+        fireEvent.click(settingsBtn);
 
-        expect(container.textContent).toContain('Audio Settings');
+        expect(screen.getByText('Audio Settings')).toBeInTheDocument();
     });
 
     it('should open and render audio settings popover', () => {
-        act(() => {
-            root.render(
-                <SettingsProvider>
-                    <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" setModalOpen={() => { }} />
-                </SettingsProvider>
-            );
-        });
+        const { container } = render(
+            <SettingsProvider>
+                <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />
+            </SettingsProvider>
+        );
 
         // Open popover
         const buttons = container.querySelectorAll('button');
-        act(() => {
-            buttons[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        });
+        fireEvent.click(buttons[1]);
 
         // Find a toggle button in the popover
         const toggles = container.querySelectorAll('.absolute button');
-        // Check if settings appear
-        act(() => {
-            toggles[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        });
+        fireEvent.click(toggles[1]);
 
-        expect(container.textContent).toContain('Audio Settings');
+        expect(screen.getByText('Audio Settings')).toBeInTheDocument();
     });
+
     it('should show confirmation dialog when clicking the cancel button', () => {
-        act(() => {
-            root.render(
-                <SettingsProvider>
-                    <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />
-                </SettingsProvider>
-            );
-        });
+        const { container } = render(
+            <SettingsProvider>
+                <ActiveTimer workout={mockWorkout} onExit={() => { }} onSave={() => { }} lang="en" />
+            </SettingsProvider>
+        );
 
         // The cancel (X) button is the first button in the header
         const buttons = container.querySelectorAll('button');
         const cancelBtn = buttons[0];
 
-        act(() => {
-            cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        });
+        fireEvent.click(cancelBtn);
 
-        expect(container.textContent).toContain('Quit workout?');
-        expect(container.textContent).toContain('Yes, Quit');
-        expect(container.textContent).toContain('No, Stay');
+        expect(screen.getByText('Quit workout?')).toBeInTheDocument();
+        expect(screen.getByText('Yes, Quit')).toBeInTheDocument();
+        expect(screen.getByText('No, Stay')).toBeInTheDocument();
     });
 });
+
+

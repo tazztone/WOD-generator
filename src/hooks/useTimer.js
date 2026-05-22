@@ -80,7 +80,7 @@ export const useTimer = (workout, lang, audioSettings) => {
                     setRoundTime(state.roundTime);
                 }
             }
-        } catch (e) {
+        } catch {
             // Silence error and fallback to default state
         }
     }, [workout.id, setStatus, setTimeLeft, setTotalTime, setCurrentRound, setRoundTime]);
@@ -155,7 +155,7 @@ export const useTimer = (workout, lang, audioSettings) => {
             } else {
                 await Haptics.vibrate({ duration: pattern });
             }
-        } catch (e) {
+        } catch {
             // Fallback to Web API for browser / non-capacitor environments
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
                 navigator.vibrate(pattern);

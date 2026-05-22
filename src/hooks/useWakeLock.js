@@ -15,7 +15,7 @@ export const useWakeLock = () => {
                 if (import.meta.env.DEV) {
                     console.log('WakeLock: Acquired via Capacitor KeepAwake');
                 }
-            } catch (err) {
+            } catch {
                 // Not running in Capacitor or plugin not found
             }
 
@@ -39,12 +39,12 @@ export const useWakeLock = () => {
                 try {
                     const { KeepAwake } = await import('@capacitor-community/keep-awake');
                     await KeepAwake.allowSleep();
-                } catch (e) { /* ignore */ }
+                } catch { /* ignore */ }
             } else if (wakeLockRef.current) {
                 try {
                     await wakeLockRef.current.release();
                     wakeLockRef.current = null;
-                } catch (e) { /* ignore */ }
+                } catch { /* ignore */ }
             }
         };
 
