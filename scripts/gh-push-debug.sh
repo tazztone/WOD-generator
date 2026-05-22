@@ -13,7 +13,7 @@ if ! command -v gh &> /dev/null; then
 fi
 
 echo "🚀 Building fresh debug APK..."
-cd android && ./gradlew assembleDebug
+(cd android && ./gradlew assembleDebug)
 
 if [ $? -ne 0 ]; then
     echo "❌ Build failed. Aborting release."

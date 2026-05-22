@@ -4,14 +4,14 @@ android {
     namespace = "com.wodgen.ultimate"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.wodgen.ultimate"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        applicationId = "com.wodgen.ultimate"
+        minSdk = rootProject.ext.minSdkVersion
+        targetSdk = rootProject.ext.targetSdkVersion
         // Base version 7000 + GitHub Run Number (or 0 for local) ensures unique, increasing codes
         def buildNumber = System.getenv("BUILD_NUMBER")?.toInteger() ?: 0
-        versionCode 7000 + buildNumber
-        versionName "7.0.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode = 7000 + buildNumber
+        versionName = "7.0.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
@@ -31,16 +31,16 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
+            signingConfig = signingConfigs.release
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
