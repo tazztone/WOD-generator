@@ -147,6 +147,20 @@ describe('Pipeline Filters and Weights', () => {
             const result = pipeline.balanceWeight(pool, director);
             expect(result).toEqual(pool);
         });
+
+        it('should handle no Push candidates found when Pull > Push', () => {
+            const pool = [{ id: 'ex1', pattern: 'Pull' }];
+            const director = { balance: { Push: 1, Pull: 2 } }; // wants push
+            const result = pipeline.balanceWeight(pool, director);
+            expect(result).toEqual(pool);
+        });
+
+        it('should handle missing properties in director.balance gracefully', () => {
+            const pool = [{ id: 'ex1', pattern: 'Pull' }, { id: 'ex2', pattern: 'Push' }];
+            const director = { balance: {} };
+            const result = pipeline.balanceWeight(pool, director);
+            expect(result).toEqual(pool);
+        });
     });
 
     describe('focusWeight', () => {
