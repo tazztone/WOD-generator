@@ -1,5 +1,5 @@
 export const RftStrategy = {
-    calculateParams(config, exercises) {
+    calculateParams(config, _exercises) {
         let rounds = 5; // Default RFT rounds
 
         // Adjust based on duration

@@ -1,5 +1,4 @@
 import { overlapFilter } from './src/engine/pipeline.js';
-import { CLASH_TAGS } from './src/config/workoutConfig.js';
 
 const mockDirector = {
     selectedExercises: [

@@ -66,7 +66,7 @@ describe('audio.js', () => {
 
   describe('playBeep fallback', () => {
     beforeEach(() => {
-      global.Audio = vi.fn().mockImplementation(() => ({
+      window.Audio = vi.fn().mockImplementation(() => ({
         play: vi.fn().mockResolvedValue(),
         volume: 1,
       }));
@@ -80,7 +80,7 @@ describe('audio.js', () => {
       const { playBeep: playBeepFallback } = await import('./audio.js');
 
       playBeepFallback(880, 'sine', 0.1, 1.0);
-      expect(global.Audio).toHaveBeenCalled();
+      expect(window.Audio).toHaveBeenCalled();
     });
   });
 });

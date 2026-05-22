@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
 import * as pipeline from './pipeline.js';
-import { FOCUS_PATTERNS } from '../config/workoutConfig.js';
 
 vi.mock('./scaling.js', () => ({
     getSubstitution: (id, difficulty) => {

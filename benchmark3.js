@@ -1,4 +1,4 @@
-import { FOCUS_PATTERNS, CLASH_TAGS } from './src/config/workoutConfig.js';
+import { FOCUS_PATTERNS } from './src/config/workoutConfig.js';
 
 const mockDirector = {
     selectedExercises: [
