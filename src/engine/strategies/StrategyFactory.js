@@ -1,3 +1,4 @@
+import { getSecureRandom } from '../secureRandom.js';
 import { AmrapStrategy } from './AmrapStrategy.js';
 import { RftStrategy } from './RftStrategy.js';
 import { EmomStrategy } from './EmomStrategy.js';
@@ -22,5 +23,5 @@ export const getStrategy = (templateName) => {
 
 export const getRandomTemplate = () => {
     const keys = Object.keys(STRATEGIES);
-    return keys[Math.floor(Math.random() * keys.length)];
+    return keys[Math.floor(getSecureRandom() * keys.length)];
 };
