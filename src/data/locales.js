@@ -3,6 +3,12 @@ export const LOCALES = {
     en: {
         duration: "Duration",
         movements: "Movements",
+        includeWarmup: "Include Warmup",
+        warmupSub: "Targeted pre-workout protocol",
+        intensity: "Intensity",
+        easy: "Easy",
+        moderate: "Moderate",
+        hard: "Hard",
         includeStrength: "Include Strength (Part A)",
         strengthSub: "Heavy compound lift before WOD",
         level: "Level",
@@ -43,7 +49,8 @@ export const LOCALES = {
             level: "Rx uses 100% standard volume. Scaled reduces reps to 60% and simplifies complex movements.",
             focus: "Biases the random selection generator towards specific movement patterns (e.g., more running/burpees for Cardio).",
             strength: "Smart Pairing: Selects a lift that complements the Metcon (e.g., if Metcon is leg-heavy, it picks an upper-body or hinge lift).",
-            buyIn: "A single exercise performed once at the beginning of the workout, before the main conditioning rounds."
+            buyIn: "A single exercise performed once at the beginning of the workout, before the main conditioning rounds.",
+            warmup: "Dynamic warmup protocol generated based on the specific movements in the workout."
         },
         calculator: "1 Rep Max",
         weight: "Weight",
@@ -109,6 +116,12 @@ export const LOCALES = {
     de: {
         duration: "Dauer",
         movements: "Übungen",
+        includeWarmup: "Aufwärmen (Warmup)",
+        warmupSub: "Gezieltes Aufwärm-Protokoll",
+        intensity: "Intensität",
+        easy: "Leicht",
+        moderate: "Moderat",
+        hard: "Hart",
         includeStrength: "Kraftteil (Teil A)",
         strengthSub: "Schwere Grundübung vor dem WOD",
         level: "Niveau",
@@ -149,7 +162,8 @@ export const LOCALES = {
             level: "Rx nutzt 100% Volumen. Skaliert reduziert die Wiederholungen auf 60% und vereinfacht komplexe Übungen.",
             focus: "Beeinflusst den Generator, bestimmte Bewegungsmuster zu bevorzugen (z.B. mehr Laufen/Burpees bei Cardio).",
             strength: "Smart Pairing: Wählt eine Übung, die das Metcon ergänzt (z.B. wenn das Metcon beinlastig ist, wird Oberkörper oder Hinge gewählt).",
-            buyIn: "Eine einzelne Übung, die einmal zu Beginn des Workouts vor den Hauptrunden absolviert wird."
+            buyIn: "Eine einzelne Übung, die einmal zu Beginn des Workouts vor den Hauptrunden absolviert wird.",
+            warmup: "Dynamisches Aufwärm-Protokoll basierend auf den spezifischen Übungen im Workout."
         },
         calculator: "1 Rep Max",
         weight: "Gewicht",
@@ -238,6 +252,7 @@ export const LOCALES = {
     },
     warmup: {
         cardioEasy: { en: "3 min Cardio (Easy)", de: "3 min Cardio (Easy)" },
+        dynamicCardio: { en: "Dynamic Cardio", de: "Dynamisches Cardio" },
         airSquats: { en: "10 Air Squats", de: "10 Kniebeugen" },
         hingeWarmup: { en: "10 Glute Bridges + 10 Good Mornings", de: "10 Glute Bridges + 10 Good Mornings" },
         pushWarmup: { en: "10 Scap Push-ups + 5 Inchworms", de: "10 Scap Push-ups + 5 Inchworms" },

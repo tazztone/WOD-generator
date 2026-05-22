@@ -45,9 +45,18 @@ export const isExerciseValid = (ex, currentConfig) => {
     return true;
 };
 
-// TODO: Make warmup duration/intensity configurable via user settings
-export const generateWarmupLogic = (exercises) => {
-    let moves = new Set(['cardioEasy']);
+export const generateWarmupLogic = (exercises, config = {}) => {
+    if (config.includeWarmup === false) return [];
+
+    let moves = new Set();
+    const duration = config.warmupDuration || 3;
+    const intensity = config.warmupIntensity || 'Easy';
+
+    if (duration === 3 && intensity === 'Easy') {
+        moves.add('cardioEasy');
+    } else {
+        moves.add(`dynamicCardio|${duration}|${intensity}`);
+    }
 
     exercises.forEach(slot => {
         const { pattern, id } = slot.exercise;

@@ -88,6 +88,22 @@ describe('Utils Engine', () => {
             expect(warmup).toContain('airSquats');
         });
 
+        it('should respect config settings for warmup duration and intensity', () => {
+            const exercises = [
+                { exercise: { id: 'pushup', pattern: 'Push' } }
+            ];
+            const warmup = generateWarmupLogic(exercises, { warmupDuration: 5, warmupIntensity: 'Moderate' });
+            expect(warmup).toContain('dynamicCardio|5|Moderate');
+        });
+
+        it('should return empty array if includeWarmup is false', () => {
+            const exercises = [
+                { exercise: { id: 'pushup', pattern: 'Push' } }
+            ];
+            const warmup = generateWarmupLogic(exercises, { includeWarmup: false });
+            expect(warmup).toEqual([]);
+        });
+
         it('should add calf raises for specific IDs', () => {
             const exercises = [{ exercise: { id: 'run_400', pattern: 'Cardio' } }];
             const warmup = generateWarmupLogic(exercises);

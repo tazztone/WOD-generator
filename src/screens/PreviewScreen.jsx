@@ -243,20 +243,47 @@ export const PreviewScreen = ({
                     </div>
                 </div>
 
-                <div className="bg-slate-900/50 border border-dashed border-slate-800 rounded-xl p-4 relative">
-                    <button onClick={(e) => onTooltip(e, explanations.warmupText)} className="absolute top-2 right-2 text-slate-700 hover:text-slate-400 transition-colors p-2">
-                        <Info size={14} />
-                    </button>
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">{pt.warmup}</span>
-                    <ul className="space-y-1">
-                        {workout.warmup.map((key, i) => (
-                            <li key={i} className="text-xs text-slate-400 flex gap-2">
-                                <div className="w-1 h-1 bg-slate-600 rounded-full mt-1.5 shrink-0" />
-                                {LOCALES.warmup[key] ? (LOCALES.warmup[key][lang] || key) : key}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {workout.warmup && workout.warmup.length > 0 && (
+                    <div className="bg-slate-900/50 border border-dashed border-slate-800 rounded-xl p-4 relative">
+                        <button onClick={(e) => onTooltip(e, explanations.warmupText)} className="absolute top-2 right-2 text-slate-700 hover:text-slate-400 transition-colors p-2">
+                            <Info size={14} />
+                        </button>
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">{pt.warmup}</span>
+                        <ul className="space-y-1">
+                            {workout.warmup.map((keyStr, i) => {
+                                // Support new dynamic cardio string: "dynamicCardio|duration|intensity"
+                                const parts = keyStr.split('|');
+                                const key = parts[0];
+                                const duration = parts[1];
+                                const intensity = parts[2];
+
+                                let text = keyStr;
+                                if (LOCALES.warmup[key]) {
+                                    text = LOCALES.warmup[key][lang] || key;
+
+                                    // Handle dynamic values if provided
+                                    if (key === 'dynamicCardio' && duration && intensity) {
+                                        // Simple translation for intensity if possible
+                                        let localizedIntensity = intensity;
+                                        if (lang === 'de') {
+                                            if (intensity === 'Easy') localizedIntensity = 'Leicht';
+                                            if (intensity === 'Moderate') localizedIntensity = 'Moderat';
+                                            if (intensity === 'Hard') localizedIntensity = 'Hart';
+                                        }
+                                        text = `${duration} min Cardio (${localizedIntensity})`;
+                                    }
+                                }
+
+                                return (
+                                    <li key={i} className="text-xs text-slate-400 flex gap-2">
+                                        <div className="w-1 h-1 bg-slate-600 rounded-full mt-1.5 shrink-0" />
+                                        {text}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                )}
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent">
