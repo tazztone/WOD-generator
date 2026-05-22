@@ -13,6 +13,7 @@ export default function CrossFitGenerator() {
     const {
         appState,
         lang,
+        unit,
         config,
         workout,
         history,
@@ -24,6 +25,7 @@ export default function CrossFitGenerator() {
     const {
         setAppState,
         toggleLang,
+        toggleUnit,
         setConfig,
         setWorkout,
         setModalOpen,
@@ -47,9 +49,11 @@ export default function CrossFitGenerator() {
                 <Header
                     onBack={clearWorkout}
                     onLangToggle={toggleLang}
+                    onUnitToggle={toggleUnit}
                     onHistory={() => setAppState('history')}
                     onCalculator={() => setAppState('calculator')}
                     lang={lang}
+                    unit={unit}
                     appState={appState}
                 />
             )}
@@ -104,6 +108,7 @@ export default function CrossFitGenerator() {
                 {appState === 'calculator' && (
                     <OneRepMaxScreen
                         lang={lang}
+                        unit={unit}
                         onBack={() => setAppState('config')}
                     />
                 )}

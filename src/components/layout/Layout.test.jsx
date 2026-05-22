@@ -21,9 +21,11 @@ describe('Layout Components', () => {
         const defaultProps = {
             onBack: vi.fn(),
             onLangToggle: vi.fn(),
+            onUnitToggle: vi.fn(),
             onHistory: vi.fn(),
             onCalculator: vi.fn(),
             lang: 'en',
+            unit: 'kg',
             appState: 'home'
         };
 
@@ -59,12 +61,26 @@ describe('Layout Components', () => {
             expect(defaultProps.onLangToggle).toHaveBeenCalledTimes(1);
         });
 
+        it('renders unit toggle correctly', () => {
+            render(<Header {...defaultProps} unit="lbs" />);
+            expect(screen.getByText('LBS')).toBeInTheDocument();
+        });
+
+        it('triggers onUnitToggle when unit button is clicked', async () => {
+            const user = userEvent.setup();
+            render(<Header {...defaultProps} />);
+
+            const unitButton = screen.getByText('KG').closest('button');
+            await user.click(unitButton);
+            expect(defaultProps.onUnitToggle).toHaveBeenCalledTimes(1);
+        });
+
         it('triggers onCalculator when calculator button is clicked', async () => {
             const user = userEvent.setup();
             const { container } = render(<Header {...defaultProps} />);
 
             const buttons = container.querySelectorAll('button');
-            const calcButton = buttons[1];
+            const calcButton = buttons[2];
 
             await user.click(calcButton);
             expect(defaultProps.onCalculator).toHaveBeenCalledTimes(1);
@@ -75,7 +91,7 @@ describe('Layout Components', () => {
             const { container } = render(<Header {...defaultProps} />);
 
             const buttons = container.querySelectorAll('button');
-            const historyButton = buttons[2];
+            const historyButton = buttons[3];
 
             await user.click(historyButton);
             expect(defaultProps.onHistory).toHaveBeenCalledTimes(1);
@@ -84,7 +100,7 @@ describe('Layout Components', () => {
         it('applies active styling to calculator button when appState is calculator', () => {
             const { container } = render(<Header {...defaultProps} appState="calculator" />);
             const buttons = container.querySelectorAll('button');
-            const calcButton = buttons[1];
+            const calcButton = buttons[2];
 
             expect(calcButton.className).toContain('bg-slate-700');
             expect(calcButton.className).not.toContain('hover:bg-slate-800');
@@ -93,7 +109,7 @@ describe('Layout Components', () => {
         it('applies active styling to history button when appState is history', () => {
             const { container } = render(<Header {...defaultProps} appState="history" />);
             const buttons = container.querySelectorAll('button');
-            const historyButton = buttons[2];
+            const historyButton = buttons[3];
 
             expect(historyButton.className).toContain('bg-slate-700');
             expect(historyButton.className).not.toContain('hover:bg-slate-800');

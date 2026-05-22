@@ -1,6 +1,6 @@
 
 
-import { Globe, History as HistoryIcon, Calculator } from 'lucide-react';
+import { Globe, Weight, History as HistoryIcon, Calculator } from 'lucide-react';
 
 export const Shell = ({ children }) => {
     return (
@@ -12,7 +12,7 @@ export const Shell = ({ children }) => {
     );
 };
 
-export const Header = ({ onBack, onLangToggle, onHistory, onCalculator, lang, appState }) => {
+export const Header = ({ onBack, onLangToggle, onUnitToggle, onHistory, onCalculator, lang, unit, appState }) => {
     return (
         <header 
             className="px-5 pb-4 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 flex justify-between items-center sticky top-0 z-30"
@@ -24,6 +24,9 @@ export const Header = ({ onBack, onLangToggle, onHistory, onCalculator, lang, ap
             <div className="flex gap-2">
                 <button onClick={onLangToggle} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 font-bold text-xs border border-slate-700 flex items-center gap-1">
                     <Globe size={14} /> {lang.toUpperCase()}
+                </button>
+                <button onClick={onUnitToggle} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 font-bold text-xs border border-slate-700 flex items-center gap-1">
+                    <Weight size={14} /> {unit.toUpperCase()}
                 </button>
                 <button onClick={onCalculator} className={`p-2 rounded-full transition-all ${appState === 'calculator' ? "bg-slate-700 text-emerald-400" : "hover:bg-slate-800 text-slate-400"}`}>
                     <Calculator size={18} />

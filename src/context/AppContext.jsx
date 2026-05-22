@@ -92,6 +92,7 @@ export const useAppContext = () => {
         state: {
             appState: workout.appState,
             lang: settings.lang,
+            unit: settings.unit,
             config: settings.config,
             workout: workout.workout,
             history: workout.history,
@@ -103,6 +104,7 @@ export const useAppContext = () => {
             setAppState: workout.setAppState,
             setLang: settings.setLang,
             toggleLang: settings.toggleLang,
+            toggleUnit: settings.toggleUnit,
             setConfig: settings.setConfig,
             setWorkout: workout.setWorkout,
             setModalOpen: settings.setModalOpen,

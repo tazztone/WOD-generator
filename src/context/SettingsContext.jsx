@@ -6,6 +6,7 @@ const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
     const [lang, setLang] = useState(() => localStorage.getItem('wod_lang') || 'en');
+    const [unit, setUnit] = useState(() => localStorage.getItem('wod_unit') || 'kg');
     const [config, setConfig] = useState(loadConfig());
     const [tooltip, setTooltip] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
@@ -14,6 +15,11 @@ export const SettingsProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('wod_lang', lang);
     }, [lang]);
+
+    // Persist Unit Changes
+    useEffect(() => {
+        localStorage.setItem('wod_unit', unit);
+    }, [unit]);
 
     // Save Config Changes & Update Audio
     useEffect(() => {
@@ -24,6 +30,7 @@ export const SettingsProvider = ({ children }) => {
     }, [config]);
 
     const toggleLang = () => setLang(l => l === 'en' ? 'de' : 'en');
+    const toggleUnit = () => setUnit(u => u === 'kg' ? 'lbs' : 'kg');
 
     const handleTooltip = (e, text) => {
         if (!text) return;
@@ -38,6 +45,9 @@ export const SettingsProvider = ({ children }) => {
         lang,
         setLang,
         toggleLang,
+        unit,
+        setUnit,
+        toggleUnit,
         config,
         setConfig,
         tooltip,

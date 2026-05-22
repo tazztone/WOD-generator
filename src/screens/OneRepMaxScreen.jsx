@@ -4,7 +4,7 @@ import { LOCALES } from '../data/locales';
 import { calculateOneRepMax, calculatePercentages } from '../engine/calculator';
 import { Card } from '../components/ui/Card';
 
-export const OneRepMaxScreen = ({ lang, onBack }) => {
+export const OneRepMaxScreen = ({ lang, unit, onBack }) => {
     const t = LOCALES[lang];
     const [weight, setWeight] = useState('');
     const [reps, setReps] = useState('');
@@ -33,7 +33,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
             <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                     <Card className="flex flex-col gap-2">
-                         <span className="text-xs font-bold text-slate-400 uppercase">{t.weight}</span>
+                         <span className="text-xs font-bold text-slate-400 uppercase">{t.weight} ({unit})</span>
                          <input
                             type="number"
                             value={weight}
@@ -61,6 +61,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
                         <Card className="bg-emerald-500/10 border-emerald-500/30 text-center py-6">
                             <span className="text-sm font-bold text-emerald-400 uppercase tracking-widest block mb-1">{t.estimated1RM}</span>
                             <span className="text-5xl font-black text-white">{oneRepMax}</span>
+                            <span className="text-lg font-bold text-emerald-400/70 ml-1">{unit}</span>
                         </Card>
 
                         <div>
@@ -69,7 +70,7 @@ export const OneRepMaxScreen = ({ lang, onBack }) => {
                                 {percentages.map(({ percentage, value }) => (
                                     <div key={percentage} className="bg-slate-800 p-3 rounded-lg border border-slate-700 text-center">
                                         <div className="text-xs text-slate-500 font-bold">{percentage}%</div>
-                                        <div className="text-lg font-bold text-white">{value}</div>
+                                        <div className="text-lg font-bold text-white">{value} <span className="text-xs text-slate-500">{unit}</span></div>
                                     </div>
                                 ))}
                             </div>

@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from 'vitest';
 describe('OneRepMaxScreen', () => {
     const mockProps = {
         lang: 'en',
+        unit: 'kg',
         onBack: vi.fn()
     };
 
