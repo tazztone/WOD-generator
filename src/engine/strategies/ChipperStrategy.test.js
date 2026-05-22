@@ -54,6 +54,10 @@ describe('ChipperStrategy', () => {
         it('should handle non-numeric base reps (feet)', () => {
             expect(ChipperStrategy.scaleReps('50ft', {}, 'Normal', 20)).toBe('100ft');
         });
+        it('should return non-numeric reps unmodified if distance parsing fails', () => {
+            expect(ChipperStrategy.scaleReps('m', {}, 'Normal', 20)).toBe('m');
+            expect(ChipperStrategy.scaleReps('ft', {}, 'Normal', 20)).toBe('ft');
+        });
 
         it('should return non-numeric reps unmodified if no match', () => {
             expect(ChipperStrategy.scaleReps('45s', {}, 'Normal', 20)).toBe('45s');
