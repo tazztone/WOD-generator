@@ -1,20 +1,18 @@
-import { overlapFilter } from './src/engine/pipeline.js';
+import { performance } from 'perf_hooks';
+import { calculateBaseReps } from './src/engine/scaling.js';
 
-const mockDirector = {
-    selectedExercises: [
-        { exercise: { id: 'ex1', pattern: 'Push', tags: ['push', 'chest', 'triceps', 'shoulders'] } }
-    ]
-};
+const iterations = 1000000;
 
-const mockPool = Array.from({ length: 1000 }, (_, i) => ({
-    id: `ex${i}`,
-    pattern: i % 2 === 0 ? 'Pull' : 'Push',
-    tags: i % 2 === 0 ? ['pull', 'back', 'biceps'] : ['push', 'chest', 'triceps']
-}));
+const exerciseRun = { id: 'run', equipment: 'None', intensity: 'Low' };
+const exercisePlank = { id: 'plank', id_g: 'plank', equipment: 'None', intensity: 'Low' };
+const exerciseOther = { id: 'pushup', equipment: 'None', intensity: 'High' };
 
 const start = performance.now();
-for (let i = 0; i < 10000; i++) {
-    overlapFilter(mockPool, mockDirector);
+for (let i = 0; i < iterations; i++) {
+    calculateBaseReps(exerciseRun, 'Rx', 20);
+    calculateBaseReps(exercisePlank, 'Rx', 20);
+    calculateBaseReps(exerciseOther, 'Rx', 20);
 }
 const end = performance.now();
-console.log(`Baseline overlapFilter execution time: ${end - start} ms`);
+
+console.log(`Baseline performance: ${(end - start).toFixed(2)} ms`);
