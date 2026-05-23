@@ -22,6 +22,13 @@ describe('Pipeline Filters and Weights', () => {
             const result = pipeline.alreadySelectedFilter(pool, director);
             expect(result).toEqual([{ id: 'ex1' }, { id: 'ex3' }]);
         });
+
+        it('should handle an empty pool array', () => {
+            const pool = [];
+            const director = { selectedExerciseIds: new Set(['ex1']) };
+            const result = pipeline.alreadySelectedFilter(pool, director);
+            expect(result).toEqual([]);
+        });
     });
 
     describe('skillFilter', () => {
@@ -46,6 +53,12 @@ describe('Pipeline Filters and Weights', () => {
 
         it('should return exercises without tags for Beginners', () => {
             const pool = [{ id: 'ex1' }];
+            const director = { config: { difficulty: 'Beginner' } };
+            expect(pipeline.skillFilter(pool, director)).toEqual(pool);
+        });
+
+        it('should return exercises with empty tags array for Beginners', () => {
+            const pool = [{ id: 'ex1', tags: [] }];
             const director = { config: { difficulty: 'Beginner' } };
             expect(pipeline.skillFilter(pool, director)).toEqual(pool);
         });

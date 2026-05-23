@@ -5,8 +5,11 @@ import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrength
 import { getStrategy, getRandomTemplate } from './strategies/StrategyFactory.js';
 import { BUY_IN_CONFIG } from '../config/workoutConfig.js';
 import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
+import { getSecureRandom } from './secureRandom.js';
+
 
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic, formatReps };
+
 
 // Fast lookup index
 const EXERCISE_MAP = new Map(EXERCISE_DB.map(e => [e.id, e]));
@@ -47,7 +50,7 @@ class WorkoutDirector {
         this.buyInForContext = null;
         if (candidates.length === 0) return null;
         
-        let picked = candidates[Math.floor(Math.random() * candidates.length)];
+        let picked = candidates[Math.floor(getSecureRandom() * candidates.length)];
         
         const subId = getSubstitution(picked.id, this.config.difficulty);
         if (subId) {
@@ -79,13 +82,13 @@ export const generateWorkout = (config) => {
     let buyIn = null;
 
     // Smart Buy-In Logic
-    if (config.duration > BUY_IN_CONFIG.MIN_DURATION && Math.random() < BUY_IN_CONFIG.CHANCE) {
+    if (config.duration > BUY_IN_CONFIG.MIN_DURATION && getSecureRandom() < BUY_IN_CONFIG.CHANCE) {
         let buyInPatterns = BUY_IN_CONFIG.PATTERNS[config.focus] || BUY_IN_CONFIG.PATTERNS.Default;
         
         const buyInPool = director.pool.filter(ex => buyInPatterns.includes(ex.pattern));
         
         if (buyInPool.length > 0) {
-            const picked = buyInPool[Math.floor(Math.random() * buyInPool.length)];
+            const picked = buyInPool[Math.floor(getSecureRandom() * buyInPool.length)];
             buyIn = {
                 exercise: picked,
                 reps: picked.pattern === 'Cardio' ? BUY_IN_CONFIG.REPS.Cardio : BUY_IN_CONFIG.REPS.Default
