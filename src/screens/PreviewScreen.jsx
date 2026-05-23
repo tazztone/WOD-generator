@@ -109,12 +109,15 @@ export const PreviewScreen = ({
         }
     };
 
+    const existingExerciseIds = useMemo(() => {
+        return new Set(workout.exercises.map(item => item.exercise.id));
+    }, [workout.exercises]);
+
     const getSwapCandidates = (index) => {
         const current = workout.exercises[index];
-        const existingIds = new Set(workout.exercises.map(item => item.exercise.id));
         return validExercises.filter(ex =>
             ex.pattern === current.exercise.pattern &&
-            !existingIds.has(ex.id)
+            !existingExerciseIds.has(ex.id)
         );
     };
 
