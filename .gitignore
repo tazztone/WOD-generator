@@ -147,3 +147,4 @@ keystore-base64.txt
 android/app/release-key.keystore
 .idea/
 scratch/
+.vscode/settings.json
