@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#10b981</color> <!-- Emerald 500 -->
+    <color name="colorPrimaryDark">#020617</color> <!-- Slate 950 -->
+    <color name="colorAccent">#34d399</color> <!-- Emerald 400 -->
+</resources>
