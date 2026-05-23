@@ -8,11 +8,18 @@
 # - GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: Google Play Service Account JSON (for Play Store upload)
 #
 # Trigger: Push tags starting with 'v' or manual workflow_dispatch
+#
+# Play Store Track: alpha (Closed testing - Alpha)
+# To change track, update the 'track' input in step 7.
+# Valid values: internal, alpha, beta, production
+
 
 name: Build & Publish Android Release
 
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 
 on:
   push:
@@ -32,12 +39,14 @@ on:
         default: true
         required: false
 
+
 jobs:
   build-and-release:
     name: Build APK/AAB & Create Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
 
     steps:
       - uses: actions/checkout@v6
@@ -146,14 +155,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 7. Publish to Google Play Store (Production Track)
+      # 7. Publish to Google Play Store (Closed Testing - Alpha track)
+      # Track 'alpha' = Closed testing - Alpha in Play Console
+      # To use a different closed track name, change 'track' to match
+      # the track name shown in Play Console (e.g. a custom track like 'beta-testers')
       - name: Publish to Google Play Store
         if: ${{ github.event.inputs.publish_to_play_store != 'false' }}
-        uses: r0adkll/upload-google-play@v1 # Still on v1 as per search
+        uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.wodgen.ultimate
           releaseFiles: release-artifacts/wod-gen-${{ steps.vars.outputs.tag }}.aab
-          tracks: internal
+          track: alpha
           mappingFile: release-artifacts/mapping-${{ steps.vars.outputs.tag }}.txt
           status: completed
