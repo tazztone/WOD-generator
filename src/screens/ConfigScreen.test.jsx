@@ -14,7 +14,7 @@ describe('ConfigScreen', () => {
 
     it('renders all main configuration sections', () => {
         render(<ConfigScreen {...mockProps} />);
-        expect(screen.getByText(/duration/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/duration/i)[0]).toBeInTheDocument();
         expect(screen.getByText(/movements/i)).toBeInTheDocument();
         expect(screen.getByText(/style/i)).toBeInTheDocument();
         expect(screen.getByText(/level/i)).toBeInTheDocument();

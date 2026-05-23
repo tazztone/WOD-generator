@@ -139,6 +139,57 @@ export const ConfigScreen = ({ config, setConfig, onGenerate, lang, onTooltip })
                 </button>
             </div>
 
+            {/* Warmup Toggle & Settings */}
+            <div className="bg-slate-800/60 p-4 rounded-xl border border-slate-700 space-y-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="text-sm font-bold text-white uppercase">{t.includeWarmup || "Include Warmup"}</span>
+                            <HelpCircle size={14} className="text-slate-600 cursor-help" onClick={(e) => onTooltip(e, t.tt.warmup || "Dynamic warmup protocol based on the workout")} />
+                        </div>
+                        <span className="text-xs text-slate-500">{t.warmupSub || "Targeted pre-workout protocol"}</span>
+                    </div>
+                    <button
+                        onClick={() => setConfig({ ...config, includeWarmup: config.includeWarmup === false ? true : false })}
+                        className={`w-12 h-7 rounded-full transition-colors relative ${config.includeWarmup !== false ? 'bg-emerald-500' : 'bg-slate-600'}`}
+                        role="switch"
+                        aria-checked={config.includeWarmup !== false}
+                        aria-label={t.includeWarmup || "Include Warmup"}
+                    >
+                        <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${config.includeWarmup !== false ? 'translate-x-6' : 'translate-x-1'}`} />
+                    </button>
+                </div>
+
+                {config.includeWarmup !== false && (
+                    <div className="grid grid-cols-2 gap-4 pt-3 border-t border-slate-700/50">
+                        <div>
+                            <span className="text-xs font-bold text-slate-400 uppercase mb-1 block">{t.duration}</span>
+                            <select
+                                value={config.warmupDuration || 3}
+                                onChange={(e) => setConfig({ ...config, warmupDuration: parseInt(e.target.value) })}
+                                className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:ring-1 focus:ring-emerald-500"
+                            >
+                                <option value="3">3 {t.min || "Min"}</option>
+                                <option value="5">5 {t.min || "Min"}</option>
+                                <option value="10">10 {t.min || "Min"}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span className="text-xs font-bold text-slate-400 uppercase mb-1 block">{t.intensity || "Intensity"}</span>
+                            <select
+                                value={config.warmupIntensity || 'Easy'}
+                                onChange={(e) => setConfig({ ...config, warmupIntensity: e.target.value })}
+                                className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:ring-1 focus:ring-emerald-500"
+                            >
+                                <option value="Easy">{t.easy || "Easy"}</option>
+                                <option value="Moderate">{t.moderate || "Moderate"}</option>
+                                <option value="Hard">{t.hard || "Hard"}</option>
+                            </select>
+                        </div>
+                    </div>
+                )}
+            </div>
+
             {/* Strength Toggle */}
             <div className="flex items-center justify-between bg-slate-800/60 p-4 rounded-xl border border-slate-700">
                 <div>

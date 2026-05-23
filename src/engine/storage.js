@@ -10,6 +10,9 @@ export const DEFAULT_CONFIG = {
     focus: 'Balanced',
     templateType: 'Random',
     includeStrength: false,
+    includeWarmup: true,
+    warmupDuration: 3,
+    warmupIntensity: 'Easy',
     numExercises: 3,
     avoid: [],
     equipment: {

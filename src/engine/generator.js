@@ -124,7 +124,7 @@ export const generateWorkout = (config) => {
         buyIn,
         isPartner: config.isPartner || false,
         generatedAt: new Date(),
-        warmup: generateWarmupLogic(director.selectedExercises),
+        warmup: generateWarmupLogic(director.selectedExercises, config),
         strength: generateStrengthLogic(director.selectedExercises, config)
     };
 };
@@ -156,7 +156,7 @@ export const swapExercise = (workout, index, newExerciseId, config) => {
     return {
         ...workout,
         exercises: newExercises,
-        warmup: generateWarmupLogic(newExercises),
+        warmup: generateWarmupLogic(newExercises, config),
         strength: generateStrengthLogic(newExercises, config)
     };
 };
