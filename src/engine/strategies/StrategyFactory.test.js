@@ -7,6 +7,11 @@ import { ChipperStrategy } from './ChipperStrategy.js';
 import { TabataStrategy } from './TabataStrategy.js';
 import { LadderStrategy } from './LadderStrategy.js';
 import { DeathByStrategy } from './DeathByStrategy.js';
+import { getSecureRandom } from '../secureRandom.js';
+
+vi.mock('../secureRandom.js', () => ({
+    getSecureRandom: vi.fn(() => 0.5)
+}));
 
 describe('StrategyFactory', () => {
     describe('getStrategy', () => {
@@ -60,20 +65,20 @@ describe('StrategyFactory', () => {
 
         it('should be able to return different templates (not strictly deterministc test but checks randomization)', () => {
             // Mock Math.random to return specific values and check behavior
-            const randomSpy = vi.spyOn(Math, 'random');
+
 
             // Should return first element ('AMRAP' based on object keys order but to be safe let's check it returns a string)
-            randomSpy.mockReturnValue(0.01);
+            vi.mocked(getSecureRandom).mockReturnValue(0.01);
             const firstTemplate = getRandomTemplate();
             expect(typeof firstTemplate).toBe('string');
 
             // Should return last element
-            randomSpy.mockReturnValue(0.99);
+            vi.mocked(getSecureRandom).mockReturnValue(0.99);
             const lastTemplate = getRandomTemplate();
             expect(typeof lastTemplate).toBe('string');
 
             // Clean up
-            randomSpy.mockRestore();
+            vi.mocked(getSecureRandom).mockRestore();
         });
     });
 });
