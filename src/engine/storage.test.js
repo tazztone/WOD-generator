@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { exportData, importData, loadConfig, DEFAULT_CONFIG, CONFIG_STORAGE_KEY, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './storage';
+import { exportData, importData, loadConfig, saveConfig, DEFAULT_CONFIG, CONFIG_STORAGE_KEY, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './storage';
 
 describe('Storage Engine - loadConfig', () => {
     beforeEach(() => {
@@ -33,6 +33,47 @@ describe('Storage Engine - loadConfig', () => {
         // It should be merged with DEFAULT_CONFIG for other missing values
         expect(config.templateType).toBe(DEFAULT_CONFIG.templateType);
         expect(config.equipment).toEqual(DEFAULT_CONFIG.equipment);
+    });
+});
+
+
+describe('Storage Engine - saveConfig', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        vi.restoreAllMocks();
+    });
+
+    afterEach(() => {
+        localStorage.clear();
+    });
+
+    it('should save config to localStorage', () => {
+        const mockConfig = { version: 1, duration: 45, difficulty: 'Rx' };
+
+        saveConfig(mockConfig);
+
+        const storedConfig = localStorage.getItem(CONFIG_STORAGE_KEY);
+        expect(storedConfig).toBeDefined();
+        expect(JSON.parse(storedConfig)).toEqual(mockConfig);
+    });
+
+    it('should handle localStorage errors during saveConfig', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+            throw new Error('Mock quota exceeded');
+        });
+
+        const mockConfig = { version: 1 };
+        saveConfig(mockConfig);
+
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
+            action: 'saveConfig',
+            message: 'Failed to save config',
+            error: 'Mock quota exceeded'
+        }));
+
+        consoleSpy.mockRestore();
+        setItemSpy.mockRestore();
     });
 });
 
