@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from '../engine/storage';
-import { generateWorkout as engineGenerate, swapExercise as engineSwap } from '../engine/generator';
+import { generateWorkout, swapExercise } from '../engine/generator';
 import { useSettings } from './SettingsContext';
 
 const WorkoutContext = createContext();
@@ -26,8 +26,8 @@ export const WorkoutProvider = ({ children }) => {
         }
     }, []);
 
-    const generateWorkout = () => {
-        const newWorkout = engineGenerate(config);
+    const handleGenerateWorkout = () => {
+        const newWorkout = generateWorkout(config);
         setWorkout(newWorkout);
         setAppState('preview');
     };
@@ -37,9 +37,9 @@ export const WorkoutProvider = ({ children }) => {
         setAppState('config');
     };
 
-    const swapExercise = (index, newExId) => {
+    const handleSwapWorkout = (index, newExId) => {
         if (!workout) return;
-        const updatedWorkout = engineSwap(workout, index, newExId, config);
+        const updatedWorkout = swapExercise(workout, index, newExId, config);
         setWorkout(updatedWorkout);
     };
 
@@ -92,9 +92,9 @@ export const WorkoutProvider = ({ children }) => {
         setWorkout,
         history,
         savedWorkouts,
-        generateWorkout,
+        generateWorkout: handleGenerateWorkout,
         clearWorkout,
-        swapExercise,
+        swapExercise: handleSwapWorkout,
         saveToHistory,
         deleteHistoryEntry,
         clearHistory,
