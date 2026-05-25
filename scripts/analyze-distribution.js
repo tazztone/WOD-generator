@@ -1,6 +1,14 @@
 import { generateWorkout } from '../src/engine/generator.js';
 import { DEFAULT_CONFIG } from '../src/engine/storage.js';
 import { EXERCISE_DB } from '../src/data/exercises.js';
+import crypto from "crypto";
+
+const getSecureRandom = () => {
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    return array[0] / (0xffffffff + 1);
+};
+
 
 const iterations = 10000;
 const results = {
@@ -35,21 +43,21 @@ console.log(`Generating ${iterations} workouts across various configurations...`
 const start = performance.now();
 
 for (let i = 0; i < iterations; i++) {
-    const focus = foci[Math.floor(Math.random() * foci.length)];
-    const difficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+    const focus = foci[Math.floor(getSecureRandom() * foci.length)];
+    const difficulty = difficulties[Math.floor(getSecureRandom() * difficulties.length)];
     
     // Random equipment config to test constraints
-    const useBarbell = Math.random() > 0.3;
-    const usePullup = Math.random() > 0.3;
+    const useBarbell = getSecureRandom() > 0.3;
+    const usePullup = getSecureRandom() > 0.3;
     
     const config = {
         ...DEFAULT_CONFIG,
         templateType: 'Random',
-        numExercises: 3 + Math.floor(Math.random() * 3),
-        includeStrength: Math.random() > 0.5,
+        numExercises: 3 + Math.floor(getSecureRandom() * 3),
+        includeStrength: getSecureRandom() > 0.5,
         focus: focus,
         difficulty: difficulty,
-        duration: 10 + Math.floor(Math.random() * 50),
+        duration: 10 + Math.floor(getSecureRandom() * 50),
         equipment: { 
             barbell: useBarbell, 
             dumbbell: true, 
