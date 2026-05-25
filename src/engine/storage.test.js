@@ -184,4 +184,20 @@ describe('Storage Engine - Export/Import', () => {
         consoleSpy.mockRestore();
         setItemSpy.mockRestore();
     });
+
+    it('should reject payloads larger than 5MB', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        // Create a string slightly larger than 5MB
+        const largeString = 'a'.repeat((5 * 1024 * 1024) + 1);
+
+        const success = importData(largeString);
+
+        expect(success).toBe(false);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
+            action: 'importData',
+            message: 'Payload too large'
+        }));
+
+        consoleSpy.mockRestore();
+    });
 });

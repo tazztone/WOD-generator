@@ -125,6 +125,10 @@ export function importData(data) {
     try {
         let parsed = data;
         if (typeof data === 'string') {
+            if (data.length > 5 * 1024 * 1024) {
+                console.error({ action: 'importData', message: 'Payload too large' });
+                return false;
+            }
             parsed = JSON.parse(data);
         }
 
