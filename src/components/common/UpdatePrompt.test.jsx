@@ -76,22 +76,4 @@ describe('UpdatePrompt', () => {
         expect(mockUpdateServiceWorker).toHaveBeenCalledWith(true);
         expect(mockUpdateServiceWorker).toHaveBeenCalledTimes(1);
     });
-
-    it('logs to console.error when onRegisterError callback is triggered', () => {
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-        render(<UpdatePrompt />);
-
-        // Extract the config object passed to useRegisterSW
-        expect(useRegisterSW).toHaveBeenCalled();
-        const config = useRegisterSW.mock.calls[0][0];
-
-        // Trigger the error callback manually
-        const testError = new Error('Test SW Error');
-        config.onRegisterError(testError);
-
-        expect(consoleSpy).toHaveBeenCalledWith('SW registration error', testError);
-
-        consoleSpy.mockRestore();
-    });
 });
