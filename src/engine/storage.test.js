@@ -34,6 +34,25 @@ describe('Storage Engine - loadConfig', () => {
         expect(config.templateType).toBe(DEFAULT_CONFIG.templateType);
         expect(config.equipment).toEqual(DEFAULT_CONFIG.equipment);
     });
+
+    it('should catch exceptions and return DEFAULT_CONFIG when localStorage fails', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+            throw new Error('localStorage read failed');
+        });
+
+        const config = loadConfig();
+
+        expect(config).toEqual(DEFAULT_CONFIG);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
+            action: 'loadConfig',
+            message: 'Failed to load config',
+            error: 'localStorage read failed'
+        }));
+
+        consoleSpy.mockRestore();
+        getItemSpy.mockRestore();
+    });
 });
 
 
