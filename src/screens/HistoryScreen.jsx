@@ -1,6 +1,6 @@
 
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Trash2, Star, History as HistoryIcon } from 'lucide-react';
+import { ArrowLeft, Trash2, Star, History } from 'lucide-react';
 import { LOCALES } from '../data/locales';
 import { getExerciseName, formatReps } from '../engine/generator';
 
@@ -74,7 +74,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
                 {activeTab === 'history' ? (
                     history.length === 0 ? (
                         <div className="text-center text-slate-500 mt-20">
-                            <HistoryIcon size={48} className="mx-auto mb-4 opacity-20" />
+                            <History size={48} className="mx-auto mb-4 opacity-20" />
                             <p>{t.noLogs}</p>
                         </div>
                     ) : formattedHistory.map(entry => (
