@@ -56,7 +56,11 @@ export function loadConfig() {
             return { ...DEFAULT_CONFIG, ...migrated };
         }
     } catch (e) {
-        // Ignored
+        console.error({
+            action: 'loadConfig',
+            message: 'Failed to load config',
+            error: e instanceof Error ? e.message : String(e)
+        });
     }
     return DEFAULT_CONFIG;
 }
