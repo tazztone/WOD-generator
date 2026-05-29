@@ -97,13 +97,13 @@ export const balanceWeight = (pool, director) => {
         const pullCandidates = pool.filter(ex => ex.pattern === 'Pull');
         if (pullCandidates.length > 0) {
             // Duplicate them to increase probability
-            return [...pool, ...pullCandidates, ...pullCandidates];
+            return pool.concat(pullCandidates, pullCandidates);
         }
     }
     if (director.balance.Pull > director.balance.Push) {
         const pushCandidates = pool.filter(ex => ex.pattern === 'Push');
         if (pushCandidates.length > 0) {
-            return [...pool, ...pushCandidates, ...pushCandidates];
+            return pool.concat(pushCandidates, pushCandidates);
         }
     }
     return pool;
@@ -123,7 +123,7 @@ export const focusWeight = (pool, director) => {
     
     if (priorityMoves.length > 0) {
         // Significantly boost priority
-        return [...pool, ...priorityMoves, ...priorityMoves, ...priorityMoves];
+        return pool.concat(priorityMoves, priorityMoves, priorityMoves);
     }
     return pool;
 };
