@@ -7,6 +7,8 @@ export const getExerciseName = (ex, lang) => (lang === 'de' && ex.name_de) ? ex.
 // This prevents repeated Set instantiation even if config objects are recreated or frozen
 const forbiddenTagsCache = new Map();
 
+const CALF_RAISE_REGEX = /run|jump|^du$/;
+
 export const isExerciseValid = (ex, currentConfig) => {
     if (ex.equipment === 'Barbell' && !currentConfig.equipment.barbell) return false;
     if (ex.equipment === 'Dumbbell' && !currentConfig.equipment.dumbbell) return false;
@@ -64,7 +66,7 @@ export const generateWarmupLogic = (exercises, config = {}) => {
         if (pattern === 'Hinge') moves.add('hingeWarmup');
         if (pattern === 'Push') moves.add('pushWarmup');
         if (pattern === 'Pull') moves.add('pullWarmup');
-        if (id.includes('run') || id.includes('jump') || id === 'du') moves.add('calfRaises');
+        if (!moves.has('calfRaises') && CALF_RAISE_REGEX.test(id)) moves.add('calfRaises');
     });
     return Array.from(moves);
 };
