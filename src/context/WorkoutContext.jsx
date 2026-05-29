@@ -52,7 +52,7 @@ export const WorkoutProvider = ({ children }) => {
         // Cap history at 200 entries to avoid localStorage quota errors
         let updated = [newEntry, ...history];
         if (updated.length > 200) {
-            updated.pop();
+            updated = updated.slice(0, 200);
         }
         setHistory(updated);
         localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
