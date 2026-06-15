@@ -47,7 +47,7 @@ describe('useTimer haptic helper', () => {
 
         const workout = { id: 'test-1', template: 'AMRAP', timeCap: 10, exercises: [] };
 
-        const { result } = renderHook(() => useTimer(workout, 'en', { countdowns: true, announcements: true, beeps: true }));
+        renderHook(() => useTimer(workout, 'en', { countdowns: true, announcements: true, beeps: true }));
 
         // Fast forward 8 seconds to reach countdown (timeLeft <= 3) where haptic(50) is called
         await act(async () => {
@@ -67,7 +67,7 @@ describe('useTimer haptic helper', () => {
     it('covers other branches in the try block', async () => {
         const workout = { id: 'test-1', template: 'AMRAP', timeCap: 10, exercises: [] };
 
-        const { result } = renderHook(() => useTimer(workout, 'en', { countdowns: true, announcements: true, beeps: true }));
+        renderHook(() => useTimer(workout, 'en', { countdowns: true, announcements: true, beeps: true }));
 
         // Start timer properly
         await act(async () => {
