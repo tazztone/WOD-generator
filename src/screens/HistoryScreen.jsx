@@ -23,7 +23,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
-    const handleTouchStart = (e, _id) => {
+    const handleTouchStart = (e) => {
         setTouchStart(e.targetTouches[0].clientX);
     };
 
@@ -88,7 +88,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
 
                             <div
                                 className={`bg-slate-800 p-4 rounded-xl border border-slate-700 relative z-10 transition-transform duration-300 ${swipedId === entry.id ? '-translate-x-16' : 'translate-x-0'}`}
-                                onTouchStart={(e) => handleTouchStart(e, entry.id)}
+                                onTouchStart={(e) => handleTouchStart(e)}
                                 onTouchMove={(e) => handleTouchMove(e, entry.id)}
                             >
                                 <div className="flex justify-between mb-2">
@@ -126,7 +126,7 @@ export const HistoryScreen = ({ history, savedWorkouts, onDeleteEntry, onDeleteS
 
                             <div
                                 className={`bg-slate-800 p-4 rounded-xl border border-slate-700 relative z-10 transition-transform duration-300 ${swipedId === workout.id ? '-translate-x-16' : 'translate-x-0'}`}
-                                onTouchStart={(e) => handleTouchStart(e, workout.id)}
+                                onTouchStart={(e) => handleTouchStart(e)}
                                 onTouchMove={(e) => handleTouchMove(e, workout.id)}
                             >
                                 <div className="flex justify-between mb-2">
