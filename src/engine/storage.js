@@ -41,8 +41,6 @@ function migrateConfig(config) {
         migrated.version = 1;
     }
 
-    // Add future migrations here:
-    // if (migrated.version < 2) { ... migrated.version = 2 }
 
     return migrated;
 }
