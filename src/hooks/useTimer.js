@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { SOUNDS, speak } from '../engine/audio';
 import { getExerciseName } from '../engine/utils';
@@ -164,12 +164,15 @@ export const useTimer = (workout, lang, audioSettings) => {
     }, []);
 
     // Speak helper
+    const moveListString = useMemo(() => {
+        return workout?.exercises?.map(e => getExerciseName(e.exercise, lang)).join(', ') || '';
+    }, [workout, lang]);
+
     const speakMovements = useCallback(() => {
         if (!announcements || timerStateRef.current.status === 'finished') return;
         const nextText = lang === 'de' ? "Als nächstes:" : "Next up:";
-        const moveList = workout.exercises.map(e => getExerciseName(e.exercise, lang)).join(', ');
-        speak(`${nextText} ${moveList}`, lang);
-    }, [workout, announcements, lang]);
+        speak(`${nextText} ${moveListString}`, lang);
+    }, [announcements, lang, moveListString]);
 
     // Ref to hold the latest callback logic
     const tickLogicRef = useRef();
