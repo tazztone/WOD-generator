@@ -1,12 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import {
-    getExerciseName,
-    isExerciseValid,
-    formatReps
-} from './utils';
+import { getExerciseName, isExerciseValid } from './utils';
+import { formatReps } from './scaling';
 
 describe('Utils Engine', () => {
     describe('getExerciseName', () => {
+
         const ex = { name: 'Push-up', name_de: 'Liegestütz' };
 
         it('should return English name when lang is en', () => {

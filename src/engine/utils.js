@@ -39,15 +39,8 @@ export const isExerciseValid = (ex, currentConfig) => {
             }
             forbiddenTagsCache.set(cacheKey, forbiddenTagsSet);
         }
-
         if (ex.tags && ex.tags.some(tag => forbiddenTagsSet.has(tag))) return false;
     }
-    return true;
-};
 
-export const formatReps = (reps, exercise) => {
-    if (typeof reps === 'string') return reps; // Already formatted: "400m", "45s", "40/30 cal"
-    if (!exercise) return reps;
-    if (exercise.equipment === 'Machine' && exercise.pattern === 'Cardio') return `${reps} Cal`;
-    return reps; // Plain number = reps (standard CrossFit convention)
+    return true;
 };

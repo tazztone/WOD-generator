@@ -26,9 +26,14 @@ The project was recently refactored (Jan '26) from a Monolith to a **Features-Fi
 ### ⚙️ `src/engine/` (Pure Business Logic)
 **Rule**: These files must be pure JavaScript. NO React imports.
 *   **`generator.js`**:
-    *   `generateWorkout(config)`: The main factory function. Randomly selects exercises based on filters and patterns.
-    *   `getReps(...)`: Heuristic function to determine rep counts based on exercise intensity and workout duration.
+    *   `generateWorkout(config)`: The main factory function. Randomly selects exercises using the pipeline filtering system.
     *   `swapExercise(...)`: Returns a *new* workout object with one exercise replaced. Immutability is key.
+*   **`TimerEngine.js`**:
+    *   Pure JS state machine managing EMOM, Tabata, AMRAP timings, phases, and background recovery fast-forward. Returns state updates and event triggers.
+*   **`scaling.js` (ScalingEngine)**:
+    *   Unified scaling seam encapsulating `scale(ex, config, template)`, difficulty multipliers, partner multiplier (`x2`), and substitutions.
+*   **`pipeline.js`**:
+    *   Dynamic/static filter rules run against a read-only `FilterContext` to construct a balanced workout.
 *   **`audio.js`**:
     *   Uses `window.AudioContext` for beeps (Oscillators) to avoid loading mp3 assets.
     *   Uses `window.speechSynthesis` for voice announcements.
@@ -45,7 +50,7 @@ Feature-specific views that consume UI components and bind data.
 *   **`HistoryScreen`**: Read-only list of past workouts.
 
 ### 🪝 `src/hooks/` (State Logic)
-*   **`useTimer`**: The most complex state machine. Handles phases (`pre` -> `work` -> `rest` -> `finished`).
+*   **`useTimer`**: React adapter wrapping `TimerEngine`. Syncs state changes and executes engine-triggered events (audio, haptics, localStorage).
 *   **`useWakeLock`**: Navigator API to prevent screen sleep.
 
 ---
@@ -87,8 +92,8 @@ Feature-specific views that consume UI components and bind data.
 3.  Update `ConfigScreen.jsx` to render a new toggle button for it.
 
 ### ➤ How to Tweak Rep Logic
-1.  Open `src/engine/generator.js`.
-2.  Modify `getReps`.
+1.  Open `src/engine/scaling.js`.
+2.  Modify `calculateBaseReps` or specific strategy scale rules.
 3.  **Mandatory**: Run `npm test` to ensure you haven't broken the beginner scaling.
 
 ---

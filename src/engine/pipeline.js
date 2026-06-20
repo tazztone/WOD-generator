@@ -9,24 +9,36 @@ const FOCUS_PATTERN_SETS = Object.keys(FOCUS_PATTERNS).reduce((acc, key) => {
 }, {});
 
 /**
+ * FilterContext Definition:
+ * Represents the read-only state slice required by the pipeline rule filters.
+ * {
+ *   config: Object,
+ *   selectedExercises: Array,
+ *   selectedExerciseIds: Set,
+ *   balance: Object,
+ *   buyInForContext: Object | null
+ * }
+ */
+
+/**
  * Basic Filter: Remove already selected exercises
  */
-export const alreadySelectedFilter = (pool, state) => {
-    if (!state || !state.selectedExerciseIds) return pool;
-    return pool.filter(ex => !state.selectedExerciseIds.has(ex.id));
+export const alreadySelectedFilter = (pool, context) => {
+    if (!context || !context.selectedExerciseIds) return pool;
+    return pool.filter(ex => !context.selectedExerciseIds.has(ex.id));
 };
 
 /**
  * Skill Filter: Filter out skill moves for beginners if no substitution exists
  */
-export const skillFilter = (pool, state) => {
-    if (!state || !state.config || state.config.difficulty !== 'Beginner') return pool;
+export const skillFilter = (pool, context) => {
+    if (!context || !context.config || context.config.difficulty !== 'Beginner') return pool;
 
     return pool.filter(ex => {
         if (!ex.tags || !ex.tags.includes('skill')) {
             return true;
         }
-        return getSubstitution(ex.id, state.config.difficulty) !== null;
+        return getSubstitution(ex.id, context.config.difficulty) !== null;
     });
 };
 
@@ -35,9 +47,9 @@ const GYMNASTICS_EQUIPMENT_EXCLUDES = new Set(['Barbell', 'Dumbbell', 'Kettlebel
 /**
  * Focus Relevance Filter: Ensure exercises match the intended focus style
  */
-export const focusRelevanceFilter = (pool, state) => {
-    if (!state || !state.config) return pool;
-    if (state.config.focus === 'Gymnastics') {
+export const focusRelevanceFilter = (pool, context) => {
+    if (!context || !context.config) return pool;
+    if (context.config.focus === 'Gymnastics') {
         // Gymnastics implies bodyweight mastery. Exclude heavy implements.
         return pool.filter(ex => !GYMNASTICS_EQUIPMENT_EXCLUDES.has(ex.equipment));
     }
@@ -47,14 +59,14 @@ export const focusRelevanceFilter = (pool, state) => {
 /**
  * Overlap Filter: Prevent muscle group overlap and strict pattern repetition
  */
-export const overlapFilter = (pool, state) => {
-    if (!state) return pool;
+export const overlapFilter = (pool, context) => {
+    if (!context) return pool;
     let lastEx = null;
 
-    if (state.selectedExercises && state.selectedExercises.length > 0) {
-        lastEx = state.selectedExercises[state.selectedExercises.length - 1].exercise;
-    } else if (state.buyInForContext) {
-        lastEx = state.buyInForContext;
+    if (context.selectedExercises && context.selectedExercises.length > 0) {
+        lastEx = context.selectedExercises[context.selectedExercises.length - 1].exercise;
+    } else if (context.buyInForContext) {
+        lastEx = context.buyInForContext;
     }
 
     if (!lastEx) return pool;
@@ -93,10 +105,10 @@ export const overlapFilter = (pool, state) => {
 /**
  * Dynamic Balancing: Weight patterns to maintain Push/Pull balance
  */
-export const balanceWeight = (pool, state) => {
-    if (!state || !state.balance) return pool;
-    const push = state.balance.Push || 0;
-    const pull = state.balance.Pull || 0;
+export const balanceWeight = (pool, context) => {
+    if (!context || !context.balance) return pool;
+    const push = context.balance.Push || 0;
+    const pull = context.balance.Pull || 0;
 
     if (push === pull) return pool;
 
@@ -118,10 +130,10 @@ export const balanceWeight = (pool, state) => {
 /**
  * Focus Bias: Weight patterns based on the selected workout focus
  */
-export const focusWeight = (pool, state) => {
-    if (!state || !state.config || state.config.focus === 'Balanced') return pool;
+export const focusWeight = (pool, context) => {
+    if (!context || !context.config || context.config.focus === 'Balanced') return pool;
 
-    const targetPatterns = FOCUS_PATTERN_SETS[state.config.focus];
+    const targetPatterns = FOCUS_PATTERN_SETS[context.config.focus];
     if (!targetPatterns) return pool;
 
     // Note: This matches based on "pattern" string (e.g. "Cardio", "Push")

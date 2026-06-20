@@ -1,12 +1,14 @@
-// Logic for scaling reps and substituting exercises based on difficulty
+// src/engine/scaling.js
 import { getStrategy } from './strategies/StrategyFactory.js';
 import { SCALING_CONSTANTS, SUBSTITUTIONS } from '../config/workoutConfig.js';
+import { EXERCISE_DB } from '../data/exercises.js';
 
 const RUN_IDS = new Set(['run', 'shuttle_run']);
 const TIME_BASED_IDS = new Set(['plank', 'side_plank', 'plank_shoulder_tap', 'plank_reach', 'copenhagen_plank', 'wall_sit']);
 
+const EXERCISE_MAP = new Map(EXERCISE_DB.map(e => [e.id, e]));
+
 export const calculateBaseReps = (exercise, difficulty, duration) => {
-    // V7: Dynamic Scaling based on duration
     const { SHORT, EXTRA_LONG, EXTREME } = SCALING_CONSTANTS.DURATION_THRESHOLDS;
     const isExtraLong = duration > EXTRA_LONG;
     const isExtreme = duration > EXTREME;
@@ -20,8 +22,6 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
 
     if (TIME_BASED_IDS.has(exercise.id) || TIME_BASED_IDS.has(exercise.id_g)) return '45s';
     
-    // Machine is tricky because Chipper logic was embedded here.
-    // We return a standard number for now, Strategy can override if needed.
     if (exercise.equipment === 'Machine') {
         if (isExtreme) return SCALING_CONSTANTS.MACHINE_REPS.EXTREME;
         if (isExtraLong) return SCALING_CONSTANTS.MACHINE_REPS.EXTRA_LONG;
@@ -32,7 +32,6 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     if (exercise.intensity === 'High') baseReps = SCALING_CONSTANTS.INTENSITY_REPS.High;
     if (exercise.intensity === 'VeryHigh') baseReps = SCALING_CONSTANTS.INTENSITY_REPS.VeryHigh;
 
-    // V7.1 Special Overrides for very slow/hard movements
     if (exercise.id === 'rope_climb' || exercise.id === 'wall_walk') return 3;
     if (exercise.id === 'hswalk') return '50ft';
     if (exercise.id === 'l_sit') return '30s';
@@ -40,7 +39,6 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     if (exercise.id === 'du') baseReps = SCALING_CONSTANTS.SPECIAL_REPS.Double;
     if (exercise.id === 'su') baseReps = SCALING_CONSTANTS.SPECIAL_REPS['Single Unders'];
 
-    // Scale down for beginners
     if (difficulty === 'Beginner') {
         baseReps = Math.ceil(baseReps * SCALING_CONSTANTS.BEGINNER_MULTIPLIER);
         if (exercise.id === 'du' || exercise.id === 'su') {
@@ -51,18 +49,12 @@ export const calculateBaseReps = (exercise, difficulty, duration) => {
     return baseReps;
 };
 
-/**
- * Compatibility wrapper for the new strategy pattern.
- */
 export const getReps = (exercise, difficulty, format, duration) => {
     const strategy = getStrategy(format);
     const baseReps = calculateBaseReps(exercise, difficulty, duration);
     return strategy.scaleReps(baseReps, exercise, difficulty, duration);
 };
 
-/**
- * Returns a substituted exercise ID if applicable for the difficulty
- */
 export const getSubstitution = (exerciseId, difficulty) => {
     if (difficulty === 'Rx') return null;
 
@@ -75,4 +67,40 @@ export const getSubstitution = (exerciseId, difficulty) => {
     }
 
     return null;
+};
+
+// Unified ScalingEngine query methods
+
+export const scale = (exercise, config, template) => {
+    const reps = getReps(exercise, config.difficulty, template, config.duration);
+    if (config.isPartner && typeof reps === 'number') {
+        return reps * 2;
+    }
+    return reps;
+};
+
+export const resolveExercise = (exercise, difficulty) => {
+    const subId = getSubstitution(exercise.id, difficulty);
+    if (subId) {
+        const subEx = EXERCISE_MAP.get(subId);
+        if (subEx) return subEx;
+    }
+    return exercise;
+};
+
+export const formatReps = (reps, exercise) => {
+    if (typeof reps === 'string') return reps;
+    if (!exercise) return reps;
+    if (exercise.equipment === 'Machine' && exercise.pattern === 'Cardio') return `${reps} Cal`;
+    return reps;
+};
+
+// Bundle into an API object for clean usage/mocking if preferred
+export const ScalingEngine = {
+    scale,
+    resolveExercise,
+    formatReps,
+    getReps,
+    getSubstitution,
+    calculateBaseReps
 };

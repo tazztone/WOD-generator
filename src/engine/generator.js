@@ -1,16 +1,17 @@
 // src/engine/generator.js
 import { EXERCISE_DB, INJURY_MAP } from '../data/exercises.js';
-import { getSubstitution, getReps } from './scaling.js';
-import { getExerciseName, isExerciseValid, formatReps } from './utils.js';
+import { ScalingEngine } from './scaling.js';
+import { getExerciseName, isExerciseValid } from './utils.js';
 import { generateWarmupLogic, generateStrengthLogic } from './flowRules.js';
 import { getStrategy, getRandomTemplate } from './strategies/StrategyFactory.js';
 import { BUY_IN_CONFIG } from '../config/workoutConfig.js';
 import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
 import { getSecureRandom } from './secureRandom.js';
 
+// Retrieve from ScalingEngine for back-compat with views
+const formatReps = ScalingEngine.formatReps;
 
 export { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic, formatReps };
-
 
 // Fast lookup index
 const EXERCISE_MAP = new Map(EXERCISE_DB.map(e => [e.id, e]));
@@ -32,7 +33,14 @@ class WorkoutDirector {
 
         // Apply Static Pipeline ONCE to create the filtered base pool
         const basePool = EXERCISE_DB.filter(ex => isExerciseValid(ex, this.config));
-        this.pool = STATIC_PIPELINE.reduce((currentPool, rule) => rule(currentPool, this), basePool);
+        const staticContext = {
+            config: this.config,
+            selectedExercises: [],
+            selectedExerciseIds: new Set(),
+            balance: { Push: 0, Pull: 0, Squat: 0, Hinge: 0, Core: 0, Cardio: 0 },
+            buyInForContext: null
+        };
+        this.pool = STATIC_PIPELINE.reduce((currentPool, rule) => rule(currentPool, staticContext), basePool);
         
         this.selectedExercises = [];
         this.selectedExerciseIds = new Set();
@@ -42,7 +50,14 @@ class WorkoutDirector {
 
     // Weight the pool based on Dynamic Pipeline Rules (O(N) instead of O(N*Pipeline_Count))
     getWeightedPool() {
-        return DYNAMIC_PIPELINE.reduce((currentPool, rule) => rule(currentPool, this), this.pool);
+        const dynamicContext = {
+            config: this.config,
+            selectedExercises: this.selectedExercises,
+            selectedExerciseIds: this.selectedExerciseIds,
+            balance: this.balance,
+            buyInForContext: this.buyInForContext
+        };
+        return DYNAMIC_PIPELINE.reduce((currentPool, rule) => rule(currentPool, dynamicContext), this.pool);
     }
 
     pickNext(buyInContext = null) {
@@ -53,11 +68,7 @@ class WorkoutDirector {
         
         let picked = candidates[Math.floor(getSecureRandom() * candidates.length)];
         
-        const subId = getSubstitution(picked.id, this.config.difficulty);
-        if (subId) {
-            const subEx = EXERCISE_MAP.get(subId);
-            if (subEx) picked = subEx;
-        }
+        picked = ScalingEngine.resolveExercise(picked, this.config.difficulty);
 
         this.usedPatterns.push(picked.pattern);
         
@@ -105,12 +116,7 @@ export const generateWorkout = (config) => {
 
         if (!picked) break;
 
-        // --- NEW STRATEGY SCALING ---
-        let reps = getReps(picked, config.difficulty, template, config.duration);
-
-        if (config.isPartner && typeof reps === 'number') {
-            reps = reps * 2;
-        }
+        const reps = ScalingEngine.scale(picked, config, template);
 
         director.addSelection(picked, reps);
     }
@@ -133,18 +139,11 @@ export const swapExercise = (workout, index, newExerciseId, config) => {
     let newEx = EXERCISE_MAP.get(newExerciseId);
     if (!newEx) return workout;
 
-    const subId = getSubstitution(newEx.id, config.difficulty);
-    if (subId) {
-        const subEx = EXERCISE_MAP.get(subId);
-        if (subEx) newEx = subEx;
-    }
+    newEx = ScalingEngine.resolveExercise(newEx, config.difficulty);
 
     const newExercises = [...workout.exercises];
     
-    // --- NEW STRATEGY SCALING ---
-    let reps = getReps(newEx, config.difficulty, workout.template, config.duration);
-
-    if (config.isPartner && typeof reps === 'number') reps = reps * 2;
+    const reps = ScalingEngine.scale(newEx, config, workout.template);
 
     newExercises[index] = {
         exercise: newEx,
