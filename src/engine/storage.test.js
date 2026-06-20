@@ -205,6 +205,25 @@ describe('Storage Engine - Export/Import', () => {
         expect(localStorage.getItem(CONFIG_STORAGE_KEY)).toBeNull();
     });
 
+
+    it('should assert console.error and handle non-Error exceptions in exportData', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+            throw 'String exception';
+        });
+
+        expect(() => exportData()).toThrow('String exception');
+
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
+            action: 'exportData',
+            message: 'Failed to export data',
+            error: 'String exception'
+        }));
+
+        consoleSpy.mockRestore();
+        getItemSpy.mockRestore();
+    });
+
     it('should throw an error when localStorage fails during export', () => {
         const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
             throw new Error('localStorage is broken');
