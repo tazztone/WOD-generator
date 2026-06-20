@@ -92,19 +92,22 @@ export const overlapFilter = (pool, director) => {
  * Dynamic Balancing: Weight patterns to maintain Push/Pull balance
  */
 export const balanceWeight = (pool, director) => {
-    // If we have more Push than Pull, add more Pull candidates
-    if (director.balance.Push > director.balance.Pull) {
-        const pullCandidates = pool.filter(ex => ex.pattern === 'Pull');
-        if (pullCandidates.length > 0) {
-            // Duplicate them to increase probability
-            return pool.concat(pullCandidates, pullCandidates);
+    const push = director.balance.Push;
+    const pull = director.balance.Pull;
+
+    if (push === pull) return pool;
+
+    const targetPattern = push > pull ? 'Pull' : 'Push';
+    const candidates = [];
+
+    for (let i = 0; i < pool.length; i++) {
+        if (pool[i].pattern === targetPattern) {
+            candidates.push(pool[i]);
         }
     }
-    if (director.balance.Pull > director.balance.Push) {
-        const pushCandidates = pool.filter(ex => ex.pattern === 'Push');
-        if (pushCandidates.length > 0) {
-            return pool.concat(pushCandidates, pushCandidates);
-        }
+
+    if (candidates.length > 0) {
+        return pool.concat(candidates, candidates);
     }
     return pool;
 };
