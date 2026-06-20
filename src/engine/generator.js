@@ -1,7 +1,8 @@
 // src/engine/generator.js
 import { EXERCISE_DB, INJURY_MAP } from '../data/exercises.js';
-import { calculateBaseReps, getSubstitution } from './scaling.js';
-import { getExerciseName, isExerciseValid, generateWarmupLogic, generateStrengthLogic, formatReps } from './utils.js';
+import { getSubstitution, getReps } from './scaling.js';
+import { getExerciseName, isExerciseValid, formatReps } from './utils.js';
+import { generateWarmupLogic, generateStrengthLogic } from './flowRules.js';
 import { getStrategy, getRandomTemplate } from './strategies/StrategyFactory.js';
 import { BUY_IN_CONFIG } from '../config/workoutConfig.js';
 import { STATIC_PIPELINE, DYNAMIC_PIPELINE } from './pipeline.js';
@@ -105,8 +106,7 @@ export const generateWorkout = (config) => {
         if (!picked) break;
 
         // --- NEW STRATEGY SCALING ---
-        const baseReps = calculateBaseReps(picked, config.difficulty, config.duration);
-        let reps = strategy.scaleReps(baseReps, picked, config.difficulty, config.duration);
+        let reps = getReps(picked, config.difficulty, template, config.duration);
 
         if (config.isPartner && typeof reps === 'number') {
             reps = reps * 2;
@@ -142,9 +142,7 @@ export const swapExercise = (workout, index, newExerciseId, config) => {
     const newExercises = [...workout.exercises];
     
     // --- NEW STRATEGY SCALING ---
-    const strategy = getStrategy(workout.template);
-    const baseReps = calculateBaseReps(newEx, config.difficulty, config.duration);
-    let reps = strategy.scaleReps(baseReps, newEx, config.difficulty, config.duration);
+    let reps = getReps(newEx, config.difficulty, workout.template, config.duration);
 
     if (config.isPartner && typeof reps === 'number') reps = reps * 2;
 

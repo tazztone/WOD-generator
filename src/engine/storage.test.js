@@ -1,5 +1,23 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { exportData, importData, loadConfig, saveConfig, DEFAULT_CONFIG, CONFIG_STORAGE_KEY, HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from './storage';
+import {
+    exportData,
+    importData,
+    loadConfig,
+    saveConfig,
+    DEFAULT_CONFIG,
+    CONFIG_STORAGE_KEY,
+    HISTORY_STORAGE_KEY,
+    SAVED_WORKOUTS_STORAGE_KEY,
+    loadHistory,
+    saveToHistory,
+    deleteHistoryEntry,
+    clearHistory,
+    loadSavedWorkouts,
+    toggleSavedWorkout,
+    loadLanguage,
+    saveLanguage,
+    loadUnit,
+    saveUnit
+} from './storage';
 
 describe('Storage Engine - loadConfig', () => {
     beforeEach(() => {
@@ -278,5 +296,92 @@ describe('Storage Engine - Export/Import', () => {
         }));
 
         consoleSpy.mockRestore();
+    });
+});
+
+describe('Storage Engine - Repository Operations', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        vi.restoreAllMocks();
+    });
+
+    afterEach(() => {
+        localStorage.clear();
+    });
+
+    it('should load history correctly', () => {
+        expect(loadHistory()).toEqual([]);
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify([{ id: 1 }]));
+        expect(loadHistory()).toEqual([{ id: 1 }]);
+    });
+
+    it('should save to history and cap at 200 entries', () => {
+        const dummyEntry = { name: 'Test Workout' };
+        
+        // Save first entry
+        const res1 = saveToHistory(dummyEntry);
+        expect(res1.length).toBe(1);
+        expect(res1[0].name).toBe('Test Workout');
+        expect(res1[0].id).toBeDefined();
+        expect(res1[0].date).toBeDefined();
+
+        // Check capping by populating history with 205 items
+        const largeHistory = Array.from({ length: 205 }, (_, i) => ({ id: i, name: `WOD ${i}` }));
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(largeHistory));
+        const res2 = saveToHistory(dummyEntry);
+        expect(res2.length).toBe(200);
+        expect(res2[0].name).toBe('Test Workout');
+    });
+
+    it('should delete a history entry', () => {
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify([{ id: 1 }, { id: 2 }]));
+        const updated = deleteHistoryEntry(1);
+        expect(updated).toEqual([{ id: 2 }]);
+        expect(JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY))).toEqual([{ id: 2 }]);
+    });
+
+    it('should clear history', () => {
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify([{ id: 1 }]));
+        clearHistory();
+        expect(localStorage.getItem(HISTORY_STORAGE_KEY)).toBeNull();
+    });
+
+    it('should load saved workouts', () => {
+        expect(loadSavedWorkouts()).toEqual([]);
+        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify([{ id: 5 }]));
+        expect(loadSavedWorkouts()).toEqual([{ id: 5 }]);
+    });
+
+    it('should toggle saved workouts and enforce limit of 50', () => {
+        const workout = { id: 999, name: 'Grace' };
+        
+        // Add
+        const res1 = toggleSavedWorkout(workout);
+        expect(res1).toEqual([workout]);
+
+        // Remove
+        const res2 = toggleSavedWorkout(workout);
+        expect(res2).toEqual([]);
+
+        // Populate to limit (50 items)
+        const fiftySaved = Array.from({ length: 50 }, (_, i) => ({ id: i, name: `WOD ${i}` }));
+        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(fiftySaved));
+
+        // Attempting to add should throw limit error
+        expect(() => toggleSavedWorkout(workout)).toThrow('MAX_LIMIT_REACHED');
+    });
+
+    it('should load and save language settings', () => {
+        expect(loadLanguage()).toBe('en'); // default
+        saveLanguage('de');
+        expect(loadLanguage()).toBe('de');
+        expect(localStorage.getItem('wod_lang')).toBe('de');
+    });
+
+    it('should load and save unit settings', () => {
+        expect(loadUnit()).toBe('kg'); // default
+        saveUnit('lbs');
+        expect(loadUnit()).toBe('lbs');
+        expect(localStorage.getItem('wod_unit')).toBe('lbs');
     });
 });

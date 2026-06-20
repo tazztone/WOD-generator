@@ -1,24 +1,24 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loadConfig, saveConfig } from '../engine/storage';
+import { loadConfig, saveConfig, loadLanguage, saveLanguage, loadUnit, saveUnit } from '../engine/storage';
 import { setGlobalVolume } from '../engine/audio';
 
 const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
-    const [lang, setLang] = useState(() => localStorage.getItem('wod_lang') || 'en');
-    const [unit, setUnit] = useState(() => localStorage.getItem('wod_unit') || 'kg');
+    const [lang, setLang] = useState(() => loadLanguage());
+    const [unit, setUnit] = useState(() => loadUnit());
     const [config, setConfig] = useState(loadConfig());
     const [tooltip, setTooltip] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
 
     // Persist Language Changes
     useEffect(() => {
-        localStorage.setItem('wod_lang', lang);
+        saveLanguage(lang);
     }, [lang]);
 
     // Persist Unit Changes
     useEffect(() => {
-        localStorage.setItem('wod_unit', unit);
+        saveUnit(unit);
     }, [unit]);
 
     // Save Config Changes & Update Audio

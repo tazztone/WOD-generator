@@ -6,7 +6,11 @@ import * as audio from '../engine/audio';
 
 vi.mock('../engine/storage', () => ({
     loadConfig: vi.fn(),
-    saveConfig: vi.fn()
+    saveConfig: vi.fn(),
+    loadLanguage: vi.fn(),
+    saveLanguage: vi.fn(),
+    loadUnit: vi.fn(),
+    saveUnit: vi.fn()
 }));
 
 vi.mock('../engine/audio', () => ({
@@ -22,8 +26,16 @@ describe('SettingsContext', () => {
         vi.spyOn(Storage.prototype, 'setItem').mockImplementation((key, value) => { mockStorage[key] = value.toString(); });
 
         storage.loadConfig.mockReturnValue({ theme: 'dark', volume: 0.8 });
+        storage.loadLanguage.mockImplementation(() => mockStorage['wod_lang'] || 'en');
+        storage.loadUnit.mockImplementation(() => mockStorage['wod_unit'] || 'kg');
+        storage.saveLanguage.mockImplementation((lang) => { mockStorage['wod_lang'] = lang; });
+        storage.saveUnit.mockImplementation((unit) => { mockStorage['wod_unit'] = unit; });
         audio.setGlobalVolume.mockClear();
         storage.saveConfig.mockClear();
+        storage.loadLanguage.mockClear();
+        storage.loadUnit.mockClear();
+        storage.saveLanguage.mockClear();
+        storage.saveUnit.mockClear();
     });
 
     afterEach(() => {

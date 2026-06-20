@@ -162,3 +162,139 @@ export function importData(data) {
         return false;
     }
 }
+
+export function loadHistory() {
+    try {
+        const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+        return savedHistory ? JSON.parse(savedHistory) : [];
+    } catch {
+        return [];
+    }
+}
+
+export function saveToHistory(result) {
+    try {
+        const history = loadHistory();
+        const newEntry = {
+            ...result,
+            id: Date.now(),
+            date: new Date().toISOString()
+        };
+        // Cap history at 200 entries to avoid localStorage quota errors
+        let updated = [newEntry, ...history];
+        if (updated.length > 200) {
+            updated = updated.slice(0, 200);
+        }
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
+        return updated;
+    } catch (e) {
+        console.error({
+            action: 'saveToHistory',
+            message: 'Failed to save history',
+            error: e instanceof Error ? e.message : String(e)
+        });
+        return loadHistory();
+    }
+}
+
+export function deleteHistoryEntry(id) {
+    try {
+        const history = loadHistory();
+        const updated = history.filter(entry => entry.id !== id);
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
+        return updated;
+    } catch (e) {
+        console.error({
+            action: 'deleteHistoryEntry',
+            message: 'Failed to delete history entry',
+            error: e instanceof Error ? e.message : String(e)
+        });
+        return loadHistory();
+    }
+}
+
+export function clearHistory() {
+    try {
+        localStorage.removeItem(HISTORY_STORAGE_KEY);
+    } catch (e) {
+        console.error({
+            action: 'clearHistory',
+            message: 'Failed to clear history',
+            error: e instanceof Error ? e.message : String(e)
+        });
+    }
+}
+
+export function loadSavedWorkouts() {
+    try {
+        const savedJson = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
+        return savedJson ? JSON.parse(savedJson) : [];
+    } catch {
+        return [];
+    }
+}
+
+export function toggleSavedWorkout(w) {
+    const savedWorkouts = loadSavedWorkouts();
+    const isSaved = savedWorkouts.some(sw => sw.id === w.id);
+    let updated;
+    if (isSaved) {
+        updated = savedWorkouts.filter(sw => sw.id !== w.id);
+    } else {
+        if (savedWorkouts.length >= 50) {
+            throw new Error('MAX_LIMIT_REACHED');
+        }
+        updated = [w, ...savedWorkouts];
+    }
+    try {
+        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(updated));
+    } catch (e) {
+        console.error({
+            action: 'toggleSavedWorkout',
+            message: 'Failed to toggle saved workout',
+            error: e instanceof Error ? e.message : String(e)
+        });
+    }
+    return updated;
+}
+
+export function loadLanguage() {
+    try {
+        return localStorage.getItem('wod_lang') || 'en';
+    } catch {
+        return 'en';
+    }
+}
+
+export function saveLanguage(lang) {
+    try {
+        localStorage.setItem('wod_lang', lang);
+    } catch (e) {
+        console.error({
+            action: 'saveLanguage',
+            message: 'Failed to save language',
+            error: e instanceof Error ? e.message : String(e)
+        });
+    }
+}
+
+export function loadUnit() {
+    try {
+        return localStorage.getItem('wod_unit') || 'kg';
+    } catch {
+        return 'kg';
+    }
+}
+
+export function saveUnit(unit) {
+    try {
+        localStorage.setItem('wod_unit', unit);
+    } catch (e) {
+        console.error({
+            action: 'saveUnit',
+            message: 'Failed to save unit',
+            error: e instanceof Error ? e.message : String(e)
+        });
+    }
+}
+

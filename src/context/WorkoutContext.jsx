@@ -1,5 +1,12 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { HISTORY_STORAGE_KEY, SAVED_WORKOUTS_STORAGE_KEY } from '../engine/storage';
+import {
+    loadHistory,
+    saveToHistory,
+    deleteHistoryEntry,
+    clearHistory,
+    loadSavedWorkouts,
+    toggleSavedWorkout
+} from '../engine/storage';
 import { generateWorkout, swapExercise } from '../engine/generator';
 import { useSettings } from './SettingsContext';
 
@@ -15,15 +22,8 @@ export const WorkoutProvider = ({ children }) => {
 
     // Load History & Saved Workouts on Mount
     useEffect(() => {
-        try {
-            const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
-            if (savedHistory) setHistory(JSON.parse(savedHistory));
-
-            const savedWorkoutsData = localStorage.getItem(SAVED_WORKOUTS_STORAGE_KEY);
-            if (savedWorkoutsData) setSavedWorkouts(JSON.parse(savedWorkoutsData));
-        } catch {
-            // Ignore parse errors, defaulting to empty state
-        }
+        setHistory(loadHistory());
+        setSavedWorkouts(loadSavedWorkouts());
     }, []);
 
     const handleGenerateWorkout = () => {
@@ -43,46 +43,30 @@ export const WorkoutProvider = ({ children }) => {
         setWorkout(updatedWorkout);
     };
 
-    const saveToHistory = (result) => {
-        const newEntry = {
-            ...result,
-            id: Date.now(),
-            date: new Date().toISOString()
-        };
-        // Cap history at 200 entries to avoid localStorage quota errors
-        let updated = [newEntry, ...history];
-        if (updated.length > 200) {
-            updated = updated.slice(0, 200);
-        }
+    const handleSaveToHistory = (result) => {
+        const updated = saveToHistory(result);
         setHistory(updated);
-        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
     };
 
-    const deleteHistoryEntry = (id) => {
-        const updated = history.filter(entry => entry.id !== id);
+    const handleDeleteHistoryEntry = (id) => {
+        const updated = deleteHistoryEntry(id);
         setHistory(updated);
-        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
     };
 
-    const clearHistory = () => {
+    const handleClearHistory = () => {
+        clearHistory();
         setHistory([]);
-        localStorage.removeItem(HISTORY_STORAGE_KEY);
     };
 
-    const toggleSaveWorkout = (w) => {
-        const isSaved = savedWorkouts.some(sw => sw.id === w.id);
-        let updated;
-        if (isSaved) {
-            updated = savedWorkouts.filter(sw => sw.id !== w.id);
-        } else {
-            if (savedWorkouts.length >= 50) {
+    const handleToggleSaveWorkout = (w) => {
+        try {
+            const updated = toggleSavedWorkout(w);
+            setSavedWorkouts(updated);
+        } catch (e) {
+            if (e.message === 'MAX_LIMIT_REACHED') {
                 alert(lang === 'de' ? 'Maximal 50 Workouts können gespeichert werden.' : 'Maximum of 50 saved workouts reached.');
-                return;
             }
-            updated = [w, ...savedWorkouts];
         }
-        setSavedWorkouts(updated);
-        localStorage.setItem(SAVED_WORKOUTS_STORAGE_KEY, JSON.stringify(updated));
     };
 
     const value = {
@@ -95,10 +79,10 @@ export const WorkoutProvider = ({ children }) => {
         generateWorkout: handleGenerateWorkout,
         clearWorkout,
         swapExercise: handleSwapWorkout,
-        saveToHistory,
-        deleteHistoryEntry,
-        clearHistory,
-        toggleSaveWorkout
+        saveToHistory: handleSaveToHistory,
+        deleteHistoryEntry: handleDeleteHistoryEntry,
+        clearHistory: handleClearHistory,
+        toggleSaveWorkout: handleToggleSaveWorkout
     };
 
     return (
