@@ -20,7 +20,8 @@ export const useWakeLock = () => {
       if (!isNative && 'wakeLock' in navigator) {
         try {
           wakeLockRef.current = await navigator.wakeLock.request('screen');
-        } catch { // Ignored
+        } catch {
+          // Ignored
         }
       }
     };

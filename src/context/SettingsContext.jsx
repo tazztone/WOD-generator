@@ -1,72 +1,75 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loadConfig, saveConfig, loadLanguage, saveLanguage, loadUnit, saveUnit } from '../engine/storage';
+import {
+  loadConfig,
+  saveConfig,
+  loadLanguage,
+  saveLanguage,
+  loadUnit,
+  saveUnit,
+} from '../engine/storage';
 import { setGlobalVolume } from '../engine/audio';
 
 const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
-    const [lang, setLang] = useState(() => loadLanguage());
-    const [unit, setUnit] = useState(() => loadUnit());
-    const [config, setConfig] = useState(loadConfig());
-    const [tooltip, setTooltip] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
+  const [lang, setLang] = useState(() => loadLanguage());
+  const [unit, setUnit] = useState(() => loadUnit());
+  const [config, setConfig] = useState(loadConfig());
+  const [tooltip, setTooltip] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-    // Persist Language Changes
-    useEffect(() => {
-        saveLanguage(lang);
-    }, [lang]);
+  // Persist Language Changes
+  useEffect(() => {
+    saveLanguage(lang);
+  }, [lang]);
 
-    // Persist Unit Changes
-    useEffect(() => {
-        saveUnit(unit);
-    }, [unit]);
+  // Persist Unit Changes
+  useEffect(() => {
+    saveUnit(unit);
+  }, [unit]);
 
-    // Save Config Changes & Update Audio
-    useEffect(() => {
-        saveConfig(config);
-        if (config.volume !== undefined) {
-            setGlobalVolume(config.volume);
-        }
-    }, [config]);
+  // Save Config Changes & Update Audio
+  useEffect(() => {
+    saveConfig(config);
+    if (config.volume !== undefined) {
+      setGlobalVolume(config.volume);
+    }
+  }, [config]);
 
-    const toggleLang = () => setLang(l => l === 'en' ? 'de' : 'en');
-    const toggleUnit = () => setUnit(u => u === 'kg' ? 'lbs' : 'kg');
+  const toggleLang = () => setLang((l) => (l === 'en' ? 'de' : 'en'));
+  const toggleUnit = () => setUnit((u) => (u === 'kg' ? 'lbs' : 'kg'));
 
-    const handleTooltip = (e, text) => {
-        if (!text) return;
-        e.stopPropagation();
-        const rect = e.currentTarget.getBoundingClientRect();
-        setTooltip({ x: rect.left + rect.width / 2, y: rect.top - 10, text });
-    };
+  const handleTooltip = (e, text) => {
+    if (!text) return;
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip({ x: rect.left + rect.width / 2, y: rect.top - 10, text });
+  };
 
-    const clearTooltip = () => setTooltip(null);
+  const clearTooltip = () => setTooltip(null);
 
-    const value = {
-        lang,
-        setLang,
-        toggleLang,
-        unit,
-        setUnit,
-        toggleUnit,
-        config,
-        setConfig,
-        tooltip,
-        handleTooltip,
-        clearTooltip,
-        modalOpen,
-        setModalOpen
-    };
+  const value = {
+    lang,
+    setLang,
+    toggleLang,
+    unit,
+    setUnit,
+    toggleUnit,
+    config,
+    setConfig,
+    tooltip,
+    handleTooltip,
+    clearTooltip,
+    modalOpen,
+    setModalOpen,
+  };
 
-    return (
-        <SettingsContext.Provider value={value}>
-            {children}
-        </SettingsContext.Provider>
-    );
+  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useSettings = () => {
-    const context = useContext(SettingsContext);
-    if (!context) throw new Error('useSettings must be used within SettingsProvider');
-    return context;
+  const context = useContext(SettingsContext);
+  if (!context) throw new Error('useSettings must be used within SettingsProvider');
+  return context;
 };

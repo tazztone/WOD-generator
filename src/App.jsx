@@ -9,110 +9,104 @@ import { useAppContext } from './context/AppContext';
 import { UpdatePrompt } from './components/common/UpdatePrompt';
 
 export default function CrossFitGenerator() {
-    const { state, actions } = useAppContext();
-    const {
-        appState,
-        lang,
-        unit,
-        config,
-        workout,
-        history,
-        savedWorkouts,
-        tooltip,
-        modalOpen
-    } = state;
+  const { state, actions } = useAppContext();
+  const { appState, lang, unit, config, workout, history, savedWorkouts, tooltip, modalOpen } =
+    state;
 
-    const {
-        setAppState,
-        toggleLang,
-        toggleUnit,
-        setConfig,
-        setWorkout,
-        setModalOpen,
-        generateWorkout,
-        clearWorkout,
-        swapExercise,
-        saveToHistory,
-        deleteHistoryEntry,
-        clearHistory,
-        toggleSaveWorkout,
-        handleTooltip,
-        clearTooltip
-    } = actions;
+  const {
+    setAppState,
+    toggleLang,
+    toggleUnit,
+    setConfig,
+    setWorkout,
+    setModalOpen,
+    generateWorkout,
+    clearWorkout,
+    swapExercise,
+    saveToHistory,
+    deleteHistoryEntry,
+    clearHistory,
+    toggleSaveWorkout,
+    handleTooltip,
+    clearTooltip,
+  } = actions;
 
-    return (
-        <Shell>
-            <UpdatePrompt />
-            {tooltip && <Tooltip x={tooltip.x} y={tooltip.y} text={tooltip.text} />}
+  return (
+    <Shell>
+      <UpdatePrompt />
+      {tooltip && <Tooltip x={tooltip.x} y={tooltip.y} text={tooltip.text} />}
 
-            {appState !== 'active' && (
-                <Header
-                    onBack={clearWorkout}
-                    onLangToggle={toggleLang}
-                    onUnitToggle={toggleUnit}
-                    onHistory={() => setAppState('history')}
-                    onCalculator={() => setAppState('calculator')}
-                    lang={lang}
-                    unit={unit}
-                    appState={appState}
-                />
-            )}
+      {appState !== 'active' && (
+        <Header
+          onBack={clearWorkout}
+          onLangToggle={toggleLang}
+          onUnitToggle={toggleUnit}
+          onHistory={() => setAppState('history')}
+          onCalculator={() => setAppState('calculator')}
+          lang={lang}
+          unit={unit}
+          appState={appState}
+        />
+      )}
 
-            <main className="flex-1 flex flex-col relative overflow-hidden" onClick={clearTooltip} role="presentation">
-                {appState === 'config' && (
-                    <ConfigScreen
-                        config={config}
-                        setConfig={setConfig}
-                        onGenerate={generateWorkout}
-                        lang={lang}
-                        onTooltip={handleTooltip}
-                    />
-                )}
-                {appState === 'preview' && workout && (
-                    <PreviewScreen
-                        workout={workout}
-                        config={config}
-                        onManualSwap={swapExercise}
-                        onStart={() => setAppState('active')}
-                        lang={lang}
-                        onBack={clearWorkout}
-                        modalOpen={modalOpen}
-                        setModalOpen={setModalOpen}
-                        isSaved={savedWorkouts.some(sw => sw.id === workout.id)}
-                        onToggleSave={() => toggleSaveWorkout(workout)}
-                        onTooltip={handleTooltip}
-                        onReroll={generateWorkout}
-                    />
-                )}
-                {appState === 'active' && workout && (
-                    <ActiveTimer
-                        workout={workout}
-                        onExit={() => setAppState('preview')}
-                        onSave={saveToHistory}
-                        lang={lang}
-                        setModalOpen={setModalOpen}
-                    />
-                )}
-                {appState === 'history' && (
-                    <HistoryScreen
-                        history={history}
-                        savedWorkouts={savedWorkouts}
-                        onDeleteEntry={deleteHistoryEntry}
-                        onDeleteSaved={(id) => toggleSaveWorkout({ id })}
-                        onStartWorkout={(w) => { setWorkout(w); setAppState('active'); }}
-                        clearHistory={clearHistory}
-                        onBack={() => setAppState('config')}
-                        lang={lang}
-                    />
-                )}
-                {appState === 'calculator' && (
-                    <OneRepMaxScreen
-                        lang={lang}
-                        unit={unit}
-                        onBack={() => setAppState('config')}
-                    />
-                )}
-            </main>
-        </Shell>
-    );
+      <main
+        className="flex-1 flex flex-col relative overflow-hidden"
+        onClick={clearTooltip}
+        role="presentation"
+      >
+        {appState === 'config' && (
+          <ConfigScreen
+            config={config}
+            setConfig={setConfig}
+            onGenerate={generateWorkout}
+            lang={lang}
+            onTooltip={handleTooltip}
+          />
+        )}
+        {appState === 'preview' && workout && (
+          <PreviewScreen
+            workout={workout}
+            config={config}
+            onManualSwap={swapExercise}
+            onStart={() => setAppState('active')}
+            lang={lang}
+            onBack={clearWorkout}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            isSaved={savedWorkouts.some((sw) => sw.id === workout.id)}
+            onToggleSave={() => toggleSaveWorkout(workout)}
+            onTooltip={handleTooltip}
+            onReroll={generateWorkout}
+          />
+        )}
+        {appState === 'active' && workout && (
+          <ActiveTimer
+            workout={workout}
+            onExit={() => setAppState('preview')}
+            onSave={saveToHistory}
+            lang={lang}
+            setModalOpen={setModalOpen}
+          />
+        )}
+        {appState === 'history' && (
+          <HistoryScreen
+            history={history}
+            savedWorkouts={savedWorkouts}
+            onDeleteEntry={deleteHistoryEntry}
+            onDeleteSaved={(id) => toggleSaveWorkout({ id })}
+            onStartWorkout={(w) => {
+              setWorkout(w);
+              setAppState('active');
+            }}
+            clearHistory={clearHistory}
+            onBack={() => setAppState('config')}
+            lang={lang}
+          />
+        )}
+        {appState === 'calculator' && (
+          <OneRepMaxScreen lang={lang} unit={unit} onBack={() => setAppState('config')} />
+        )}
+      </main>
+    </Shell>
+  );
 }

@@ -7,13 +7,13 @@
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: theme('colors.slate.950'); 
+    background: theme('colors.slate.950');
   }
   ::-webkit-scrollbar-thumb {
-    background: theme('colors.slate.800'); 
+    background: theme('colors.slate.800');
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: theme('colors.slate.700'); 
+    background: theme('colors.slate.700');
   }
 }

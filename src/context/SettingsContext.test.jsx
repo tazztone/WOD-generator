@@ -5,154 +5,162 @@ import * as storage from '../engine/storage';
 import * as audio from '../engine/audio';
 
 vi.mock('../engine/storage', () => ({
-    loadConfig: vi.fn(),
-    saveConfig: vi.fn(),
-    loadLanguage: vi.fn(),
-    saveLanguage: vi.fn(),
-    loadUnit: vi.fn(),
-    saveUnit: vi.fn()
+  loadConfig: vi.fn(),
+  saveConfig: vi.fn(),
+  loadLanguage: vi.fn(),
+  saveLanguage: vi.fn(),
+  loadUnit: vi.fn(),
+  saveUnit: vi.fn(),
 }));
 
 vi.mock('../engine/audio', () => ({
-    setGlobalVolume: vi.fn()
+  setGlobalVolume: vi.fn(),
 }));
 
 describe('SettingsContext', () => {
-    let mockStorage = {};
+  let mockStorage = {};
 
-    beforeEach(() => {
-        mockStorage = {};
-        vi.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => mockStorage[key] || null);
-        vi.spyOn(Storage.prototype, 'setItem').mockImplementation((key, value) => { mockStorage[key] = value.toString(); });
-
-        storage.loadConfig.mockReturnValue({ theme: 'dark', volume: 0.8 });
-        storage.loadLanguage.mockImplementation(() => mockStorage['wod_lang'] || 'en');
-        storage.loadUnit.mockImplementation(() => mockStorage['wod_unit'] || 'kg');
-        storage.saveLanguage.mockImplementation((lang) => { mockStorage['wod_lang'] = lang; });
-        storage.saveUnit.mockImplementation((unit) => { mockStorage['wod_unit'] = unit; });
-        audio.setGlobalVolume.mockClear();
-        storage.saveConfig.mockClear();
-        storage.loadLanguage.mockClear();
-        storage.loadUnit.mockClear();
-        storage.saveLanguage.mockClear();
-        storage.saveUnit.mockClear();
+  beforeEach(() => {
+    mockStorage = {};
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => mockStorage[key] || null);
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation((key, value) => {
+      mockStorage[key] = value.toString();
     });
 
-    afterEach(() => {
-        vi.restoreAllMocks();
+    storage.loadConfig.mockReturnValue({ theme: 'dark', volume: 0.8 });
+    storage.loadLanguage.mockImplementation(() => mockStorage['wod_lang'] || 'en');
+    storage.loadUnit.mockImplementation(() => mockStorage['wod_unit'] || 'kg');
+    storage.saveLanguage.mockImplementation((lang) => {
+      mockStorage['wod_lang'] = lang;
+    });
+    storage.saveUnit.mockImplementation((unit) => {
+      mockStorage['wod_unit'] = unit;
+    });
+    audio.setGlobalVolume.mockClear();
+    storage.saveConfig.mockClear();
+    storage.loadLanguage.mockClear();
+    storage.loadUnit.mockClear();
+    storage.saveLanguage.mockClear();
+    storage.saveUnit.mockClear();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('throws error when useSettings is used outside of SettingsProvider', () => {
+    // Suppress expected console.error during the throw test to keep output clean
+    const originalConsoleError = console.error;
+    console.error = vi.fn();
+    expect(() => renderHook(() => useSettings())).toThrow(
+      'useSettings must be used within SettingsProvider'
+    );
+    console.error = originalConsoleError;
+  });
+
+  it('loads default state correctly', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+
+    expect(result.current.lang).toBe('en');
+    expect(result.current.unit).toBe('kg');
+    expect(result.current.config).toEqual({ theme: 'dark', volume: 0.8 });
+    expect(result.current.tooltip).toBeNull();
+    expect(result.current.modalOpen).toBe(false);
+  });
+
+  it('loads state from localStorage if available', () => {
+    mockStorage['wod_lang'] = 'de';
+    mockStorage['wod_unit'] = 'lbs';
+
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+
+    expect(result.current.lang).toBe('de');
+    expect(result.current.unit).toBe('lbs');
+  });
+
+  it('toggles language and persists to localStorage', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+
+    act(() => {
+      result.current.toggleLang();
     });
 
-    it('throws error when useSettings is used outside of SettingsProvider', () => {
-        // Suppress expected console.error during the throw test to keep output clean
-        const originalConsoleError = console.error;
-        console.error = vi.fn();
-        expect(() => renderHook(() => useSettings())).toThrow('useSettings must be used within SettingsProvider');
-        console.error = originalConsoleError;
+    expect(result.current.lang).toBe('de');
+    expect(mockStorage['wod_lang']).toBe('de');
+
+    act(() => {
+      result.current.toggleLang();
     });
 
-    it('loads default state correctly', () => {
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+    expect(result.current.lang).toBe('en');
+    expect(mockStorage['wod_lang']).toBe('en');
+  });
 
-        expect(result.current.lang).toBe('en');
-        expect(result.current.unit).toBe('kg');
-        expect(result.current.config).toEqual({ theme: 'dark', volume: 0.8 });
-        expect(result.current.tooltip).toBeNull();
-        expect(result.current.modalOpen).toBe(false);
+  it('toggles unit and persists to localStorage', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+
+    act(() => {
+      result.current.toggleUnit();
     });
 
-    it('loads state from localStorage if available', () => {
-        mockStorage['wod_lang'] = 'de';
-        mockStorage['wod_unit'] = 'lbs';
+    expect(result.current.unit).toBe('lbs');
+    expect(mockStorage['wod_unit']).toBe('lbs');
 
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
-
-        expect(result.current.lang).toBe('de');
-        expect(result.current.unit).toBe('lbs');
+    act(() => {
+      result.current.toggleUnit();
     });
 
-    it('toggles language and persists to localStorage', () => {
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+    expect(result.current.unit).toBe('kg');
+    expect(mockStorage['wod_unit']).toBe('kg');
+  });
 
-        act(() => {
-            result.current.toggleLang();
-        });
+  it('saves config changes and updates global volume', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
 
-        expect(result.current.lang).toBe('de');
-        expect(mockStorage['wod_lang']).toBe('de');
-
-        act(() => {
-            result.current.toggleLang();
-        });
-
-        expect(result.current.lang).toBe('en');
-        expect(mockStorage['wod_lang']).toBe('en');
+    act(() => {
+      result.current.setConfig({ theme: 'light', volume: 0.5 });
     });
 
-    it('toggles unit and persists to localStorage', () => {
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+    expect(storage.saveConfig).toHaveBeenCalledWith({ theme: 'light', volume: 0.5 });
+    expect(audio.setGlobalVolume).toHaveBeenCalledWith(0.5);
+  });
 
-        act(() => {
-            result.current.toggleUnit();
-        });
+  it('handles tooltips correctly', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
 
-        expect(result.current.unit).toBe('lbs');
-        expect(mockStorage['wod_unit']).toBe('lbs');
+    const mockEvent = {
+      stopPropagation: vi.fn(),
+      currentTarget: {
+        getBoundingClientRect: () => ({ left: 100, top: 200, width: 50 }),
+      },
+    };
 
-        act(() => {
-            result.current.toggleUnit();
-        });
-
-        expect(result.current.unit).toBe('kg');
-        expect(mockStorage['wod_unit']).toBe('kg');
+    act(() => {
+      result.current.handleTooltip(mockEvent, 'Test Tooltip');
     });
 
-    it('saves config changes and updates global volume', () => {
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+    expect(mockEvent.stopPropagation).toHaveBeenCalled();
+    expect(result.current.tooltip).toEqual({ x: 125, y: 190, text: 'Test Tooltip' });
 
-        act(() => {
-            result.current.setConfig({ theme: 'light', volume: 0.5 });
-        });
-
-        expect(storage.saveConfig).toHaveBeenCalledWith({ theme: 'light', volume: 0.5 });
-        expect(audio.setGlobalVolume).toHaveBeenCalledWith(0.5);
+    act(() => {
+      result.current.clearTooltip();
     });
 
-    it('handles tooltips correctly', () => {
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
+    expect(result.current.tooltip).toBeNull();
+  });
 
-        const mockEvent = {
-            stopPropagation: vi.fn(),
-            currentTarget: {
-                getBoundingClientRect: () => ({ left: 100, top: 200, width: 50 })
-            }
-        };
+  it('does not set tooltip if text is empty', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
 
-        act(() => {
-            result.current.handleTooltip(mockEvent, 'Test Tooltip');
-        });
+    const mockEvent = {
+      stopPropagation: vi.fn(),
+    };
 
-        expect(mockEvent.stopPropagation).toHaveBeenCalled();
-        expect(result.current.tooltip).toEqual({ x: 125, y: 190, text: 'Test Tooltip' });
-
-        act(() => {
-            result.current.clearTooltip();
-        });
-
-        expect(result.current.tooltip).toBeNull();
+    act(() => {
+      result.current.handleTooltip(mockEvent, '');
     });
 
-    it('does not set tooltip if text is empty', () => {
-        const { result } = renderHook(() => useSettings(), { wrapper: SettingsProvider });
-
-        const mockEvent = {
-            stopPropagation: vi.fn()
-        };
-
-        act(() => {
-            result.current.handleTooltip(mockEvent, '');
-        });
-
-        expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        expect(result.current.tooltip).toBeNull();
-    });
+    expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
+    expect(result.current.tooltip).toBeNull();
+  });
 });

@@ -8,20 +8,20 @@ import { LadderStrategy } from './LadderStrategy.js';
 import { DeathByStrategy } from './DeathByStrategy.js';
 
 const STRATEGIES = {
-    'AMRAP': AmrapStrategy,
-    'RFT': RftStrategy,
-    'EMOM': EmomStrategy,
-    'Chipper': ChipperStrategy,
-    'Tabata': TabataStrategy,
-    'Ladder': LadderStrategy,
-    'Death By': DeathByStrategy
+  AMRAP: AmrapStrategy,
+  RFT: RftStrategy,
+  EMOM: EmomStrategy,
+  Chipper: ChipperStrategy,
+  Tabata: TabataStrategy,
+  Ladder: LadderStrategy,
+  'Death By': DeathByStrategy,
 };
 
 export const getStrategy = (templateName) => {
-    return STRATEGIES[templateName] || AmrapStrategy;
+  return STRATEGIES[templateName] || AmrapStrategy;
 };
 
 export const getRandomTemplate = () => {
-    const keys = Object.keys(STRATEGIES);
-    return keys[Math.floor(getSecureRandom() * keys.length)];
+  const keys = Object.keys(STRATEGIES);
+  return keys[Math.floor(getSecureRandom() * keys.length)];
 };
